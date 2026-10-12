@@ -185,7 +185,7 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 | 132 | [132-no-name-on-the-door](./13-night-shift/132-no-name-on-the-door/) | 125 | [README](./13-night-shift/132-no-name-on-the-door/README.md) |
 | 133 | [133-hopscotch](./13-night-shift/133-hopscotch/) | 150 | [README](./13-night-shift/133-hopscotch/README.md) |
 | 134 | [134-repacked](./13-night-shift/134-repacked/) | 150 | [README](./13-night-shift/134-repacked/README.md) |
-| 135 | [135-what-they-took](./13-night-shift/135-what-they-took/) | 193 | [README](./13-night-shift/135-what-they-took/README.md) |
+| 135 | [135-what-they-took](./13-night-shift/135-what-they-took/) | 175 | [README](./13-night-shift/135-what-they-took/README.md) |
 
 ---
 
