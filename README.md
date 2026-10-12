@@ -111,20 +111,20 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 
 | # | Challenge | Points | Write-up |
 |---:|---|---:|---|
-| 501 | [501-cosmic-bit-blunder](./05-rad-hard-rampage/501-cosmic-bit-blunder/) | 55 | `GAIANSPACE{s1ngle_event_upset}` |
-| 502 | [502-ionized-transistangle](./05-rad-hard-rampage/502-ionized-transistangle/) | 96 | `GAIANSPACE{t0tal_1onizing_d0se}` |
-| 503 | [503-degradift](./05-rad-hard-rampage/503-degradift/) | 144 | `GAIANSPACE{displ4cement_drift}` |
-| 504 | [504-lunar-latch-up](./05-rad-hard-rampage/504-lunar-latch-up/) | 180 | `GAIANSPACE{s1ngle_event_l4tchup}` |
-| 505 | [505-thermal-duty](./05-rad-hard-rampage/505-thermal-duty/) | 102 | `GAIANSPACE{therm4l_duty_cycle}` |
+| 501 | [501-cosmic-bit-blunder](./05-rad-hard-rampage/501-cosmic-bit-blunder/) | 50 | `GAIANSPACE{s1ngle_event_upset}` |
+| 502 | [502-ionized-transistangle](./05-rad-hard-rampage/502-ionized-transistangle/) | 75 | `GAIANSPACE{t0tal_1onizing_d0se}` |
+| 503 | [503-degradift](./05-rad-hard-rampage/503-degradift/) | 100 | `GAIANSPACE{displ4cement_drift}` |
+| 504 | [504-lunar-latch-up](./05-rad-hard-rampage/504-lunar-latch-up/) | 125 | `GAIANSPACE{s1ngle_event_l4tchup}` |
+| 505 | [505-thermal-duty](./05-rad-hard-rampage/505-thermal-duty/) | 75 | `GAIANSPACE{therm4l_duty_cycle}` |
 
 ### <a id="06-dr-one"></a>[06-dr-one](./06-dr-one/)
 
 | # | Challenge | Points | Write-up |
 |---:|---|---:|---|
-| 601 | [601-what-is-this-planet](./06-dr-one/601-what-is-this-planet/) | 64 | `GAIANSPACE{m4rs_r0torcraft_scout}` |
-| 602 | [602-help-me-fly](./06-dr-one/602-help-me-fly/) | 102 | `GAIANSPACE{fl1ght_telemetry_str3am}` |
-| 603 | [603-g-fold](./06-dr-one/603-g-fold/) | 136 | `GAIANSPACE{LZ_1370_-360}` |
-| 604 | [604-ice-vault](./06-dr-one/604-ice-vault/) | 245 | `GAIANSPACE{UTOPIA_PLANITIA_46.7N_97.3E}` |
+| 601 | [601-what-is-this-planet](./06-dr-one/601-what-is-this-planet/) | 50 | `GAIANSPACE{m4rs_r0torcraft_scout}` |
+| 602 | [602-help-me-fly](./06-dr-one/602-help-me-fly/) | 75 | `GAIANSPACE{fl1ght_telemetry_str3am}` |
+| 603 | [603-g-fold](./06-dr-one/603-g-fold/) | 100 | `GAIANSPACE{LZ_1370_-360}` |
+| 604 | [604-ice-vault](./06-dr-one/604-ice-vault/) | 125 | `GAIANSPACE{UTOPIA_PLANITIA_46.7N_97.3E}` |
 
 ### <a id="07-unscheduled-passes"></a>[07-unscheduled-passes](./07-unscheduled-passes/)
 
@@ -149,11 +149,11 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 
 | # | Challenge | Points | Write-up |
 |---:|---|---:|---|
-| 901 | [901-twenty-two-kilohertz](./09-dish-wrangler/901-twenty-two-kilohertz/) | 79 | `GAIANSPACE{dis3qc_t0ne_b1ts}` |
-| 902 | [902-where-was-it-pointing](./09-dish-wrangler/902-where-was-it-pointing/) | 119 | `GAIANSPACE{usals_arc_backtr4ced}` |
-| 903 | [903-console-backdoor](./09-dish-wrangler/903-console-backdoor/) | 164 | `GAIANSPACE{ref_p4th_tr4versal}` |
-| 904 | [904-gotox-maint](./09-dish-wrangler/904-gotox-maint/) | 164 | `GAIANSPACE{m41nt_m0de_unl0cked}` |
-| 905 | [905-hand-on-the-wheel](./09-dish-wrangler/905-hand-on-the-wheel/) | 205 | `GAIANSPACE{f0rged_slew_t0_h0me}` |
+| 901 | [901-twenty-two-kilohertz](./09-dish-wrangler/901-twenty-two-kilohertz/) | 50 | `GAIANSPACE{dis3qc_t0ne_b1ts}` |
+| 902 | [902-where-was-it-pointing](./09-dish-wrangler/902-where-was-it-pointing/) | 75 | `GAIANSPACE{usals_arc_backtr4ced}` |
+| 903 | [903-console-backdoor](./09-dish-wrangler/903-console-backdoor/) | 100 | `GAIANSPACE{ref_p4th_tr4versal}` |
+| 904 | [904-gotox-maint](./09-dish-wrangler/904-gotox-maint/) | 100 | `GAIANSPACE{m41nt_m0de_unl0cked}` |
+| 905 | [905-hand-on-the-wheel](./09-dish-wrangler/905-hand-on-the-wheel/) | 125 | `GAIANSPACE{f0rged_slew_t0_h0me}` |
 
 ### <a id="10-not-yet"></a>[10-not-yet](./10-not-yet/)
 
@@ -174,8 +174,8 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 |---:|---|---:|---|
 | 121 | [121-channel-hop](./12-spectral-forensics/121-channel-hop/) | 100 | [README](./12-spectral-forensics/121-channel-hop/README.md) |
 | 122 | [122-true-color-is-a-lie](./12-spectral-forensics/122-true-color-is-a-lie/) | 125 | [README](./12-spectral-forensics/122-true-color-is-a-lie/README.md) |
-| 123 | [123-isodata-seven](./12-spectral-forensics/123-isodata-seven/) | 204 | [README](./12-spectral-forensics/123-isodata-seven/README.md) |
-| 124 | [124-subsidy-claim](./12-spectral-forensics/124-subsidy-claim/) | 252 | [README](./12-spectral-forensics/124-subsidy-claim/README.md) |
+| 123 | [123-isodata-seven](./12-spectral-forensics/123-isodata-seven/) | 150 | [README](./12-spectral-forensics/123-isodata-seven/README.md) |
+| 124 | [124-subsidy-claim](./12-spectral-forensics/124-subsidy-claim/) | 175 | [README](./12-spectral-forensics/124-subsidy-claim/README.md) |
 
 ### <a id="13-night-shift"></a>[13-night-shift](./13-night-shift/)
 
@@ -183,9 +183,9 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 |---:|---|---:|---|
 | 131 | [131-two-voices](./13-night-shift/131-two-voices/) | 100 | [README](./13-night-shift/131-two-voices/README.md) |
 | 132 | [132-no-name-on-the-door](./13-night-shift/132-no-name-on-the-door/) | 125 | [README](./13-night-shift/132-no-name-on-the-door/README.md) |
-| 133 | [133-hopscotch](./13-night-shift/133-hopscotch/) | 192 | [README](./13-night-shift/133-hopscotch/README.md) |
-| 134 | [134-repacked](./13-night-shift/134-repacked/) | 237 | [README](./13-night-shift/134-repacked/README.md) |
-| 135 | [135-what-they-took](./13-night-shift/135-what-they-took/) | 287 | [README](./13-night-shift/135-what-they-took/README.md) |
+| 133 | [133-hopscotch](./13-night-shift/133-hopscotch/) | 150 | [README](./13-night-shift/133-hopscotch/README.md) |
+| 134 | [134-repacked](./13-night-shift/134-repacked/) | 150 | [README](./13-night-shift/134-repacked/README.md) |
+| 135 | [135-what-they-took](./13-night-shift/135-what-they-took/) | 193 | [README](./13-night-shift/135-what-they-took/README.md) |
 
 ---
 
