@@ -68,7 +68,7 @@ Survey marker (planetocentric): 46.7 N, 97.3 E.
 FLAG: GAIANSPACE{UTOPIA_PLANITIA_46.7N_97.3E}
 ```
 
-The supplied source was uploaded as `604_crack(1).c`; save it as `604_crack.c` to use the command shown. The archive was successfully extracted with the recovered password. The survey text identifies the Utopia Planitia ice deposit at planetocentric coordinates 46.7 N, 97.3 E.
+The supplied source `604_crack.c` to use the command shown. The archive was successfully extracted with the recovered password. The survey text identifies the Utopia Planitia ice deposit at planetocentric coordinates 46.7 N, 97.3 E.
 
 ### Exploit Code
 
