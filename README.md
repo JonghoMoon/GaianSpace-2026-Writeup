@@ -55,9 +55,9 @@ The table below reflects the **solved challenges visible in the supplied scorebo
 | [09-dish-wrangler](#09-dish-wrangler) | 5 | 450 |
 | [10-not-yet](#10-not-yet) | — | — |
 | [11-the-pgm-rush](#11-the-pgm-rush) | 4 | 750 |
-| [12-spectral-forensics](#12-spectral-forensics) | 4 | 681 |
-| [13-night-shift](#13-night-shift) | 5 | 941 |
-| **Total** | **58** | **6,498** |
+| [12-spectral-forensics](#12-spectral-forensics) | 4 | 550 |
+| [13-night-shift](#13-night-shift) | 5 | 700 |
+| **Total** | **58** | **6126** |
 
 ---
 
