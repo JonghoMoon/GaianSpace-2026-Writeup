@@ -1,6 +1,6 @@
 # 01 — Welcome
 
-Challenges involving radio frequency communications, signal analysis, drone telemetry, and protocol exploitation.
+Challenges involving OSINT.
 
 | # | Challenge | Points | Flag |
 |---|-----------|--------|------|
