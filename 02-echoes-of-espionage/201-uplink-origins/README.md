@@ -17,7 +17,7 @@ Report the sub-satellite point at the uplink instant and the satellite's altitud
 
 **Flag format:** `GAIANSPACE{[Latitude],[Longitude],[Altitude]}` — degrees to two decimals, altitude in kilometres, longitude negative for west. For example GAIANSPACE{12.34,-56.78,789.01}.
 
-**Attachments:** `gaian-13.tle`
+**Attachments:** `gaian-13.tle` — the element set flight dynamics kept for GAIAN-13 on the day
 
 ## Solution
 
@@ -37,8 +37,11 @@ From the challenge input directory (`challenges/`):
 
 The code linked above is the solver **provided in the attached category archive**. It is the primary implementation referenced by this write-up.
 
-Expected relevant output:
+```bash
+python3 201.py
+```
 
+Expected relevant output:
 ```text
 Latitude:   26.46
 Longitude: -98.64
@@ -49,14 +52,6 @@ FLAG: GAIANSPACE{26.46,-98.64,3296.64}
 ### Exploit Code
 
 ```python
-"""
-Usage:
-    python3 202_fixed.py \
-    --capture telemetry_capture.bin \
-    --tle gaian-13.tle
-"""
-
-
 from datetime import datetime, timezone
 from math import atan2, cos, degrees, pi, sin, sqrt
 from pathlib import Path

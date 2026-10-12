@@ -7,13 +7,15 @@
 
 ## Description
 
-An attacker left behind a Gpredict tracking module, a secondary TLE, a ground-station QTH file, and a pass screenshot. Three pieces of a signature must be collected in phrase order.
+When the attacker left GAIAN-13, they left a second element set behind on the tracking laptop, a saved tracking module, a station file, and a screen grab of a pass. Whoever set it up signed their work, the way a tagger signs a wall. The signature is not written in one place.
 
-**Flag format:** `GAIANSPACE{...}`
+The flight-dynamics intern who imaged the laptop is convinced the whole thing is a copy of the operational setup and there is nothing to find. There is something to find. It is broken into pieces and scattered across what the attacker saved, and no single file gives it to you. Collect the pieces and they read like a title.
 
-**Attachments:** 
+Put the signature back together.
 
-![Challenge](./images/206-gpredict-secret.png)
+**Flag format:** `GAIANSPACE{...}` — three fragments joined with underscores, in the order that makes them read as a phrase.
+
+**Attachments:** `gaian-13-relay.tle` — the second element set left on the laptop, `pass_capture.png` — a screen grab of a pass, `relay.mod` — the saved tracking module, `vela.qth` — the station location file
 
 ## Solution
 
@@ -27,25 +29,165 @@ An attacker left behind a Gpredict tracking module, a secondary TLE, a ground-st
 
 ### Reproduction
 
-The supplied solver is [`scripts/206.py`](./scripts/206.py). Required dependencies: `pillow`, `pytesseract`, Tesseract OCR.
-
-From the challenge input directory (`challenges/`):
+The following source is the solver used for this challenge. Run it with its original working-directory layout and input paths.
 
 ```bash
-`python3 ../scripts/206.py`
+python3 206.py
 ```
 
-**Path note:** The supplied `206.py` resolves input files relative to its own `scripts/` directory, whereas this repository stores inputs in `challenges/`. Copy the four input files into `scripts/` (or adjust `BASE_DIR`) before running.
-
-The code linked above is the solver **provided in the attached category archive**. It is the primary implementation referenced by this write-up.
-
 Expected relevant output:
+```
+[OCR Result]
+Gpredict - Single Satellite
+Satellite GAIAN-13 R2
 
-```text
+Catalog # 00005
+
+Az / EL 181.6° / 68.2°
+Range 2654 km
+
+Next AOS 2025-06-12 19:03:11
+Footprint note: the_sky
+Doppler -1.4 kHz
+
+Mode RELAY
+
+
+[Extracted Fragments]
 TLE        : w4tcher
 Module     : 0f
 Screenshot : the_sky
-FLAG: GAIANSPACE{w4tcher_0f_the_sky}
+Station    : VELA (verified)
+
+[FLAG]
+GAIANSPACE{w4tcher_0f_the_sky}
+```
+
+### Exploit Code
+
+```python
+
+#!/usr/bin/env python3
+"""
+GaianSpace CTF 206 - gpredict-secret
+
+Extract three signature fragments from:
+  1. gaian-13-relay.tle
+  2. relay.mod
+  3. pass_capture.png
+
+Validate the station configuration in vela.qth.
+"""
+
+import re
+from pathlib import Path
+
+import pytesseract
+from PIL import Image
+
+
+BASE_DIR = Path(__file__).resolve().parent
+
+
+def extract_tle_fragment(path: Path) -> str:
+    text = path.read_text(encoding="utf-8")
+
+    match = re.search(r";tag:([A-Za-z0-9_]+)", text)
+    if match is None:
+        raise ValueError("TLE signature tag not found")
+
+    return match.group(1)
+
+
+def extract_module_fragment(path: Path) -> str:
+    text = path.read_text(encoding="utf-8")
+
+    match = re.search(
+        r"relay-token\s*=\s*([A-Za-z0-9_]+)",
+        text,
+        re.IGNORECASE,
+    )
+    if match is None:
+        raise ValueError("Relay token not found")
+
+    return match.group(1)
+
+
+def extract_image_fragment(path: Path) -> str:
+    with Image.open(path) as image:
+        rgb = image.convert("RGB")
+        text = pytesseract.image_to_string(
+            rgb,
+            config="--psm 6",
+        )
+
+    print("[OCR Result]")
+    print(text)
+
+    match = re.search(
+        r"note\s*:\s*([A-Za-z0-9_]+)",
+        text,
+        re.IGNORECASE,
+    )
+    if match is None:
+        raise ValueError("Screenshot signature not found")
+
+    return match.group(1)
+
+
+def verify_station(path: Path) -> None:
+    text = path.read_text(encoding="utf-8")
+
+    required = {
+        "LOCATION": "GaianSpace VELA",
+        "LAT": "19.48",
+        "LON": "-155.60",
+    }
+
+    for key, expected in required.items():
+        match = re.search(
+            rf"^{re.escape(key)}\s*=\s*(.+)$",
+            text,
+            re.MULTILINE,
+        )
+
+        if match is None:
+            raise ValueError(f"Missing station field: {key}")
+
+        actual = match.group(1).strip()
+        if actual != expected:
+            raise ValueError(
+                f"Unexpected {key}: {actual}"
+            )
+
+
+def main() -> None:
+    tle = BASE_DIR / "gaian-13-relay.tle"
+    module = BASE_DIR / "relay.mod"
+    station = BASE_DIR / "vela.qth"
+    screenshot = BASE_DIR / "pass_capture.png"
+
+    verify_station(station)
+
+    part1 = extract_tle_fragment(tle)
+    part2 = extract_module_fragment(module)
+    part3 = extract_image_fragment(screenshot)
+
+    signature = "_".join((part1, part2, part3))
+    flag = f"GAIANSPACE{{{signature}}}"
+
+    print("\n[Extracted Fragments]")
+    print(f"TLE        : {part1}")
+    print(f"Module     : {part2}")
+    print(f"Screenshot : {part3}")
+    print("Station    : VELA (verified)")
+
+    print("\n[FLAG]")
+    print(flag)
+
+
+if __name__ == "__main__":
+    main()
 ```
 
 ## Flag

@@ -7,13 +7,15 @@
 
 ## Description
 
-A network capture contains ordinary housekeeping and an attacker-controlled relay conversation. Recover the scrambled command returned by the remote server.
+With the decoder armed, the array stopped being ours. For a few minutes it talked to something out on the open internet, sent it a shopping list, and got told what to do next. The span monitor caught all of it. The watch wants to know what the attacker told it to do.
+
+This is the last of the capture. Most of it is the array doing its ordinary housekeeping; one conversation is not ordinary. The host that calls out does not call home, it calls somewhere else, and what comes back is not text and not an encoded file you can just unwrap — it is scrambled. The two sides agreed on how to scramble it earlier in the very same conversation, out in the open, if you read the whole exchange instead of only the reply. Reyes closed the case on the first familiar thing she saw. The watch log carries a training injection the array writes on purpose. The archive still hands out a park order and calls it tasking. A sync blob on a lookalike host names its own cipher and key in the headers. The range link still publishes a sample card. The encoded "nominal" block on the housekeeping link is the same kind of bait. None of that is the attacker.
+
+Recover the attacker's next move.
 
 **Flag format:** `GAIANSPACE{...}`
 
-**Attachments:** 
-
-![Challenge](./images/205-backdoor-from-space.png)
+**Attachments:** `ground_c2_traffic.pcap` — the span monitor's capture, just after the downlink
 
 ## Solution
 
@@ -26,24 +28,62 @@ A network capture contains ordinary housekeeping and an attacker-controlled rela
 
 ### Reproduction
 
-The supplied solver is [`scripts/205.py`](./scripts/205.py). Required dependencies: Python standard library.
-
-From the challenge input directory (`challenges/`):
+The following source is the solver used for this challenge. Run it with its original working-directory layout and input paths.
 
 ```bash
-`python3 ../scripts/205.py`
+python3 205.py
 ```
 
-The code linked above is the solver **provided in the attached category archive**. It is the primary implementation referenced by this write-up.
-
 Expected relevant output:
-
-```text
+```
 TASKING v2
 target=GAIAN-13
 action=persist;rotate-keys
 note=next move queued
 flag=GAIANSPACE{c2_rc4_from_the_nonce}
+```
+
+### Exploit Code
+
+```python
+
+import base64
+
+# Values extracted from the attacker's HTTP conversation.
+session = "9f3a7c2e15b84d60"
+payload = (
+    "VxKfG5OtdAkdsGbX8AM7soeVJGU+WOs7dLPyIAuu8edqBwL2wDHT5Bm9RZr5s4hqRyc6SvLh+m0pbKL6cG45k6y2vwdnbF6Hm//jC9yWwMgbHg/rwKDcGKX4/cCg3qJi8rxUQIU12Hu3/E4b1uHGCl3DgA=="
+)
+
+
+def rc4_decrypt(data: bytes, key: bytes) -> bytes:
+    state = list(range(256))
+    j = 0
+
+    # RC4 key scheduling algorithm.
+    for i in range(256):
+        j = (j + state[i] + key[i % len(key)]) % 256
+        state[i], state[j] = state[j], state[i]
+
+    i = 0
+    j = 0
+    output = bytearray()
+
+    # RC4 pseudo-random generation algorithm.
+    for value in data:
+        i = (i + 1) % 256
+        j = (j + state[i]) % 256
+        state[i], state[j] = state[j], state[i]
+        keystream = state[(state[i] + state[j]) % 256]
+        output.append(value ^ keystream)
+
+    return bytes(output)
+
+
+ciphertext = base64.b64decode(payload)
+plaintext = rc4_decrypt(ciphertext, session.encode("ascii"))
+
+print(plaintext.decode("ascii"))
 ```
 
 ## Flag
