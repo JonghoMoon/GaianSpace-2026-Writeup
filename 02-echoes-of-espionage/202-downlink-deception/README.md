@@ -38,7 +38,7 @@ Inspect `telemetry_capture.bin` and locate the ASCII UTC timestamp associated wi
 2025-06-12T19:15:00Z
 ```
 
-The original `scripts/202.py` computes station elevation angles, extract the timestamp and print the complete flag. 
+The `scripts/202.py` computes station elevation angles, extract the timestamp and print the complete flag. 
 
 **2. Propagate the satellite orbit**
 
