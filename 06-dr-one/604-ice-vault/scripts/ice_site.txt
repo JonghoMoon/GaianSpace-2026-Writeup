@@ -1,0 +1,10 @@
+DR-ONE subsurface survey — CONFIDENTIAL mission vault
+=====================================================
+
+Primary subsurface water-ice target confirmed by SHARAD-class sounding
+and the onboard perception stack over multiple passes.
+
+Deposit: Utopia Planitia mid-latitude ice sheet (volume ~ a small sea).
+Survey marker (planetocentric): 46.7 N, 97.3 E.
+
+FLAG: GAIANSPACE{UTOPIA_PLANITIA_46.7N_97.3E}
