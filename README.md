@@ -24,8 +24,8 @@ Each write-up will include the methodology, evidence, analysis scripts, and rele
 
 ## Environment
 
-- Ubuntu Linux
-- Python 3 and challenge-specific libraries
+- Ubuntu 22.04.5(5.15.0-185-generic)
+- Python 3.10.12 and challenge-specific libraries
 - C / OpenSSL / OpenMP where required
 - Wireshark, GNU binutils, SDR/DSP tools, and other challenge-specific utilities
 
