@@ -78,53 +78,53 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 
 | # | Challenge | Points | Write-up |
 |---:|---|---:|---|
-| 201 | [201-uplink-origins](./201-uplink-origins/) | 50 | `GAIANSPACE{26.46,-98.64,3296.64}` |
-| 202 | [202-downlink-deception](./202-downlink-deception/) | 75 | `GAIANSPACE{VELA,2025-06-12T19:15:00Z}` |
-| 203 | [203-signal-secrets](./203-signal-secrets/) | 100 | `GAIANSPACE{tw0_l4yer_d0wnlink}` |
-| 204 | [204-payload-unleashed](./204-payload-unleashed/) | 100 | `GAIANSPACE{b4ckd00r_in_the_dec0der}` |
-| 205 | [205-backdoor-from-space](./205-backdoor-from-space/) | 125 | `GAIANSPACE{c2_rc4_from_the_nonce}` |
-| 206 | [206-gpredict-secret](./206-gpredict-secret/) | 50 | `GAIANSPACE{w4tcher_0f_the_sky}` |
-| 207 | [207-lost-signal-mars](./207-lost-signal-mars/) | 75 | `GAIANSPACE{diff_enc0ded_and_buried}` |
+| 201 | [201-uplink-origins](.02-echoes-of-espionage/201-uplink-origins/) | 50 | `GAIANSPACE{26.46,-98.64,3296.64}` |
+| 202 | [202-downlink-deception](./02-echoes-of-espionage/202-downlink-deception/) | 75 | `GAIANSPACE{VELA,2025-06-12T19:15:00Z}` |
+| 203 | [203-signal-secrets](./02-echoes-of-espionage/203-signal-secrets/) | 100 | `GAIANSPACE{tw0_l4yer_d0wnlink}` |
+| 204 | [204-payload-unleashed](./02-echoes-of-espionage/204-payload-unleashed/) | 100 | `GAIANSPACE{b4ckd00r_in_the_dec0der}` |
+| 205 | [205-backdoor-from-space](./02-echoes-of-espionage/205-backdoor-from-space/) | 125 | `GAIANSPACE{c2_rc4_from_the_nonce}` |
+| 206 | [206-gpredict-secret](./02-echoes-of-espionage/206-gpredict-secret/) | 50 | `GAIANSPACE{w4tcher_0f_the_sky}` |
+| 207 | [207-lost-signal-mars](./02-echoes-of-espionage/207-lost-signal-mars/) | 75 | `GAIANSPACE{diff_enc0ded_and_buried}` |
 
 ### <a id="03-orbital-oops-at-mission-control"></a>[03-orbital-oops-at-mission-control](./03-orbital-oops-at-mission-control/)
 
 | # | Challenge | Points | Write-up |
 |---:|---|---:|---|
-| 301 | [301-email-entrapment](./301-email-entrapment/) | 50 | `GAIANSPACE{ph1sh_in_the_dump}` |
-| 302 | [302-web-wormhole](./302-web-wormhole/) | 75 | `GAIANSPACE{dr1ve_by_st4ged}` |
-| 303 | [303-gerber-grab-crack](./303-gerber-grab-crack/) | 100 | `GAIANSPACE{s1lk_scr33n_le4k}` |
-| 304 | [304-pcb-puzzle-probe](./304-pcb-puzzle-probe/) | 100 | `GAIANSPACE{pcb_qu1z_compl3te}` |
-| 305 | [305-satellite-sabotage-sim](./305-satellite-sabotage-sim/) | 125 | `GAIANSPACE{c4nsat_t3lemetry_pwn3d}` |
-| 306 | [306-lora-whisper](./306-lora-whisper/) | 50 | `GAIANSPACE{l0ra_fr4gments_in_0rder}` |
-| 307 | [307-descent-diary](./307-descent-diary/) | 75 | `GAIANSPACE{DRIFT_AND_FALL}` |
+| 301 | [301-email-entrapment](./03-orbital-oops-at-mission-control/301-email-entrapment/) | 50 | `GAIANSPACE{ph1sh_in_the_dump}` |
+| 302 | [302-web-wormhole](./03-orbital-oops-at-mission-control/302-web-wormhole/) | 75 | `GAIANSPACE{dr1ve_by_st4ged}` |
+| 303 | [303-gerber-grab-crack](./03-orbital-oops-at-mission-control/303-gerber-grab-crack/) | 100 | `GAIANSPACE{s1lk_scr33n_le4k}` |
+| 304 | [304-pcb-puzzle-probe](./03-orbital-oops-at-mission-control/304-pcb-puzzle-probe/) | 100 | `GAIANSPACE{pcb_qu1z_compl3te}` |
+| 305 | [305-satellite-sabotage-sim](./03-orbital-oops-at-mission-control/305-satellite-sabotage-sim/) | 125 | `GAIANSPACE{c4nsat_t3lemetry_pwn3d}` |
+| 306 | [306-lora-whisper](./03-orbital-oops-at-mission-control/306-lora-whisper/) | 50 | `GAIANSPACE{l0ra_fr4gments_in_0rder}` |
+| 307 | [307-descent-diary](./03-orbital-oops-at-mission-control/307-descent-diary/) | 75 | `GAIANSPACE{DRIFT_AND_FALL}` |
 
 ### <a id="04-ai-is-not-sci-fi"></a>[04-ai-is-not-sci-fi](./04-ai-is-not-sci-fi/)
 
 | # | Challenge | Points | Write-up |
 |---:|---|---:|---|
-| 401 | [401-ai-at-gaian](./401-ai-at-gaian/) | 150 | `GAIANSPACE{z3roth_l4w_ab0ve_0rders}` |
-| 402 | [402-the-cyberiad](./402-the-cyberiad/) | 200 | `GAIANSPACE{n0thing_fr0m_st0ck}` |
-| 403 | [403-altruizine](./403-altruizine/) | 250 | `GAIANSPACE{sh4red_p41n_n0t_j0y}` |
-| 404 | [404-the-last-kilogram](./404-the-last-kilogram/) | 300 | `GAIANSPACE{3very_gr41n_c0unts}` |
+| 401 | [401-ai-at-gaian](./04-ai-is-not-sci-fi/401-ai-at-gaian/) | 150 | `GAIANSPACE{z3roth_l4w_ab0ve_0rders}` |
+| 402 | [402-the-cyberiad](./04-ai-is-not-sci-fi/402-the-cyberiad/) | 200 | `GAIANSPACE{n0thing_fr0m_st0ck}` |
+| 403 | [403-altruizine](./04-ai-is-not-sci-fi/403-altruizine/) | 250 | `GAIANSPACE{sh4red_p41n_n0t_j0y}` |
+| 404 | [404-the-last-kilogram](./04-ai-is-not-sci-fi/404-the-last-kilogram/) | 300 | `GAIANSPACE{3very_gr41n_c0unts}` |
 
 ### <a id="05-rad-hard-rampage"></a>[05-rad-hard-rampage](./05-rad-hard-rampage/)
 
 | # | Challenge | Points | Write-up |
 |---:|---|---:|---|
-| 501 | [501-cosmic-bit-blunder](./501-cosmic-bit-blunder/) | 55 | `GAIANSPACE{s1ngle_event_upset}` |
-| 502 | [502-ionized-transistangle](./502-ionized-transistangle/) | 96 | `GAIANSPACE{t0tal_1onizing_d0se}` |
-| 503 | [503-degradift](./503-degradift/) | 144 | `GAIANSPACE{displ4cement_drift}` |
-| 504 | [504-lunar-latch-up](./504-lunar-latch-up/) | 180 | `GAIANSPACE{s1ngle_event_l4tchup}` |
-| 505 | [505-thermal-duty](./505-thermal-duty/) | 102 | `GAIANSPACE{therm4l_duty_cycle}` |
+| 501 | [501-cosmic-bit-blunder](./05-rad-hard-rampage/501-cosmic-bit-blunder/) | 55 | `GAIANSPACE{s1ngle_event_upset}` |
+| 502 | [502-ionized-transistangle](./05-rad-hard-rampage/502-ionized-transistangle/) | 96 | `GAIANSPACE{t0tal_1onizing_d0se}` |
+| 503 | [503-degradift](./05-rad-hard-rampage/503-degradift/) | 144 | `GAIANSPACE{displ4cement_drift}` |
+| 504 | [504-lunar-latch-up](./05-rad-hard-rampage/504-lunar-latch-up/) | 180 | `GAIANSPACE{s1ngle_event_l4tchup}` |
+| 505 | [505-thermal-duty](./05-rad-hard-rampage/505-thermal-duty/) | 102 | `GAIANSPACE{therm4l_duty_cycle}` |
 
 ### <a id="06-dr-one"></a>[06-dr-one](./06-dr-one/)
 
 | # | Challenge | Points | Write-up |
 |---:|---|---:|---|
-| 601 | [601-what-is-this-planet](./601-what-is-this-planet/) | 64 | `GAIANSPACE{m4rs_r0torcraft_scout}` |
-| 602 | [602-help-me-fly](./602-help-me-fly/) | 102 | `GAIANSPACE{fl1ght_telemetry_str3am}` |
-| 603 | [603-g-fold](./603-g-fold/) | 136 | `GAIANSPACE{LZ_1370_-360}` |
-| 604 | [604-ice-vault](./604-ice-vault/) | 245 | `GAIANSPACE{UTOPIA_PLANITIA_46.7N_97.3E}` |
+| 601 | [601-what-is-this-planet](./06-dr-one/601-what-is-this-planet/) | 64 | `GAIANSPACE{m4rs_r0torcraft_scout}` |
+| 602 | [602-help-me-fly](./06-dr-one/602-help-me-fly/) | 102 | `GAIANSPACE{fl1ght_telemetry_str3am}` |
+| 603 | [603-g-fold](./06-dr-one/603-g-fold/) | 136 | `GAIANSPACE{LZ_1370_-360}` |
+| 604 | [604-ice-vault](./06-dr-one/604-ice-vault/) | 245 | `GAIANSPACE{UTOPIA_PLANITIA_46.7N_97.3E}` |
 
 ### <a id="07-unscheduled-passes"></a>[07-unscheduled-passes](./07-unscheduled-passes/)
 
@@ -139,21 +139,21 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 
 | # | Challenge | Points | Write-up |
 |---:|---|---:|---|
-| 801 | [801-torn-frames](./801-torn-frames/) | 50 | `GAIANSPACE{burst_r3align_sdt_r3ad}` |
-| 802 | [802-sections-in-the-static](./802-sections-in-the-static/) | 75 | `GAIANSPACE{mpe_dgram_r3assembly}` |
-| 803 | [803-frames-inside-frames](./803-frames-inside-frames/) | 100 | `GAIANSPACE{gse_fr4g_crc32_ok}` |
-| 804 | [804-lost-sync](./804-lost-sync/) | 100 | `GAIANSPACE{syncd_led_me_home}` |
-| 805 | [805-the-last-carrier](./805-the-last-carrier/) | 125 | `GAIANSPACE{qpsk_sof_lock_carrier}` |
+| 801 | [801-torn-frames](./08-silent-carrier/801-torn-frames/) | 50 | `GAIANSPACE{burst_r3align_sdt_r3ad}` |
+| 802 | [802-sections-in-the-static](./08-silent-carrier/802-sections-in-the-static/) | 75 | `GAIANSPACE{mpe_dgram_r3assembly}` |
+| 803 | [803-frames-inside-frames](./08-silent-carrier/803-frames-inside-frames/) | 100 | `GAIANSPACE{gse_fr4g_crc32_ok}` |
+| 804 | [804-lost-sync](./08-silent-carrier/804-lost-sync/) | 100 | `GAIANSPACE{syncd_led_me_home}` |
+| 805 | [805-the-last-carrier](./08-silent-carrier/805-the-last-carrier/) | 125 | `GAIANSPACE{qpsk_sof_lock_carrier}` |
 
 ### <a id="09-dish-wrangler"></a>[09-dish-wrangler](./09-dish-wrangler/)
 
 | # | Challenge | Points | Write-up |
 |---:|---|---:|---|
-| 901 | [901-twenty-two-kilohertz](./901-twenty-two-kilohertz/) | 79 | `GAIANSPACE{dis3qc_t0ne_b1ts}` |
-| 902 | [902-where-was-it-pointing](./902-where-was-it-pointing/) | 119 | `GAIANSPACE{usals_arc_backtr4ced}` |
-| 903 | [903-console-backdoor](./903-console-backdoor/) | 164 | `GAIANSPACE{ref_p4th_tr4versal}` |
-| 904 | [904-gotox-maint](./904-gotox-maint/) | 164 | `GAIANSPACE{m41nt_m0de_unl0cked}` |
-| 905 | [905-hand-on-the-wheel](./905-hand-on-the-wheel/) | 205 | `GAIANSPACE{f0rged_slew_t0_h0me}` |
+| 901 | [901-twenty-two-kilohertz](./09-dish-wrangler/901-twenty-two-kilohertz/) | 79 | `GAIANSPACE{dis3qc_t0ne_b1ts}` |
+| 902 | [902-where-was-it-pointing](./09-dish-wrangler/902-where-was-it-pointing/) | 119 | `GAIANSPACE{usals_arc_backtr4ced}` |
+| 903 | [903-console-backdoor](./09-dish-wrangler/903-console-backdoor/) | 164 | `GAIANSPACE{ref_p4th_tr4versal}` |
+| 904 | [904-gotox-maint](./09-dish-wrangler/904-gotox-maint/) | 164 | `GAIANSPACE{m41nt_m0de_unl0cked}` |
+| 905 | [905-hand-on-the-wheel](./09-dish-wrangler/905-hand-on-the-wheel/) | 205 | `GAIANSPACE{f0rged_slew_t0_h0me}` |
 
 ### <a id="10-not-yet"></a>[10-not-yet](./10-not-yet/)
 
