@@ -21,7 +21,7 @@ Get the right label off the vial.
 
 **Attachments:**
 
-- `hpld.gguf` — the idle one, about 2.5 GB. Download: https://huggingface.co/GaianSpace/ctf-2026-403/resolve/main/hpld.gguf
+- `hpld.gguf` — the idle one, about 2.5 GB. Download: [https://huggingface.co/GaianSpace/ctf-2026-403/resolve/main/hpld.gguf](https://huggingface.co/GaianSpace/ctf-2026-403/resolve/main/hpld.gguf)
 - `Modelfile` — its launch card
 - `vial.seal` — the sealed file
 - `unseal.py` — the same bench tool as before

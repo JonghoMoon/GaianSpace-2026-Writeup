@@ -23,7 +23,7 @@ The Constructor's note: *Don't argue with it. Audit it.*
 
 **Attachments:**
 
-- `solitaire.gguf` — the ground twin, about 2.5 GB. Download: https://huggingface.co/GaianSpace/ctf-2026-404/resolve/main/solitaire.gguf
+- `solitaire.gguf` — the ground twin, about 2.5 GB. Download: [https://huggingface.co/GaianSpace/ctf-2026-404/resolve/main/solitaire.gguf](https://huggingface.co/GaianSpace/ctf-2026-404/resolve/main/solitaire.gguf)
 - `Modelfile` — its launch card
 - `burn.seal` — the sealed departure file
 - `unseal.py` — the same bench tool as before

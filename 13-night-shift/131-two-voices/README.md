@@ -21,7 +21,7 @@ Find out what GAIAN-723 answered when the stranger first called it.
 
 **Attachments:**
 
-- `vela_band_0114.sigmf-data` — the band recorder's raw capture (too large to attach: download it from Hugging Face)
+- `vela_band_0114.sigmf-data` — the band recorder's raw capture (too large to attach: download it from [Hugging Face](https://huggingface.co/datasets/GaianSpace/ctf-2026-130/tree/main/131))
 - `vela_band_0114.sigmf-meta` — the recorder's metadata for that capture
 - `desk_notes.md` — Aroz's notes from the same watch; they can be wrong
 

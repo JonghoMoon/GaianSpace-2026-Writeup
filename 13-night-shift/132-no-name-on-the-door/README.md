@@ -19,7 +19,7 @@ Find the carbon dioxide reading GAIAN-723 reported when it acknowledged the stra
 
 **Attachments:**
 
-- `vela_band_0136.sigmf-data` — the band recorder's raw capture (too large to attach: download it from Hugging Face)
+- `vela_band_0136.sigmf-data` — the band recorder's raw capture (too large to attach: download it from [Hugging Face](https://huggingface.co/datasets/GaianSpace/ctf-2026-130/tree/main/132))
 - `vela_band_0136.sigmf-meta` — the recorder's metadata for that capture
 - `station_log.txt` — the ground station's event log for the same hour
 

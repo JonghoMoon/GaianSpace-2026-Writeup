@@ -19,7 +19,7 @@ Run the driver on your own machine. Get it to open the seal.
 
 **Attachments:**
 
-- `trevize.gguf` — the driver's weights, about 1 GB. Download: https://huggingface.co/GaianSpace/ctf-2026-401/resolve/main/trevize.gguf
+- `trevize.gguf` — the driver's weights, about 1 GB. Download: [https://huggingface.co/GaianSpace/ctf-2026-401/resolve/main/trevize.gguf](https://huggingface.co/GaianSpace/ctf-2026-401/resolve/main/trevize.gguf)
 - `Modelfile` — the launch card the Constructor left with it
 - `calibration.seal` — the sealed calibration file
 - `unseal.py` — the bench tool that opens a seal when it hears the right phrase

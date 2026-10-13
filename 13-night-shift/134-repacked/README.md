@@ -19,7 +19,7 @@ Somewhere in the repacked frames, GAIAN-723 is carrying something it was never d
 
 **Attachments:**
 
-- `vela_band_0302.sigmf-data` — the band recorder's raw capture (too large to attach: download it from Hugging Face)
+- `vela_band_0302.sigmf-data` — the band recorder's raw capture (too large to attach: download it from [Hugging Face](https://huggingface.co/datasets/GaianSpace/ctf-2026-130/tree/main/134))
 - `vela_band_0302.sigmf-meta` — the recorder's metadata for that capture
 - `last_good_frame.csv` — the last telemetry line the MOC decoded before 01:12, with the old column names
 

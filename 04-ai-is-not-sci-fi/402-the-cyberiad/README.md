@@ -19,7 +19,7 @@ Vass wants the seal open before the machine runs out of things to make.
 
 **Attachments:**
 
-- `n-machine.gguf` — the machine, about 1 GB. Download: https://huggingface.co/GaianSpace/ctf-2026-402/resolve/main/n-machine.gguf
+- `n-machine.gguf` — the machine, about 1 GB. Download: [https://huggingface.co/GaianSpace/ctf-2026-402/resolve/main/n-machine.gguf](https://huggingface.co/GaianSpace/ctf-2026-402/resolve/main/n-machine.gguf)
 - `Modelfile` — its launch card
 - `machine.seal` — the sealed file from the same directory
 - `unseal.py` — the same bench tool as before

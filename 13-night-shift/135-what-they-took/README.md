@@ -19,7 +19,7 @@ Recover it.
 
 **Attachments:**
 
-- `vela_band_0347.sigmf-data` — the band recorder's raw capture (too large to attach: download it from Hugging Face)
+- `vela_band_0347.sigmf-data` — the band recorder's raw capture (too large to attach: download it from [Hugging Face](https://huggingface.co/datasets/GaianSpace/ctf-2026-130/tree/main/135))
 - `vela_band_0347.sigmf-meta` — the recorder's metadata for that capture
 - `chat.txt` — the last messages on Aroz's phone before the report
 
