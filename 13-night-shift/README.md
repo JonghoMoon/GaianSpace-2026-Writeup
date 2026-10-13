@@ -6,6 +6,6 @@ Five challenges tracing unauthorized communication with GAIAN-723: competing LoR
 |---|---|---:|---|
 | 1 | [131-two-voices](./131-two-voices/) | 100 | `GAIANSPACE{tw0_v01c3s_0B0EFE1A}` |
 | 2 | [132-no-name-on-the-door](./132-no-name-on-the-door/) | 125 | `GAIANSPACE{432_132}` |
-| 3 | [133-hopscotch](./133-hopscotch/) | 179 | `GAIANSPACE{h0p_sc0tch_AF44A6}` |
-| 4 | [134-repacked](./134-repacked/) | 216 | `GAIANSPACE{r3p4ck3d_660413}` |
-| 5 | [135-what-they-took](./135-what-they-took/) | 265 | `GAIANSPACE{wh4t_th3y_t00k_064CCB}` |
+| 3 | [133-hopscotch](./133-hopscotch/) | 165 | `GAIANSPACE{h0p_sc0tch_AF44A6}` |
+| 4 | [134-repacked](./134-repacked/) | 204 | `GAIANSPACE{r3p4ck3d_660413}` |
+| 5 | [135-what-they-took](./135-what-they-took/) | 252 | `GAIANSPACE{wh4t_th3y_t00k_064CCB}` |
