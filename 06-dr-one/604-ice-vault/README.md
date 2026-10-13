@@ -37,7 +37,7 @@ Run the solver with the original challenge files in the paths expected by the so
 
 ```bash
 gcc -O3 -fopenmp -Wno-deprecated-declarations 604_crack.c -o 604_crack -lcrypto
-OMP_NUM_THREADS=6 ./604_crack mission_vault.7z
+OMP_NUM_THREADS=12 ./604_crack mission_vault.7z 7684700 100
 7z x mission_vault.7z -pqvfzk
 cat ice_site.txt
 ```
@@ -45,7 +45,8 @@ cat ice_site.txt
 Expected relevant output:
 
 ```text
-7z: 506 bytes; encrypted header: 128 bytes; KDF rounds: 524288
+7z: 506 bytes; encrypted header: 128 bytes; KDF rounds: 524288; testing indices [7684700,7684800)
+PASSWORD: qvfzk
 ...
 Testing archive: mission_vault.7z
 Everything is Ok
@@ -73,137 +74,510 @@ The supplied source `604_crack.c` to use the command shown. The archive was succ
 ### Exploit Code
 
 ```c
-#define _POSIX_C_SOURCE 200809L
-#include <openssl/sha.h>
+/*
+ * 604_crack.c
+ *
+ * Recover a five-letter lowercase password from a 7z archive whose
+ * encrypted header uses AES-256-CBC and a SHA-256 KDF.
+ *
+ * This solver is tailored to the challenge archive:
+ *   - Passwords: five lowercase ASCII letters (26^5 candidates)
+ *   - KDF: SHA-256, 2^19 rounds, no salt
+ *   - AES: 256-bit CBC with a 16-byte IV
+ *   - Encrypted header: 128 bytes
+ *
+ * Candidate testing:
+ *   1. Derive the candidate key.
+ *   2. Decrypt the first 16 bytes of the encoded header.
+ *   3. Check the expected header prefix.
+ *   4. Verify promising candidates with 7-Zip.
+ *
+ * The program stops checking new candidates once a password is found.
+ * Some already-running OpenMP iterations may finish before all threads exit.
+ */
+
 #include <openssl/evp.h>
+#include <openssl/sha.h>
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <time.h>
+
 #include <omp.h>
 
-#define TOTAL 11881376U
-#define KDF_ROUNDS 524288U
-#define HEADER_LENGTH 128U
+#ifdef _WIN32
+#include <process.h>
+#else
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#endif
 
-static void fail(const char *message) { fprintf(stderr, "Error: %s\n", message); exit(1); }
-static uint32_t read_u32(const unsigned char *p) { return (uint32_t)p[0] | ((uint32_t)p[1]<<8) | ((uint32_t)p[2]<<16) | ((uint32_t)p[3]<<24); }
-static uint64_t read_u64(const unsigned char *p) { uint64_t n=0; for(int i=7;i>=0;--i)n=(n<<8)|p[i]; return n; }
-static uint64_t seven_uint(const unsigned char **pp, const unsigned char *end) {
-    if(*pp>=end) fail("Truncated 7z varint");
-    unsigned char first=*(*pp)++; unsigned char mask=0x80; uint64_t value=0;
-    for(unsigned i=0;i<8;i++) {
-        if(!(first&mask)) return value | ((uint64_t)(first & (mask-1)) << (8*i));
-        if(*pp>=end) fail("Truncated 7z varint");
-        value |= (uint64_t)*(*pp)++ << (8*i); mask >>= 1;
+#define PASSWORD_LENGTH       5U
+#define PASSWORD_COUNT        11881376U
+#define KDF_ROUNDS            524288U
+#define ENCRYPTED_HEADER_SIZE 128U
+#define AES_BLOCK_SIZE        16U
+#define PROGRESS_INTERVAL     4096ULL
+
+typedef struct {
+    unsigned char *data;
+    size_t size;
+    const unsigned char *encrypted_header;
+    unsigned char iv[AES_BLOCK_SIZE];
+} ArchiveInfo;
+
+typedef struct {
+    uint32_t begin;
+    uint32_t end;
+} SearchRange;
+
+static void fatal(const char *message)
+{
+    fprintf(stderr, "Error: %s\n", message);
+    exit(EXIT_FAILURE);
+}
+
+static uint64_t read_le64(const unsigned char *data)
+{
+    uint64_t value = 0U;
+
+    for (int index = 7; index >= 0; --index) {
+        value = (value << 8) | (uint64_t)data[index];
     }
+
     return value;
 }
-static void make_password(uint32_t n, char pass[6], unsigned char utf16[10]) {
-    for(int i=4;i>=0;i--) { char c=(char)('a'+n%26U); n/=26U; pass[i]=c; utf16[i*2]=(unsigned char)c; utf16[i*2+1]=0; }
-    pass[5]='\0';
-}
-static void key_7z(const unsigned char utf16[10], unsigned char key[32]) {
-    SHA256_CTX ctx; unsigned char data[18]; memcpy(data,utf16,10); memset(data+10,0,8);
-    SHA256_Init(&ctx);
-    for(uint32_t i=0;i<KDF_ROUNDS;i++) {
-        SHA256_Update(&ctx,data,sizeof(data));
-        for(int j=10;j<18;j++) if(++data[j]!=0)break;
+
+/* Decode a variable-length unsigned integer from a 7z header. */
+static uint64_t read_7z_uint(
+    const unsigned char **cursor,
+    const unsigned char *end)
+{
+    if (*cursor >= end) {
+        fatal("Truncated 7z integer");
     }
-    SHA256_Final(key,&ctx);
+
+    const unsigned char first = *(*cursor)++;
+    unsigned char mask = 0x80U;
+    uint64_t value = 0U;
+
+    for (unsigned int index = 0U; index < 8U; ++index) {
+        if ((first & mask) == 0U) {
+            return value |
+                ((uint64_t)(first & (unsigned char)(mask - 1U)) << (8U * index));
+        }
+
+        if (*cursor >= end) {
+            fatal("Truncated 7z integer");
+        }
+
+        value |= (uint64_t)*(*cursor)++ << (8U * index);
+        mask >>= 1U;
+    }
+
+    return value;
 }
-static int verify_archive(const char *archive, const char *password) {
-    pid_t pid=fork(); if(pid<0)fail("fork failed");
-    if(pid==0) {
-        FILE *null=fopen("/dev/null","w"); if(null){dup2(fileno(null),STDOUT_FILENO);dup2(fileno(null),STDERR_FILENO);fclose(null);}
-        char arg[8]; snprintf(arg,sizeof(arg),"-p%s",password);
-        execlp("7z","7z","t","-y",arg,archive,(char *)NULL);
+
+static unsigned char *read_entire_file(
+    const char *path,
+    size_t *file_size)
+{
+    FILE *file = fopen(path, "rb");
+    if (file == NULL) {
+        perror(path);
+        exit(EXIT_FAILURE);
+    }
+
+    if (fseek(file, 0L, SEEK_END) != 0) {
+        fatal("Unable to seek archive");
+    }
+
+    const long length = ftell(file);
+    if (length < 40L) {
+        fatal("Archive is too short");
+    }
+
+    if (fseek(file, 0L, SEEK_SET) != 0) {
+        fatal("Unable to rewind archive");
+    }
+
+    *file_size = (size_t)length;
+    unsigned char *data = (unsigned char *)malloc(*file_size);
+    if (data == NULL) {
+        fatal("Unable to allocate archive buffer");
+    }
+
+    if (fread(data, 1U, *file_size, file) != *file_size) {
+        fatal("Unable to read archive");
+    }
+
+    fclose(file);
+    return data;
+}
+
+/* Locate the encoded 7z header and extract its AES IV. */
+static ArchiveInfo load_archive(const char *path)
+{
+    static const unsigned char signature[6] = {
+        0x37U, 0x7AU, 0xBCU, 0xAFU, 0x27U, 0x1CU
+    };
+    static const unsigned char aes_codec[4] = {
+        0x06U, 0xF1U, 0x07U, 0x01U
+    };
+
+    ArchiveInfo archive = {0};
+    archive.data = read_entire_file(path, &archive.size);
+
+    if (memcmp(archive.data, signature, sizeof(signature)) != 0) {
+        fatal("Input is not a 7z archive");
+    }
+
+    const uint64_t next_offset = read_le64(archive.data + 12U);
+    const uint64_t next_size = read_le64(archive.data + 20U);
+    const uint64_t body_size = (uint64_t)archive.size - 32U;
+
+    if (next_offset > body_size ||
+        next_size > body_size - next_offset) {
+        fatal("Invalid encoded-header bounds");
+    }
+
+    const unsigned char *header =
+        archive.data + 32U + (size_t)next_offset;
+    const unsigned char *end = header + (size_t)next_size;
+    const unsigned char *cursor = header;
+
+    if (cursor >= end || *cursor++ != 0x17U) {
+        fatal("Expected encoded header (0x17)");
+    }
+    if (cursor >= end || *cursor++ != 0x06U) {
+        fatal("Expected PackInfo (0x06)");
+    }
+
+    const uint64_t pack_offset = read_7z_uint(&cursor, end);
+    const uint64_t pack_count = read_7z_uint(&cursor, end);
+
+    if (pack_count != 1U || cursor >= end || *cursor++ != 0x09U) {
+        fatal("Expected exactly one packed stream");
+    }
+
+    const uint64_t pack_size = read_7z_uint(&cursor, end);
+    if (pack_size != ENCRYPTED_HEADER_SIZE) {
+        fatal("Expected a 128-byte encrypted header");
+    }
+
+    const unsigned char *codec = NULL;
+    for (const unsigned char *p = header; p + 4U <= end; ++p) {
+        if (memcmp(p, aes_codec, sizeof(aes_codec)) == 0) {
+            codec = p;
+            break;
+        }
+    }
+
+    if (codec == NULL || (size_t)(end - codec) < 6U) {
+        fatal("AES coder metadata not found");
+    }
+
+    const unsigned int property_size = (unsigned int)codec[4];
+    if ((size_t)(end - (codec + 5U)) < property_size ||
+        property_size < 2U) {
+        fatal("Invalid AES properties");
+    }
+
+    const unsigned char *properties = codec + 5U;
+    const unsigned int rounds_power = (unsigned int)(properties[0] & 0x3FU);
+    const unsigned int salt_size =
+        (unsigned int)((properties[0] >> 7U) & 1U) +
+        (unsigned int)((properties[1] >> 4U) & 0x0FU);
+    const unsigned int iv_size =
+        (unsigned int)((properties[0] >> 6U) & 1U) +
+        (unsigned int)(properties[1] & 0x0FU);
+
+    if (rounds_power != 19U ||
+        salt_size != 0U ||
+        iv_size != AES_BLOCK_SIZE ||
+        property_size != 2U + salt_size + iv_size) {
+        fatal("Unexpected AES/KDF configuration");
+    }
+
+    memcpy(archive.iv, properties + 2U, AES_BLOCK_SIZE);
+
+    if (pack_offset > body_size ||
+        pack_size > body_size - pack_offset) {
+        fatal("Invalid encrypted-header bounds");
+    }
+
+    archive.encrypted_header =
+        archive.data + 32U + (size_t)pack_offset;
+
+    return archive;
+}
+
+/* Convert a candidate index to a password and UTF-16LE bytes. */
+static void index_to_password(
+    uint32_t index,
+    char password[PASSWORD_LENGTH + 1U],
+    unsigned char utf16[PASSWORD_LENGTH * 2U])
+{
+    for (int position = (int)PASSWORD_LENGTH - 1; position >= 0; --position) {
+        const unsigned char letter =
+            (unsigned char)('a' + (int)(index % 26U));
+
+        index /= 26U;
+        password[position] = (char)letter;
+        utf16[(size_t)position * 2U] = letter;
+        utf16[(size_t)position * 2U + 1U] = 0U;
+    }
+
+    password[PASSWORD_LENGTH] = '\0';
+}
+
+/* Derive the 7z AES key using SHA-256 over password and round counter. */
+static void derive_key(
+    const unsigned char utf16[PASSWORD_LENGTH * 2U],
+    unsigned char key[SHA256_DIGEST_LENGTH])
+{
+    unsigned char input[PASSWORD_LENGTH * 2U + 8U] = {0};
+    SHA256_CTX hash;
+
+    memcpy(input, utf16, PASSWORD_LENGTH * 2U);
+
+    if (SHA256_Init(&hash) != 1) {
+        fatal("SHA-256 initialization failed");
+    }
+
+    for (uint32_t round = 0U; round < KDF_ROUNDS; ++round) {
+        if (SHA256_Update(&hash, input, sizeof(input)) != 1) {
+            fatal("SHA-256 update failed");
+        }
+
+        /* Increment the 64-bit little-endian round counter. */
+        for (size_t index = PASSWORD_LENGTH * 2U;
+             index < sizeof(input); ++index) {
+            input[index] = (unsigned char)(input[index] + 1U);
+            if (input[index] != 0U) {
+                break;
+            }
+        }
+    }
+
+    if (SHA256_Final(key, &hash) != 1) {
+        fatal("SHA-256 finalization failed");
+    }
+}
+
+/* Quickly reject keys whose decrypted header has the wrong prefix. */
+static int header_looks_valid(
+    EVP_CIPHER_CTX *context,
+    const ArchiveInfo *archive,
+    const unsigned char key[SHA256_DIGEST_LENGTH])
+{
+    unsigned char plaintext[AES_BLOCK_SIZE];
+    int written = 0;
+
+    if (EVP_DecryptInit_ex(
+            context, EVP_aes_256_cbc(), NULL, key, archive->iv) != 1) {
+        fatal("AES initialization failed");
+    }
+
+    if (EVP_CIPHER_CTX_set_padding(context, 0) != 1) {
+        fatal("Unable to disable AES padding");
+    }
+
+    if (EVP_DecryptUpdate(
+            context, plaintext, &written,
+            archive->encrypted_header, AES_BLOCK_SIZE) != 1 ||
+        written != (int)AES_BLOCK_SIZE) {
+        fatal("AES decryption failed");
+    }
+
+    return plaintext[0] == 0x01U &&
+           plaintext[1] >= 0x02U &&
+           plaintext[1] <= 0x05U;
+}
+
+/* Test a promising password using the installed 7z command. */
+static int verify_with_7zip(const char *path, const char *password)
+{
+    char password_option[3U + PASSWORD_LENGTH] = {0};
+    snprintf(password_option, sizeof(password_option), "-p%s", password);
+
+#ifdef _WIN32
+    const char *arguments[] = {
+        "7z", "t", "-y", password_option, path, NULL
+    };
+    const intptr_t status = _spawnvp(_P_WAIT, "7z", arguments);
+    return status == 0;
+#else
+    const pid_t child = fork();
+    if (child < 0) {
+        fatal("Unable to create 7z verification process");
+    }
+
+    if (child == 0) {
+        FILE *sink = fopen("/dev/null", "w");
+        if (sink != NULL) {
+            (void)dup2(fileno(sink), STDOUT_FILENO);
+            (void)dup2(fileno(sink), STDERR_FILENO);
+            fclose(sink);
+        }
+
+        execlp("7z", "7z", "t", "-y", password_option, path, (char *)NULL);
         _exit(127);
     }
-    int status; if(waitpid(pid,&status,0)<0)fail("waitpid failed");
-    return WIFEXITED(status)&&WEXITSTATUS(status)==0;
+
+    int status = 0;
+    if (waitpid(child, &status, 0) < 0) {
+        fatal("Unable to wait for 7z verification");
+    }
+
+    return WIFEXITED(status) && WEXITSTATUS(status) == 0;
+#endif
 }
-int main(int argc,char **argv) {
-    if(argc<2 || argc>4) {fprintf(stderr,"Usage: %s mission_vault.7z [start_index] [max_candidates]\n",argv[0]);return 2;}
-    const char *archive=argv[1]; FILE *fp=fopen(archive,"rb");if(!fp){perror("fopen");return 1;}
-    if(fseek(fp,0,SEEK_END)!=0)fail("seek failed"); long file_size=ftell(fp);if(file_size<40)fail("7z too short"); rewind(fp);
-    unsigned char *file=malloc((size_t)file_size);if(!file)fail("allocation failed");
-    if(fread(file,1,(size_t)file_size,fp)!=(size_t)file_size)fail("read failed");fclose(fp);
-    const unsigned char signature[6]={0x37,0x7a,0xbc,0xaf,0x27,0x1c};
-    if(memcmp(file,signature,6)!=0)fail("Not 7z");
-    uint64_t next_off=read_u64(file+12), next_size=read_u64(file+20);
-    if(next_off+next_size > (uint64_t)file_size-32)fail("Invalid next header bounds");
-    const unsigned char *h=file+32+next_off,*end=h+next_size,*p=h;
-    if(p>=end || *p++!=0x17)fail("Expected encoded header (0x17)");
-    if(p>=end || *p++!=0x06)fail("Expected PackInfo (0x06)");
-    uint64_t packpos=seven_uint(&p,end), packcount=seven_uint(&p,end);
-    if(packcount!=1 || p>=end || *p++!=0x09)fail("Expected one packed stream");
-    uint64_t packsize=seven_uint(&p,end);
-    if(packsize!=HEADER_LENGTH)fail("This program expects a 128-byte encrypted header");
-    // Locate the AES coder signature in the encoded-header metadata.
-    const unsigned char aes_codec[4]={0x06,0xf1,0x07,0x01};
-    const unsigned char *codec=NULL;
-    for(const unsigned char *q=h;q+4<=end;q++)if(memcmp(q,aes_codec,4)==0){codec=q;break;}
-    if(!codec || codec+6>end)fail("7z AES metadata not found");
-    unsigned char propsize=codec[4];
-    if(propsize<2 || codec+5+propsize>end)fail("Invalid AES properties");
-    const unsigned char *prop=codec+5;
-    uint32_t power=prop[0]&0x3fU;
-    uint32_t salt_len=((prop[0]>>7)&1U)+((prop[1]>>4)&0x0fU);
-    uint32_t iv_len=((prop[0]>>6)&1U)+(prop[1]&0x0fU);
-    if(power!=19U || salt_len!=0U || iv_len!=16U || propsize!=(unsigned char)(2+salt_len+iv_len))fail("Unexpected AES KDF metadata");
-    unsigned char iv[16];memcpy(iv,prop+2,16);
-    if(packpos+packsize > (uint64_t)file_size-32)fail("Invalid packed data bounds");
-    const unsigned char *cipher=file+32+packpos;
-    unsigned start=0,limit=TOTAL;
-    if(argc>=3)start=(unsigned)strtoul(argv[2],NULL,10);
-    if(argc>=4){unsigned count=(unsigned)strtoul(argv[3],NULL,10);limit=start+count;if(limit<start || limit>TOTAL)limit=TOTAL;}
-    if(start>=TOTAL || start>=limit)fail("Invalid candidate range");
-    fprintf(stderr,"7z: %ld bytes; encrypted header: %llu bytes; KDF rounds: %u; testing indices [%u,%u)\n",file_size,(unsigned long long)packsize,KDF_ROUNDS,start,limit);
-    double begin=omp_get_wtime();
-    unsigned long long completed=0;
-    int found=0;
-    char found_pass[6]={0};
+
+static uint32_t parse_index(const char *text)
+{
+    char *end = NULL;
+    const unsigned long value = strtoul(text, &end, 10);
+
+    if (text[0] == '\0' || end == text || *end != '\0' ||
+        value > PASSWORD_COUNT) {
+        fatal("Invalid candidate index or count");
+    }
+
+    return (uint32_t)value;
+}
+
+static SearchRange parse_range(int argc, char **argv)
+{
+    SearchRange range = {0U, PASSWORD_COUNT};
+
+    if (argc >= 3) {
+        range.begin = parse_index(argv[2]);
+    }
+
+    if (argc >= 4) {
+        const uint32_t count = parse_index(argv[3]);
+        const uint32_t remaining = PASSWORD_COUNT - range.begin;
+        range.end = range.begin + (count < remaining ? count : remaining);
+    }
+
+    if (range.begin >= PASSWORD_COUNT || range.begin >= range.end) {
+        fatal("Empty or invalid candidate range");
+    }
+
+    return range;
+}
+
+static int search_password(
+    const ArchiveInfo *archive,
+    const char *archive_path,
+    SearchRange range,
+    char result[PASSWORD_LENGTH + 1U])
+{
+    int found = 0;
+    unsigned long long completed = 0ULL;
+    const double started = omp_get_wtime();
+
     #pragma omp parallel
     {
-        EVP_CIPHER_CTX *ctx=EVP_CIPHER_CTX_new();
-        if(!ctx)fail("EVP allocation failed");
-        #pragma omp for schedule(dynamic,32)
-        for(unsigned n=start;n<limit;n++){
-            if(__atomic_load_n(&found,__ATOMIC_RELAXED))continue;
-            char pass[6];unsigned char wide[10],key[32],plain[16];
-            make_password(n,pass,wide);
-            key_7z(wide,key);
-            int written=0;
-            if(EVP_DecryptInit_ex(ctx,EVP_aes_256_cbc(),NULL,key,iv)!=1)fail("AES initialization failed");
-            EVP_CIPHER_CTX_set_padding(ctx,0);
-            if(EVP_DecryptUpdate(ctx,plain,&written,cipher,16)!=1 || written!=16)fail("AES decryption failed");
-            if(plain[0]==0x01 && (plain[1]==0x02 || plain[1]==0x03 || plain[1]==0x04 || plain[1]==0x05)) {
+        EVP_CIPHER_CTX *context = EVP_CIPHER_CTX_new();
+        if (context == NULL) {
+            fatal("Unable to allocate AES context");
+        }
+
+        #pragma omp for schedule(dynamic, 32)
+        for (uint32_t index = range.begin; index < range.end; ++index) {
+            int already_found = 0;
+
+            #pragma omp atomic read
+            already_found = found;
+
+            if (already_found != 0) {
+                continue;
+            }
+
+            char password[PASSWORD_LENGTH + 1U];
+            unsigned char utf16[PASSWORD_LENGTH * 2U];
+            unsigned char key[SHA256_DIGEST_LENGTH];
+
+            index_to_password(index, password, utf16);
+            derive_key(utf16, key);
+
+            if (header_looks_valid(context, archive, key)) {
                 #pragma omp critical(verify)
                 {
-                    if(!found && verify_archive(archive,pass)){
-                        strcpy(found_pass,pass);
-                        __atomic_store_n(&found,1,__ATOMIC_RELAXED);
+                    if (found == 0 &&
+                        verify_with_7zip(archive_path, password)) {
+                        memcpy(result, password, PASSWORD_LENGTH + 1U);
+
+                        #pragma omp atomic write
+                        found = 1;
                     }
                 }
             }
-            unsigned long long progress=__atomic_add_fetch(&completed,1ULL,__ATOMIC_RELAXED);
-            if(progress%4096ULL==0ULL){
-                #pragma omp critical(progress)
+
+            unsigned long long progress = 0ULL;
+
+            #pragma omp atomic capture
+            progress = ++completed;
+
+            if (progress % PROGRESS_INTERVAL == 0ULL) {
+                #pragma omp critical(progress_output)
                 {
-                    double elapsed=omp_get_wtime()-begin;
-                    fprintf(stderr,"Progress %llu/%u (%.2f%%), %.1f candidates/s\n",
-                        progress,limit-start,100.0*progress/(limit-start),progress/(elapsed>0?elapsed:1));
+                    const double elapsed = omp_get_wtime() - started;
+                    const double rate =
+                        (double)progress / (elapsed > 0.0 ? elapsed : 1.0);
+                    const double percentage =
+                        100.0 * (double)progress /
+                        (double)(range.end - range.begin);
+
+                    fprintf(stderr,
+                        "Progress %llu/%u (%.2f%%), %.1f candidates/s\n",
+                        progress, range.end - range.begin, percentage, rate);
                 }
             }
         }
-        EVP_CIPHER_CTX_free(ctx);
+
+        EVP_CIPHER_CTX_free(context);
     }
-    if(found){printf("PASSWORD: %s\n",found_pass);free(file);return 0;}
-    free(file);fprintf(stderr,"Password not found in the tested range.\n");return 1;
+
+    return found;
+}
+
+int main(int argc, char **argv)
+{
+    if (argc < 2 || argc > 4) {
+        fprintf(stderr,
+            "Usage: %s mission_vault.7z [start_index] [max_candidates]\n",
+            argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    const char *archive_path = argv[1];
+    const SearchRange range = parse_range(argc, argv);
+    ArchiveInfo archive = load_archive(archive_path);
+
+    fprintf(stderr,
+        "7z: %zu bytes; encrypted header: %u bytes; "
+        "KDF rounds: %u; testing indices [%u,%u)\n",
+        archive.size, ENCRYPTED_HEADER_SIZE, KDF_ROUNDS,
+        range.begin, range.end);
+
+    char password[PASSWORD_LENGTH + 1U] = {0};
+    const int found = search_password(
+        &archive, archive_path, range, password);
+
+    free(archive.data);
+
+    if (found != 0) {
+        printf("PASSWORD: %s\n", password);
+        return EXIT_SUCCESS;
+    }
+
+    fprintf(stderr, "Password not found in the tested range.\n");
+    return EXIT_FAILURE;
 }
 ```
 
