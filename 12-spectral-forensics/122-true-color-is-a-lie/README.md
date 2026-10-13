@@ -392,6 +392,8 @@ if __name__=="__main__":
 
 ## Flag
 
+![flag](./images/stamp.png)
+
 ```text
 GAIANSPACE{TRUE-NDVI-HR6TNM}
 ```
