@@ -31,6 +31,11 @@ Find out what GAIAN-723 answered when the stranger first called it.
 
 Identify two LoRa transmitters in the raw capture rather than assuming the old frequency sheet is correct. Extract the satellite reply as complex IQ and decode with the GNU Radio LoRa receiver. The included `131_A_reply_1.cf32` is an intermediate extraction. Validate the decoded packet CRC.
 
+Use GNU Radio Companion with the `gr-lora_sdr`.
+
+![GNU Radio](./images/gnuradio.png)
+
+
 ### Reproduction
 
 Open `lora_RX.grc` in GNU Radio Companion, configure the source to read `131_A_reply_1.cf32`, and run the receiver. The generated `lora_RX.py` is a GNU Radio flowgraph, not a standalone flag-printing script. The decoded output is preserved in `result.txt`.
