@@ -31,10 +31,11 @@ Decode the short binary downlink frames, check PHY and application CRCs, use fra
 
 ### Reproduction
 
+Results are saved under `134_solution/`.
+
 ```bash
 python3 134.py vela_band_0302.sigmf-data --out-dir 134_solution
 ```
-Results are saved under `134_solution/`.
 
 Expected relevant output:
 

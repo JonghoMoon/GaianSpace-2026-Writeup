@@ -31,11 +31,11 @@ The station log identifies a downlink configuration change. Decode LoRa with imp
 
 ### Reproduction
 
+Use the gr-lora_sdr.
+
 ```bash
 PYTHONNOUSERSITE=1 /usr/bin/python3 132.py 132_DL_candidates/132_DL_3_32.5s.cf32
 ```
-
-Use the gr-lora_sdr.
 
 Expected relevant output:
 

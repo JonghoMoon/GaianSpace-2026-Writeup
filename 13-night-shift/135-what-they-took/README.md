@@ -31,10 +31,11 @@ Recover the long downlink, verify packet CRCs, reassemble dump fragments, and re
 
 ### Reproduction
 
+Results are saved under `135_solution/`, including plaintext, flag and verification JSON.
+
 ```bash
 python3 135.py vela_band_0347.sigmf-data --out-dir 135_solution
 ```
-Results are saved under `135_solution/`, including plaintext, flag and verification JSON.
 
 Expected relevant output:
 

@@ -31,10 +31,11 @@ Recover the radio's frequency-hopping sequence, dehop the bursts, decode the LoR
 
 ### Reproduction
 
+The decoder saves recovered IQ, symbols and verified payload in `133_solution/`.
+
 ```bash
 python3 133.py vela_wide_0212.sigmf-data --out-dir 133_solution
 ```
-The decoder saves recovered IQ, symbols and verified payload in `133_solution/`.
 
 Expected relevant output:
 
