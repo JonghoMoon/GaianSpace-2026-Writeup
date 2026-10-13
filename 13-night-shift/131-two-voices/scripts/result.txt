@@ -1,0 +1,12 @@
+--------Header--------
+Payload length: 46
+CRC presence:   1
+Coding rate:    1
+Header checksum valid!
+
+rx msg: TM,ACK,0,HELLO,GAIANSPACE{tw0_v01c3s_0B0EFE1A}
+CRC valid!
+
+******* MESSAGE DEBUG PRINT ********
+TM,ACK,0,HELLO,GAIANSPACE{tw0_v01c3s_0B0EFE1A}
+************************************

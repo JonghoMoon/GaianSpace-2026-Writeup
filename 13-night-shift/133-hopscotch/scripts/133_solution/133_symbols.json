@@ -1,0 +1,710 @@
+[
+  {
+    "index": 0,
+    "center_hz": 434225000,
+    "symbol": 229,
+    "fft_peak_fraction": 0.9461132082648794
+  },
+  {
+    "index": 1,
+    "center_hz": 434675000,
+    "symbol": 181,
+    "fft_peak_fraction": 0.9062469311953422
+  },
+  {
+    "index": 2,
+    "center_hz": 434675000,
+    "symbol": 285,
+    "fft_peak_fraction": 0.9164113954888674
+  },
+  {
+    "index": 3,
+    "center_hz": 434675000,
+    "symbol": 221,
+    "fft_peak_fraction": 0.9163513307688865
+  },
+  {
+    "index": 4,
+    "center_hz": 434675000,
+    "symbol": 29,
+    "fft_peak_fraction": 0.954851872289557
+  },
+  {
+    "index": 5,
+    "center_hz": 434675000,
+    "symbol": 93,
+    "fft_peak_fraction": 0.9373687299208122
+  },
+  {
+    "index": 6,
+    "center_hz": 434675000,
+    "symbol": 269,
+    "fft_peak_fraction": 0.9141800568383598
+  },
+  {
+    "index": 7,
+    "center_hz": 434675000,
+    "symbol": 413,
+    "fft_peak_fraction": 0.9271061001284245
+  },
+  {
+    "index": 8,
+    "center_hz": 434675000,
+    "symbol": 174,
+    "fft_peak_fraction": 0.9154851810707035
+  },
+  {
+    "index": 9,
+    "center_hz": 434525000,
+    "symbol": 351,
+    "fft_peak_fraction": 0.7620966389105434
+  },
+  {
+    "index": 10,
+    "center_hz": 434525000,
+    "symbol": 4,
+    "fft_peak_fraction": 0.9725309738368831
+  },
+  {
+    "index": 11,
+    "center_hz": 434525000,
+    "symbol": 219,
+    "fft_peak_fraction": 0.74730347891396
+  },
+  {
+    "index": 12,
+    "center_hz": 434525000,
+    "symbol": 397,
+    "fft_peak_fraction": 0.8106241756648161
+  },
+  {
+    "index": 13,
+    "center_hz": 434525000,
+    "symbol": 289,
+    "fft_peak_fraction": 0.7377049341374943
+  },
+  {
+    "index": 14,
+    "center_hz": 434525000,
+    "symbol": 430,
+    "fft_peak_fraction": 0.8427563697853482
+  },
+  {
+    "index": 15,
+    "center_hz": 434525000,
+    "symbol": 398,
+    "fft_peak_fraction": 0.8097497036462394
+  },
+  {
+    "index": 16,
+    "center_hz": 434525000,
+    "symbol": 381,
+    "fft_peak_fraction": 0.7915048510655607
+  },
+  {
+    "index": 17,
+    "center_hz": 434375000,
+    "symbol": 379,
+    "fft_peak_fraction": 0.8615432626047977
+  },
+  {
+    "index": 18,
+    "center_hz": 434375000,
+    "symbol": 268,
+    "fft_peak_fraction": 0.8463998761935128
+  },
+  {
+    "index": 19,
+    "center_hz": 434375000,
+    "symbol": 286,
+    "fft_peak_fraction": 0.8406118224479533
+  },
+  {
+    "index": 20,
+    "center_hz": 434375000,
+    "symbol": 440,
+    "fft_peak_fraction": 0.9127888720770378
+  },
+  {
+    "index": 21,
+    "center_hz": 434375000,
+    "symbol": 76,
+    "fft_peak_fraction": 0.9026450923377448
+  },
+  {
+    "index": 22,
+    "center_hz": 434375000,
+    "symbol": 389,
+    "fft_peak_fraction": 0.8688839068322861
+  },
+  {
+    "index": 23,
+    "center_hz": 434375000,
+    "symbol": 479,
+    "fft_peak_fraction": 0.941357867895412
+  },
+  {
+    "index": 24,
+    "center_hz": 434375000,
+    "symbol": 451,
+    "fft_peak_fraction": 0.9129098526912078
+  },
+  {
+    "index": 25,
+    "center_hz": 433325000,
+    "symbol": 65,
+    "fft_peak_fraction": 0.8667460443287797
+  },
+  {
+    "index": 26,
+    "center_hz": 433325000,
+    "symbol": 397,
+    "fft_peak_fraction": 0.8233996900257596
+  },
+  {
+    "index": 27,
+    "center_hz": 433325000,
+    "symbol": 77,
+    "fft_peak_fraction": 0.8754980382118193
+  },
+  {
+    "index": 28,
+    "center_hz": 433325000,
+    "symbol": 78,
+    "fft_peak_fraction": 0.8675824040607591
+  },
+  {
+    "index": 29,
+    "center_hz": 433325000,
+    "symbol": 102,
+    "fft_peak_fraction": 0.8336380700724072
+  },
+  {
+    "index": 30,
+    "center_hz": 433325000,
+    "symbol": 298,
+    "fft_peak_fraction": 0.7512565952342408
+  },
+  {
+    "index": 31,
+    "center_hz": 433325000,
+    "symbol": 485,
+    "fft_peak_fraction": 0.9368675761392534
+  },
+  {
+    "index": 32,
+    "center_hz": 433325000,
+    "symbol": 144,
+    "fft_peak_fraction": 0.7971464424143742
+  },
+  {
+    "index": 33,
+    "center_hz": 433325000,
+    "symbol": 259,
+    "fft_peak_fraction": 0.7268011740502787
+  },
+  {
+    "index": 34,
+    "center_hz": 433325000,
+    "symbol": 231,
+    "fft_peak_fraction": 0.7342552242012448
+  },
+  {
+    "index": 35,
+    "center_hz": 433325000,
+    "symbol": 487,
+    "fft_peak_fraction": 0.9416955643459193
+  },
+  {
+    "index": 36,
+    "center_hz": 433325000,
+    "symbol": 281,
+    "fft_peak_fraction": 0.72129116079439
+  },
+  {
+    "index": 37,
+    "center_hz": 433325000,
+    "symbol": 455,
+    "fft_peak_fraction": 0.8904324851318836
+  },
+  {
+    "index": 38,
+    "center_hz": 433325000,
+    "symbol": 348,
+    "fft_peak_fraction": 0.7556753362063389
+  },
+  {
+    "index": 39,
+    "center_hz": 433325000,
+    "symbol": 378,
+    "fft_peak_fraction": 0.7818490190908105
+  },
+  {
+    "index": 40,
+    "center_hz": 433325000,
+    "symbol": 64,
+    "fft_peak_fraction": 0.8742930799627883
+  },
+  {
+    "index": 41,
+    "center_hz": 433625000,
+    "symbol": 128,
+    "fft_peak_fraction": 0.8094957071669769
+  },
+  {
+    "index": 42,
+    "center_hz": 433625000,
+    "symbol": 267,
+    "fft_peak_fraction": 0.7861503302076903
+  },
+  {
+    "index": 43,
+    "center_hz": 433625000,
+    "symbol": 381,
+    "fft_peak_fraction": 0.8249160650555165
+  },
+  {
+    "index": 44,
+    "center_hz": 433625000,
+    "symbol": 388,
+    "fft_peak_fraction": 0.8277616428350582
+  },
+  {
+    "index": 45,
+    "center_hz": 433625000,
+    "symbol": 401,
+    "fft_peak_fraction": 0.8366226055547543
+  },
+  {
+    "index": 46,
+    "center_hz": 433625000,
+    "symbol": 186,
+    "fft_peak_fraction": 0.7824467961634568
+  },
+  {
+    "index": 47,
+    "center_hz": 433625000,
+    "symbol": 353,
+    "fft_peak_fraction": 0.8017370466861256
+  },
+  {
+    "index": 48,
+    "center_hz": 433625000,
+    "symbol": 374,
+    "fft_peak_fraction": 0.8101300086712202
+  },
+  {
+    "index": 49,
+    "center_hz": 434525000,
+    "symbol": 47,
+    "fft_peak_fraction": 0.858907339572753
+  },
+  {
+    "index": 50,
+    "center_hz": 434525000,
+    "symbol": 286,
+    "fft_peak_fraction": 0.6624863853199998
+  },
+  {
+    "index": 51,
+    "center_hz": 434525000,
+    "symbol": 258,
+    "fft_peak_fraction": 0.6439819809299426
+  },
+  {
+    "index": 52,
+    "center_hz": 434525000,
+    "symbol": 278,
+    "fft_peak_fraction": 0.6469783045555021
+  },
+  {
+    "index": 53,
+    "center_hz": 434525000,
+    "symbol": 495,
+    "fft_peak_fraction": 0.9409886259830272
+  },
+  {
+    "index": 54,
+    "center_hz": 434525000,
+    "symbol": 483,
+    "fft_peak_fraction": 0.9056414261735867
+  },
+  {
+    "index": 55,
+    "center_hz": 434525000,
+    "symbol": 308,
+    "fft_peak_fraction": 0.6482720336629222
+  },
+  {
+    "index": 56,
+    "center_hz": 434525000,
+    "symbol": 450,
+    "fft_peak_fraction": 0.8313340544364131
+  },
+  {
+    "index": 57,
+    "center_hz": 434375000,
+    "symbol": 463,
+    "fft_peak_fraction": 0.8637718932229442
+  },
+  {
+    "index": 58,
+    "center_hz": 434375000,
+    "symbol": 6,
+    "fft_peak_fraction": 0.9325800199082631
+  },
+  {
+    "index": 59,
+    "center_hz": 434375000,
+    "symbol": 251,
+    "fft_peak_fraction": 0.7597646352854532
+  },
+  {
+    "index": 60,
+    "center_hz": 434375000,
+    "symbol": 167,
+    "fft_peak_fraction": 0.7697751515826962
+  },
+  {
+    "index": 61,
+    "center_hz": 434375000,
+    "symbol": 423,
+    "fft_peak_fraction": 0.8231408617787331
+  },
+  {
+    "index": 62,
+    "center_hz": 434375000,
+    "symbol": 38,
+    "fft_peak_fraction": 0.8824617494073067
+  },
+  {
+    "index": 63,
+    "center_hz": 434375000,
+    "symbol": 331,
+    "fft_peak_fraction": 0.7546586024294913
+  },
+  {
+    "index": 64,
+    "center_hz": 434375000,
+    "symbol": 353,
+    "fft_peak_fraction": 0.7682733585503534
+  },
+  {
+    "index": 65,
+    "center_hz": 434375000,
+    "symbol": 427,
+    "fft_peak_fraction": 0.820263378163214
+  },
+  {
+    "index": 66,
+    "center_hz": 434375000,
+    "symbol": 7,
+    "fft_peak_fraction": 0.9116736462910948
+  },
+  {
+    "index": 67,
+    "center_hz": 434375000,
+    "symbol": 495,
+    "fft_peak_fraction": 0.9007751585088367
+  },
+  {
+    "index": 68,
+    "center_hz": 434375000,
+    "symbol": 217,
+    "fft_peak_fraction": 0.7303700274444435
+  },
+  {
+    "index": 69,
+    "center_hz": 434375000,
+    "symbol": 125,
+    "fft_peak_fraction": 0.7807849450898551
+  },
+  {
+    "index": 70,
+    "center_hz": 434375000,
+    "symbol": 439,
+    "fft_peak_fraction": 0.8280271168911695
+  },
+  {
+    "index": 71,
+    "center_hz": 434375000,
+    "symbol": 70,
+    "fft_peak_fraction": 0.8290504618222196
+  },
+  {
+    "index": 72,
+    "center_hz": 434375000,
+    "symbol": 334,
+    "fft_peak_fraction": 0.7378148086553727
+  },
+  {
+    "index": 73,
+    "center_hz": 433175000,
+    "symbol": 497,
+    "fft_peak_fraction": 0.8622775179626335
+  },
+  {
+    "index": 74,
+    "center_hz": 433175000,
+    "symbol": 115,
+    "fft_peak_fraction": 0.7891226590389812
+  },
+  {
+    "index": 75,
+    "center_hz": 433175000,
+    "symbol": 393,
+    "fft_peak_fraction": 0.7891851536983847
+  },
+  {
+    "index": 76,
+    "center_hz": 433175000,
+    "symbol": 313,
+    "fft_peak_fraction": 0.761628483210881
+  },
+  {
+    "index": 77,
+    "center_hz": 433175000,
+    "symbol": 401,
+    "fft_peak_fraction": 0.7846860484858489
+  },
+  {
+    "index": 78,
+    "center_hz": 433175000,
+    "symbol": 413,
+    "fft_peak_fraction": 0.7835480106613968
+  },
+  {
+    "index": 79,
+    "center_hz": 433175000,
+    "symbol": 375,
+    "fft_peak_fraction": 0.7651942930379121
+  },
+  {
+    "index": 80,
+    "center_hz": 433175000,
+    "symbol": 313,
+    "fft_peak_fraction": 0.7338482617897306
+  },
+  {
+    "index": 81,
+    "center_hz": 433325000,
+    "symbol": 21,
+    "fft_peak_fraction": 0.8860385354860304
+  },
+  {
+    "index": 82,
+    "center_hz": 433325000,
+    "symbol": 397,
+    "fft_peak_fraction": 0.7150840834932038
+  },
+  {
+    "index": 83,
+    "center_hz": 433325000,
+    "symbol": 51,
+    "fft_peak_fraction": 0.8391394253426191
+  },
+  {
+    "index": 84,
+    "center_hz": 433325000,
+    "symbol": 478,
+    "fft_peak_fraction": 0.8674482400393415
+  },
+  {
+    "index": 85,
+    "center_hz": 433325000,
+    "symbol": 413,
+    "fft_peak_fraction": 0.7283475977125414
+  },
+  {
+    "index": 86,
+    "center_hz": 433325000,
+    "symbol": 491,
+    "fft_peak_fraction": 0.88831713104525
+  },
+  {
+    "index": 87,
+    "center_hz": 433325000,
+    "symbol": 406,
+    "fft_peak_fraction": 0.7183599789266654
+  },
+  {
+    "index": 88,
+    "center_hz": 433325000,
+    "symbol": 179,
+    "fft_peak_fraction": 0.6419224557356907
+  },
+  {
+    "index": 89,
+    "center_hz": 434525000,
+    "symbol": 139,
+    "fft_peak_fraction": 0.609055573062602
+  },
+  {
+    "index": 90,
+    "center_hz": 434525000,
+    "symbol": 436,
+    "fft_peak_fraction": 0.7537884890629001
+  },
+  {
+    "index": 91,
+    "center_hz": 434525000,
+    "symbol": 14,
+    "fft_peak_fraction": 0.9246907134801101
+  },
+  {
+    "index": 92,
+    "center_hz": 434525000,
+    "symbol": 177,
+    "fft_peak_fraction": 0.5667569847878522
+  },
+  {
+    "index": 93,
+    "center_hz": 434525000,
+    "symbol": 262,
+    "fft_peak_fraction": 0.5418971794329276
+  },
+  {
+    "index": 94,
+    "center_hz": 434525000,
+    "symbol": 362,
+    "fft_peak_fraction": 0.6060780448506187
+  },
+  {
+    "index": 95,
+    "center_hz": 434525000,
+    "symbol": 240,
+    "fft_peak_fraction": 0.5241236469683702
+  },
+  {
+    "index": 96,
+    "center_hz": 434525000,
+    "symbol": 248,
+    "fft_peak_fraction": 0.529047906090159
+  },
+  {
+    "index": 97,
+    "center_hz": 433325000,
+    "symbol": 323,
+    "fft_peak_fraction": 0.5788994442685655
+  },
+  {
+    "index": 98,
+    "center_hz": 433325000,
+    "symbol": 447,
+    "fft_peak_fraction": 0.7693328808199572
+  },
+  {
+    "index": 99,
+    "center_hz": 433325000,
+    "symbol": 250,
+    "fft_peak_fraction": 0.5602082371942272
+  },
+  {
+    "index": 100,
+    "center_hz": 433325000,
+    "symbol": 391,
+    "fft_peak_fraction": 0.6621862626676862
+  },
+  {
+    "index": 101,
+    "center_hz": 433325000,
+    "symbol": 348,
+    "fft_peak_fraction": 0.6039235261454114
+  },
+  {
+    "index": 102,
+    "center_hz": 433325000,
+    "symbol": 393,
+    "fft_peak_fraction": 0.6593884948045972
+  },
+  {
+    "index": 103,
+    "center_hz": 433325000,
+    "symbol": 486,
+    "fft_peak_fraction": 0.8413383431746853
+  },
+  {
+    "index": 104,
+    "center_hz": 433325000,
+    "symbol": 71,
+    "fft_peak_fraction": 0.7329468912290265
+  },
+  {
+    "index": 105,
+    "center_hz": 434525000,
+    "symbol": 305,
+    "fft_peak_fraction": 0.5036454380433014
+  },
+  {
+    "index": 106,
+    "center_hz": 434525000,
+    "symbol": 478,
+    "fft_peak_fraction": 0.8261012893717469
+  },
+  {
+    "index": 107,
+    "center_hz": 434525000,
+    "symbol": 117,
+    "fft_peak_fraction": 0.6235069591314005
+  },
+  {
+    "index": 108,
+    "center_hz": 434525000,
+    "symbol": 200,
+    "fft_peak_fraction": 0.5153781256253116
+  },
+  {
+    "index": 109,
+    "center_hz": 434525000,
+    "symbol": 242,
+    "fft_peak_fraction": 0.4899718903042938
+  },
+  {
+    "index": 110,
+    "center_hz": 434525000,
+    "symbol": 82,
+    "fft_peak_fraction": 0.7070912669458003
+  },
+  {
+    "index": 111,
+    "center_hz": 434525000,
+    "symbol": 7,
+    "fft_peak_fraction": 0.9151503409561283
+  },
+  {
+    "index": 112,
+    "center_hz": 434525000,
+    "symbol": 390,
+    "fft_peak_fraction": 0.6075574602827911
+  },
+  {
+    "index": 113,
+    "center_hz": 434375000,
+    "symbol": 435,
+    "fft_peak_fraction": 0.7148087137376204
+  },
+  {
+    "index": 114,
+    "center_hz": 434375000,
+    "symbol": 341,
+    "fft_peak_fraction": 0.6320464252645012
+  },
+  {
+    "index": 115,
+    "center_hz": 434375000,
+    "symbol": 502,
+    "fft_peak_fraction": 0.7977235934388974
+  },
+  {
+    "index": 116,
+    "center_hz": 434375000,
+    "symbol": 148,
+    "fft_peak_fraction": 0.6405696475218873
+  },
+  {
+    "index": 117,
+    "center_hz": 434375000,
+    "symbol": 443,
+    "fft_peak_fraction": 0.7197603885264994
+  }
+]

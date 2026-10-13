@@ -1,0 +1,162 @@
+{
+  "capture": "vela_wide_0212.sigmf-data",
+  "capture_metadata": {
+    "global": {
+      "core:datatype": "ci8",
+      "core:sample_rate": 2999999.0,
+      "core:version": "1.0.0",
+      "core:description": "VELA station recorder, wide band capture"
+    },
+    "captures": [
+      {
+        "core:sample_start": 0,
+        "core:frequency": 433999996.0,
+        "core:datetime": "2026-10-11T02:12:50Z"
+      }
+    ],
+    "annotations": []
+  },
+  "uplink": {
+    "header": {
+      "length": 15,
+      "cr": 4,
+      "has_crc": true,
+      "checksum_valid": true,
+      "checksum_calculated": 7,
+      "checksum_received": 7
+    },
+    "payload_hex": "7d2a010054432044554d50204e4156",
+    "crc_valid": true,
+    "crc_calculated": "FC12",
+    "crc_received": "FC12",
+    "data_symbol_count": 48,
+    "codeword_bit_distance_sum": 0,
+    "sf": 7,
+    "bandwidth_hz": 250000,
+    "center_hz": 433925000,
+    "sync_symbols": [
+      24,
+      32
+    ],
+    "sample_adjustment": -1,
+    "preamble_start_s": 14.59497208165736,
+    "preamble_start_utc": "2026-10-11T02:13:04.594972+00:00",
+    "payload_ascii": "}*\u0001\u0000TC DUMP NAV"
+  },
+  "downlink": {
+    "header": {
+      "length": 94,
+      "cr": 1,
+      "has_crc": true,
+      "checksum_valid": true,
+      "checksum_calculated": 6,
+      "checksum_received": 6
+    },
+    "payload_hex": "544d2c41434b2c312c44554d50204e41562c4e41562c45504f43483d323032362d31302d31315430323a31335a2c4d4f44453d534146452c4e4f54453d474149414e53504143457b6830705f7363307463685f4146343441367d2c454e44",
+    "crc_valid": true,
+    "crc_calculated": "B654",
+    "crc_received": "B654",
+    "data_symbol_count": 118,
+    "codeword_bit_distance_sum": 0,
+    "sf": 9,
+    "bandwidth_hz": 125000,
+    "sample_rate_nominal_hz": 500000,
+    "sample_rate_effective_hz": 499999.8333333333,
+    "implicit_header": false,
+    "preamble_upchirps": 12,
+    "sync_symbols": [
+      8,
+      16
+    ],
+    "hop_period_symbols": 8,
+    "hop_period_seconds": 0.032768,
+    "first_hop_after_data_symbols": 1,
+    "channel_centers_hz": [
+      433175000,
+      433325000,
+      433475000,
+      433625000,
+      434225000,
+      434375000,
+      434525000,
+      434675000
+    ],
+    "preamble_start_s": 14.828880042960014,
+    "sample_adjustment": 0,
+    "observed_channel_changes": [
+      {
+        "data_symbol_index": 0,
+        "capture_time_s": 14.895440065146687,
+        "center_hz": 434225000
+      },
+      {
+        "data_symbol_index": 1,
+        "capture_time_s": 14.899536066512022,
+        "center_hz": 434675000
+      },
+      {
+        "data_symbol_index": 9,
+        "capture_time_s": 14.932304077434692,
+        "center_hz": 434525000
+      },
+      {
+        "data_symbol_index": 17,
+        "capture_time_s": 14.965072088357362,
+        "center_hz": 434375000
+      },
+      {
+        "data_symbol_index": 25,
+        "capture_time_s": 14.997840099280033,
+        "center_hz": 433325000
+      },
+      {
+        "data_symbol_index": 41,
+        "capture_time_s": 15.063376121125373,
+        "center_hz": 433625000
+      },
+      {
+        "data_symbol_index": 49,
+        "capture_time_s": 15.096144132048043,
+        "center_hz": 434525000
+      },
+      {
+        "data_symbol_index": 57,
+        "capture_time_s": 15.128912142970714,
+        "center_hz": 434375000
+      },
+      {
+        "data_symbol_index": 73,
+        "capture_time_s": 15.194448164816054,
+        "center_hz": 433175000
+      },
+      {
+        "data_symbol_index": 81,
+        "capture_time_s": 15.227216175738725,
+        "center_hz": 433325000
+      },
+      {
+        "data_symbol_index": 89,
+        "capture_time_s": 15.259984186661395,
+        "center_hz": 434525000
+      },
+      {
+        "data_symbol_index": 97,
+        "capture_time_s": 15.292752197584065,
+        "center_hz": 433325000
+      },
+      {
+        "data_symbol_index": 105,
+        "capture_time_s": 15.325520208506735,
+        "center_hz": 434525000
+      },
+      {
+        "data_symbol_index": 113,
+        "capture_time_s": 15.358288219429406,
+        "center_hz": 434375000
+      }
+    ],
+    "preamble_start_utc": "2026-10-11T02:13:04.828880+00:00",
+    "payload_ascii": "TM,ACK,1,DUMP NAV,NAV,EPOCH=2026-10-11T02:13Z,MODE=SAFE,NOTE=GAIANSPACE{h0p_sc0tch_AF44A6},END"
+  },
+  "flag": "GAIANSPACE{h0p_sc0tch_AF44A6}"
+}
