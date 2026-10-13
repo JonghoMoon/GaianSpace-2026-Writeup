@@ -56,8 +56,8 @@ The table below reflects the **solved challenges visible in the supplied scorebo
 | [10-not-yet](#10-not-yet) | — | — |
 | [11-the-pgm-rush](#11-the-pgm-rush) | 4 | 750 |
 | [12-spectral-forensics](#12-spectral-forensics) | 4 | 604 |
-| [13-night-shift](#13-night-shift) | 5 | 846 |
-| **Total** | **58** | **6326** |
+| [13-night-shift](#13-night-shift) | 5 | 819 |
+| **Total** | **58** | **6299** |
 
 ---
 
