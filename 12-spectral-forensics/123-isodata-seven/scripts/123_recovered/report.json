@@ -1,0 +1,169 @@
+{
+  "cube_shape": [
+    5,
+    128,
+    128
+  ],
+  "cube_sha256": "e340cf9f46f85b3a31a260b0d1ff3db929ad9b867d12e1b3388a88a36fb09f82",
+  "clustering": "KMeans, seven classes, raw unsigned channel values",
+  "classes": [
+    {
+      "class": 0,
+      "pixels": 1972,
+      "bounds_xyxy": [
+        0,
+        0,
+        127,
+        127
+      ],
+      "bounding_area": 16384,
+      "centroid": [
+        8.197261663286005,
+        15.109026369168356,
+        9.82657200811359,
+        103.72565922920893,
+        47.93306288032454
+      ],
+      "compact": false
+    },
+    {
+      "class": 1,
+      "pixels": 3921,
+      "bounds_xyxy": [
+        0,
+        0,
+        127,
+        127
+      ],
+      "bounding_area": 16384,
+      "centroid": [
+        21.737458619811562,
+        28.56200662083015,
+        39.13649096002037,
+        56.28087598675834,
+        93.6707410236822
+      ],
+      "compact": false
+    },
+    {
+      "class": 2,
+      "pixels": 5554,
+      "bounds_xyxy": [
+        0,
+        0,
+        127,
+        127
+      ],
+      "bounding_area": 16384,
+      "centroid": [
+        9.91594672426206,
+        17.11861051115911,
+        17.59611231101512,
+        58.2922966162707,
+        51.345032397408204
+      ],
+      "compact": false
+    },
+    {
+      "class": 3,
+      "pixels": 3213,
+      "bounds_xyxy": [
+        0,
+        0,
+        126,
+        127
+      ],
+      "bounding_area": 16256,
+      "centroid": [
+        26.02992518703242,
+        33.938902743142144,
+        45.326059850374065,
+        62.89993765586035,
+        97.06047381546135
+      ],
+      "compact": false
+    },
+    {
+      "class": 4,
+      "pixels": 401,
+      "bounds_xyxy": [
+        12,
+        36,
+        77,
+        67
+      ],
+      "bounding_area": 2112,
+      "centroid": [
+        8.251870324189527,
+        15.306733167082294,
+        9.506234413965089,
+        107.08728179551122,
+        97.80548628428927
+      ],
+      "compact": true
+    },
+    {
+      "class": 5,
+      "pixels": 368,
+      "bounds_xyxy": [
+        12,
+        36,
+        77,
+        67
+      ],
+      "bounding_area": 2112,
+      "centroid": [
+        25.065217391304348,
+        32.88586956521739,
+        44.49184782608695,
+        62.622282608695656,
+        47.244565217391305
+      ],
+      "compact": true
+    },
+    {
+      "class": 6,
+      "pixels": 955,
+      "bounds_xyxy": [
+        0,
+        0,
+        127,
+        127
+      ],
+      "bounding_area": 16384,
+      "centroid": [
+        16.001050420168067,
+        22.349789915966387,
+        27.206932773109244,
+        60.32983193277311,
+        72.4296218487395
+      ],
+      "compact": false
+    }
+  ],
+  "mask_pixels": 769,
+  "bitmap_lines": [
+    {
+      "text": "GAIANSPACE{",
+      "left": 12,
+      "top": 34,
+      "horizontal_dilation": 1,
+      "mismatch_pixels": 0
+    },
+    {
+      "text": "7TH-CLASS-",
+      "left": 15,
+      "top": 46,
+      "horizontal_dilation": 1,
+      "mismatch_pixels": 0
+    },
+    {
+      "text": "XHTXWX}",
+      "left": 24,
+      "top": 58,
+      "horizontal_dilation": 1,
+      "mismatch_pixels": 0
+    }
+  ],
+  "flag": "GAIANSPACE{7TH-CLASS-XHTXWX}"
+}

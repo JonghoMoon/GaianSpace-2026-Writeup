@@ -1,0 +1,572 @@
+[
+  {
+    "order": 1,
+    "parcel": "MZH-8140",
+    "declared": "legelo",
+    "area_ha": 44.67,
+    "code": "CUVE",
+    "original_class": "legelo",
+    "restored_class": "kukorica",
+    "majority_percent": 93.10499216476383,
+    "pixels": 4467,
+    "false": true,
+    "class_counts": {
+      "legelo": 275,
+      "tarlo": 0,
+      "szanto": 0,
+      "telepules": 33,
+      "kukorica": 4159
+    }
+  },
+  {
+    "order": 2,
+    "parcel": "MZH-1537",
+    "declared": "szanto",
+    "area_ha": 48.06,
+    "code": "J7V6",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 100.0,
+    "pixels": 4806,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 0,
+      "szanto": 4806,
+      "telepules": 0,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 3,
+    "parcel": "MZH-1465",
+    "declared": "szanto",
+    "area_ha": 14.27,
+    "code": "37M4",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 99.64961457603364,
+    "pixels": 1427,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 5,
+      "szanto": 1422,
+      "telepules": 0,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 4,
+    "parcel": "MZH-9906",
+    "declared": "tarlo",
+    "area_ha": 5.45,
+    "code": "Q7TC",
+    "original_class": "tarlo",
+    "restored_class": "tarlo",
+    "majority_percent": 90.8256880733945,
+    "pixels": 545,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 495,
+      "szanto": 0,
+      "telepules": 50,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 5,
+    "parcel": "MZH-3296",
+    "declared": "szanto",
+    "area_ha": 17.97,
+    "code": "VPCC",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 97.88536449638286,
+    "pixels": 1797,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 18,
+      "szanto": 1759,
+      "telepules": 20,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 6,
+    "parcel": "MZH-9835",
+    "declared": "tarlo",
+    "area_ha": 33.31,
+    "code": "H9UJ",
+    "original_class": "tarlo",
+    "restored_class": "tarlo",
+    "majority_percent": 97.17802461723207,
+    "pixels": 3331,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 3237,
+      "szanto": 0,
+      "telepules": 94,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 7,
+    "parcel": "MZH-6634",
+    "declared": "szanto",
+    "area_ha": 13.96,
+    "code": "W3C9",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 96.13180515759312,
+    "pixels": 1396,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 0,
+      "szanto": 1342,
+      "telepules": 54,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 8,
+    "parcel": "MZH-2386",
+    "declared": "legelo",
+    "area_ha": 17.78,
+    "code": "AKCG",
+    "original_class": "legelo",
+    "restored_class": "legelo",
+    "majority_percent": 88.47019122609674,
+    "pixels": 1778,
+    "false": false,
+    "class_counts": {
+      "legelo": 1573,
+      "tarlo": 0,
+      "szanto": 0,
+      "telepules": 205,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 9,
+    "parcel": "MZH-2422",
+    "declared": "szanto",
+    "area_ha": 61.92,
+    "code": "QWXH",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 99.24095607235142,
+    "pixels": 6192,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 45,
+      "szanto": 6145,
+      "telepules": 2,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 10,
+    "parcel": "MZH-9183",
+    "declared": "legelo",
+    "area_ha": 4.07,
+    "code": "UKEJ",
+    "original_class": "legelo",
+    "restored_class": "kukorica",
+    "majority_percent": 84.02948402948402,
+    "pixels": 407,
+    "false": true,
+    "class_counts": {
+      "legelo": 63,
+      "tarlo": 0,
+      "szanto": 0,
+      "telepules": 2,
+      "kukorica": 342
+    }
+  },
+  {
+    "order": 11,
+    "parcel": "MZH-2535",
+    "declared": "legelo",
+    "area_ha": 7.59,
+    "code": "VY3Q",
+    "original_class": "legelo",
+    "restored_class": "legelo",
+    "majority_percent": 92.35836627140975,
+    "pixels": 759,
+    "false": false,
+    "class_counts": {
+      "legelo": 701,
+      "tarlo": 0,
+      "szanto": 0,
+      "telepules": 58,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 12,
+    "parcel": "MZH-9683",
+    "declared": "szanto",
+    "area_ha": 6.58,
+    "code": "P4WR",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 88.44984802431611,
+    "pixels": 658,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 0,
+      "szanto": 582,
+      "telepules": 76,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 13,
+    "parcel": "MZH-4631",
+    "declared": "tarlo",
+    "area_ha": 105.93,
+    "code": "QGQ3",
+    "original_class": "tarlo",
+    "restored_class": "tarlo",
+    "majority_percent": 97.76267346360804,
+    "pixels": 10593,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 10356,
+      "szanto": 0,
+      "telepules": 237,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 14,
+    "parcel": "MZH-5520",
+    "declared": "tarlo",
+    "area_ha": 14.51,
+    "code": "JXPW",
+    "original_class": "tarlo",
+    "restored_class": "tarlo",
+    "majority_percent": 97.93246037215714,
+    "pixels": 1451,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 1421,
+      "szanto": 0,
+      "telepules": 30,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 15,
+    "parcel": "MZH-9911",
+    "declared": "tarlo",
+    "area_ha": 32.96,
+    "code": "QWA9",
+    "original_class": "tarlo",
+    "restored_class": "tarlo",
+    "majority_percent": 98.30097087378641,
+    "pixels": 3296,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 3240,
+      "szanto": 0,
+      "telepules": 56,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 16,
+    "parcel": "MZH-2589",
+    "declared": "szanto",
+    "area_ha": 24.77,
+    "code": "E47F",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 99.27331449333872,
+    "pixels": 2477,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 18,
+      "szanto": 2459,
+      "telepules": 0,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 17,
+    "parcel": "MZH-7877",
+    "declared": "szanto",
+    "area_ha": 4.71,
+    "code": "GPF6",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 99.78768577494692,
+    "pixels": 471,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 0,
+      "szanto": 470,
+      "telepules": 1,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 18,
+    "parcel": "MZH-8283",
+    "declared": "legelo",
+    "area_ha": 4.02,
+    "code": "UHYQ",
+    "original_class": "legelo",
+    "restored_class": "legelo",
+    "majority_percent": 87.31343283582089,
+    "pixels": 402,
+    "false": false,
+    "class_counts": {
+      "legelo": 351,
+      "tarlo": 0,
+      "szanto": 0,
+      "telepules": 51,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 19,
+    "parcel": "MZH-6000",
+    "declared": "szanto",
+    "area_ha": 3.01,
+    "code": "CMVH",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 95.68106312292359,
+    "pixels": 301,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 12,
+      "szanto": 288,
+      "telepules": 1,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 20,
+    "parcel": "MZH-7666",
+    "declared": "legelo",
+    "area_ha": 7.09,
+    "code": "RXFK",
+    "original_class": "legelo",
+    "restored_class": "legelo",
+    "majority_percent": 95.06346967559944,
+    "pixels": 709,
+    "false": false,
+    "class_counts": {
+      "legelo": 674,
+      "tarlo": 0,
+      "szanto": 0,
+      "telepules": 35,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 21,
+    "parcel": "MZH-1304",
+    "declared": "tarlo",
+    "area_ha": 3.29,
+    "code": "69XN",
+    "original_class": "tarlo",
+    "restored_class": "tarlo",
+    "majority_percent": 82.37082066869301,
+    "pixels": 329,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 271,
+      "szanto": 0,
+      "telepules": 58,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 22,
+    "parcel": "MZH-7394",
+    "declared": "tarlo",
+    "area_ha": 12.15,
+    "code": "DQ4T",
+    "original_class": "tarlo",
+    "restored_class": "tarlo",
+    "majority_percent": 93.33333333333333,
+    "pixels": 1215,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 1134,
+      "szanto": 0,
+      "telepules": 81,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 23,
+    "parcel": "MZH-7278",
+    "declared": "szanto",
+    "area_ha": 3.14,
+    "code": "EMAH",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 84.71337579617834,
+    "pixels": 314,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 48,
+      "szanto": 266,
+      "telepules": 0,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 24,
+    "parcel": "MZH-2933",
+    "declared": "tarlo",
+    "area_ha": 93.3,
+    "code": "PWWF",
+    "original_class": "tarlo",
+    "restored_class": "tarlo",
+    "majority_percent": 94.91961414790997,
+    "pixels": 9330,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 8856,
+      "szanto": 0,
+      "telepules": 474,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 25,
+    "parcel": "MZH-8823",
+    "declared": "szanto",
+    "area_ha": 17.71,
+    "code": "YPJE",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 94.2970073404856,
+    "pixels": 1771,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 94,
+      "szanto": 1670,
+      "telepules": 7,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 26,
+    "parcel": "MZH-1932",
+    "declared": "legelo",
+    "area_ha": 4.15,
+    "code": "KAJ9",
+    "original_class": "legelo",
+    "restored_class": "legelo",
+    "majority_percent": 93.49397590361446,
+    "pixels": 415,
+    "false": false,
+    "class_counts": {
+      "legelo": 388,
+      "tarlo": 0,
+      "szanto": 0,
+      "telepules": 27,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 27,
+    "parcel": "MZH-5626",
+    "declared": "legelo",
+    "area_ha": 3.77,
+    "code": "JNPD",
+    "original_class": "legelo",
+    "restored_class": "legelo",
+    "majority_percent": 98.93899204244032,
+    "pixels": 377,
+    "false": false,
+    "class_counts": {
+      "legelo": 373,
+      "tarlo": 0,
+      "szanto": 0,
+      "telepules": 4,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 28,
+    "parcel": "MZH-1402",
+    "declared": "legelo",
+    "area_ha": 7.92,
+    "code": "TRP6",
+    "original_class": "legelo",
+    "restored_class": "kukorica",
+    "majority_percent": 79.79797979797979,
+    "pixels": 792,
+    "false": true,
+    "class_counts": {
+      "legelo": 157,
+      "tarlo": 0,
+      "szanto": 0,
+      "telepules": 3,
+      "kukorica": 632
+    }
+  },
+  {
+    "order": 29,
+    "parcel": "MZH-1234",
+    "declared": "szanto",
+    "area_ha": 22.09,
+    "code": "3GC4",
+    "original_class": "szanto",
+    "restored_class": "szanto",
+    "majority_percent": 99.45676776822091,
+    "pixels": 2209,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 11,
+      "szanto": 2197,
+      "telepules": 1,
+      "kukorica": 0
+    }
+  },
+  {
+    "order": 30,
+    "parcel": "MZH-6794",
+    "declared": "tarlo",
+    "area_ha": 8.14,
+    "code": "3XDF",
+    "original_class": "tarlo",
+    "restored_class": "tarlo",
+    "majority_percent": 93.61179361179362,
+    "pixels": 814,
+    "false": false,
+    "class_counts": {
+      "legelo": 0,
+      "tarlo": 762,
+      "szanto": 0,
+      "telepules": 52,
+      "kukorica": 0
+    }
+  }
+]
