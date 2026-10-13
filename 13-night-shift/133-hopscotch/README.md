@@ -32,15 +32,21 @@ Recover the radio's frequency-hopping sequence, dehop the bursts, decode the LoR
 ### Reproduction
 
 ```bash
-python3 133.py vela_wide_0212.sigmf-data
+python3 133.py vela_wide_0212.sigmf-data --out-dir 133_solution
 ```
 The decoder saves recovered IQ, symbols and verified payload in `133_solution/`.
 
 Expected relevant output:
 
 ```text
-TM,ACK,1,DUMP NAV,NAV,EPOCH=2026-10-11T02:13Z,MODE=SAFE,NOTE=GAIANSPACE{h0p_sc0tch_AF44A6},END
+UPLINK: b'}*\x01\x00TC DUMP NAV'
+UPLINK CRC: received=FC12 calculated=FC12 valid=True
+Building eight non-overlapping receive channels ...
+DOWNLINK: TM,ACK,1,DUMP NAV,NAV,EPOCH=2026-10-11T02:13Z,MODE=SAFE,NOTE=GAIANSPACE{h0p_sc0tch_AF44A6},END
+HEADER checksum valid: True
+PAYLOAD CRC: received=B654 calculated=B654 valid=True
 FLAG: GAIANSPACE{h0p_sc0tch_AF44A6}
+Outputs: /home/jhmoon/gaianspace/13-night-shift/133/133_solution
 ```
 
 ### Exploit Code

@@ -32,135 +32,130 @@ The station log identifies a downlink configuration change. Decode LoRa with imp
 ### Reproduction
 
 ```bash
-python3 scan_132_lora.py 132_DL_candidates/132_DL_3_32.5s.cf32
-cat result.txt
+PYTHONNOUSERSITE=1 /usr/bin/python3 132.py 132_DL_candidates/132_DL_3_32.5s.cf32
 ```
-The scanner requires the local LoRa decoder executable. It takes extracted complex IQ, not the original SigMF bytes.
+
+Use the gr-lora_sdr.
 
 Expected relevant output:
 
 ```text
-SF10 / CR 4/6 / Payload Length 64
-TM,ACK,1,GET HK,HK,V=4.51,I=0.1,T=21.82,P=996.24,CO2=432,UP=132*18FC
-
-GAIANSPACE{432_132}
+RECEIVER: netid1 is 16, netid2 is 88, check skipped
+DECODED BYTES: 68
+PAYLOAD: TM,ACK,1,GET HK,HK,V=4.51,I=0.1,T=21.82,P=996.24,CO2=432,UP=132*18FC
+CRC-16/CCITT-FALSE: calculated=18FC, received=18FC
+FLAG: GAIANSPACE{432_132}
 ```
 
 ### Exploit Code
 
-**`scan_132_lora.py`**
+**`132.py`**
 
 ```python
 #!/usr/bin/env python3
-"""Batch-test gr-lora_sdr implicit-header LoRa settings against IQ files."""
+"""Recover GaianSpace 132 GET HK acknowledgement from LoRa implicit-header IQ.
+
+Requires GNU Radio and gr-lora_sdr installed for the system Python interpreter.
+Input: 132_DL_3_32.5s.cf32 (complex64, nominal 500 kS/s).
+"""
+from __future__ import annotations
 
 import argparse
-import json
+import binascii
 import os
-import pathlib
+from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
 
 WORKER = r'''
 import argparse
-from gnuradio import blocks, gr
-from gnuradio import lora_sdr
+from gnuradio import blocks, gr, lora_sdr
 
 parser = argparse.ArgumentParser()
-for flag in ('input', 'output'):
-    parser.add_argument('--' + flag, required=True)
-for flag in ('sf', 'cr', 'length', 'bw', 'rate', 'crc'):
-    parser.add_argument('--' + flag, type=int, required=True)
+parser.add_argument('--input', required=True)
+parser.add_argument('--output', required=True)
+parser.add_argument('--length', required=True, type=int)
 args = parser.parse_args()
 
 class Receiver(gr.top_block):
     def __init__(self):
-        super().__init__('LoRa batch receiver')
+        super().__init__('GaianSpace 132 decoder')
         source = blocks.file_source(gr.sizeof_gr_complex, args.input, False, 0, 0)
-        rx = lora_sdr.lora_sdr_lora_rx(
-            bw=args.bw, cr=args.cr, has_crc=bool(args.crc), impl_head=True,
-            pay_len=args.length, samp_rate=args.rate, sf=args.sf,
-            sync_word=[0x00], soft_decoding=False,
-            ldro_mode=2, print_rx=[False, False])
+        receiver = lora_sdr.lora_sdr_lora_rx(
+            bw=125000, cr=2, has_crc=False, impl_head=True,
+            pay_len=args.length, samp_rate=500000, sf=10,
+            sync_word=[0x00], soft_decoding=False, ldro_mode=2,
+            print_rx=[False, False])
         sink = blocks.file_sink(gr.sizeof_char, args.output, False)
         sink.set_unbuffered(True)
-        self.connect(source, rx)
-        self.connect(rx, sink)
+        self.connect(source, receiver, sink)
 
-receiver = Receiver()
-receiver.run()
+Receiver().run()
 '''
 
-
-def score(data: bytes) -> tuple[float, int, str]:
-    if not data:
-        return 0.0, 0, ''
-    good = sum(32 <= x <= 126 or x in (9, 10, 13) for x in data)
-    preview = data[:180].decode('ascii', errors='replace')
-    return good / len(data), len(data), preview
+ACK_PATTERN = re.compile(rb'TM,ACK,\d+,GET HK,HK,.*?CO2=(\d+),UP=(\d+)\*([0-9A-Fa-f]{4})')
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('iq', nargs='+', help='Complex float32 IQ files (500 kS/s)')
-    parser.add_argument('--sf', type=int, nargs='+', default=[7, 8, 9, 10])
-    parser.add_argument('--cr', type=int, nargs='+', default=[1, 2, 3, 4])
-    parser.add_argument('--length', type=int, nargs='+', default=[32, 48, 64, 96, 128, 165, 192, 208])
-    parser.add_argument('--crc', type=int, choices=[0, 1], default=0)
-    parser.add_argument('--bw', type=int, default=125000)
-    parser.add_argument('--rate', type=int, default=500000)
-    parser.add_argument('--timeout', type=int, default=12)
-    parser.add_argument('--out', default='scan132_results.jsonl')
-    args = parser.parse_args()
-
-    with tempfile.TemporaryDirectory(prefix='scan132_') as temp_dir:
-        worker = pathlib.Path(temp_dir, 'worker.py')
+def decode(iq: Path, length: int, timeout: int) -> tuple[bytes, str]:
+    with tempfile.TemporaryDirectory(prefix='gs132_') as dirname:
+        directory = Path(dirname)
+        worker = directory / 'receiver.py'
+        output = directory / 'decoded.bin'
         worker.write_text(WORKER, encoding='utf-8')
-        output = pathlib.Path(temp_dir, 'decoded.bin')
-        number = 0
-        with open(args.out, 'w', encoding='utf-8') as records:
-            for filename in args.iq:
-                if not pathlib.Path(filename).is_file():
-                    print(f'ERROR: missing input {filename}', file=sys.stderr)
-                    continue
-                for sf in args.sf:
-                    for cr in args.cr:
-                        for length in args.length:
-                            number += 1
-                            output.write_bytes(b'')
-                            command = [sys.executable, str(worker), '--input', str(pathlib.Path(filename).resolve()),
-                                       '--output', str(output), '--sf', str(sf), '--cr', str(cr),
-                                       '--length', str(length), '--bw', str(args.bw),
-                                       '--rate', str(args.rate), '--crc', str(args.crc)]
-                            env = dict(os.environ)
-                            env['PYTHONNOUSERSITE'] = '1'
-                            try:
-                                proc = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                                      timeout=args.timeout, check=False, env=env)
-                                log = (proc.stdout + proc.stderr).decode('utf-8', errors='replace')
-                                data = output.read_bytes()
-                                fraction, size, preview = score(data)
-                                valid = 'CRC valid!' in log and 'CRC invalid' not in log
-                                record = dict(iq=filename, sf=sf, cr=cr, length=length, crc=args.crc,
-                                              bytes=size, printable=round(fraction, 5), valid_crc=valid,
-                                              preview=preview, returncode=proc.returncode,
-                                              log_tail=log[-500:])
-                                records.write(json.dumps(record, ensure_ascii=False) + '\n')
-                                records.flush()
-                                if valid or (size and fraction > 0.85):
-                                    print(f'[{number}] {filename} SF{sf} CR{cr} len={length} '
-                                          f'bytes={size} printable={fraction:.1%} CRC={valid} {preview[:100]!r}',
-                                          flush=True)
-                            except subprocess.TimeoutExpired:
-                                records.write(json.dumps(dict(iq=filename, sf=sf, cr=cr,
-                                                              length=length, error='timeout')) + '\n')
-                                records.flush()
-            print(f'Finished {number} trials. Results: {args.out}')
+        env = os.environ.copy()
+        env['PYTHONNOUSERSITE'] = '1'
+        cmd = [sys.executable, str(worker), '--input', str(iq.resolve()),
+               '--output', str(output), '--length', str(int(length))]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                timeout=int(timeout), check=False, env=env)
+        log = (result.stdout + result.stderr).decode('utf-8', errors='replace')
+        if result.returncode != 0:
+            raise RuntimeError(f'Receiver exited with {result.returncode}:\n{log[-2000:]}')
+        return (output.read_bytes() if output.exists() else b''), log
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('iq', nargs='?', type=Path,
+                        default=Path('132_DL_candidates/132_DL_3_32.5s.cf32'))
+    parser.add_argument('--length', type=int, default=68,
+                        help='Implicit payload length (default: 68 for the 63-byte message plus *XXXX)')
+    parser.add_argument('--timeout', type=int, default=30)
+    args = parser.parse_args()
+    if not args.iq.is_file():
+        parser.error(f'IQ file not found: {args.iq}')
+    data, log = decode(args.iq, int(args.length), int(args.timeout))
+    print('RECEIVER:', log.strip() or '(no log)')
+    print('DECODED BYTES:', len(data))
+    print('PAYLOAD:', data.decode('ascii', errors='backslashreplace'))
+    candidates = list(ACK_PATTERN.finditer(data))
+    if not candidates:
+        print('ERROR: No complete GET HK acknowledgement with *XXXX check field was decoded.', file=sys.stderr)
+        print('Try --length 69 or inspect IQ synchronization; no flag is asserted.', file=sys.stderr)
+        return 1
+    for match in candidates:
+        message = match.group(0)
+        checksum_text = int(match.group(3).decode('ascii'), 16)
+        received_prefix = message.rsplit(b'*', 1)[0]
+        calculated = int(binascii.crc_hqx(received_prefix, 0xFFFF))
+        print(f'CRC-16/CCITT-FALSE: calculated={calculated:04X}, received={checksum_text:04X}')
+        if calculated == checksum_text:
+            co2 = int(match.group(1).decode('ascii'))
+            uptime = int(match.group(2).decode('ascii'))
+            print(f'FLAG: GAIANSPACE{{{co2}_{uptime}}}')
+            return 0
+    print('ERROR: ACK found but application CRC did not match.', file=sys.stderr)
+    return 1
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        sys.exit(main())
+    except (RuntimeError, subprocess.TimeoutExpired) as exc:
+        print(f'ERROR: {exc}', file=sys.stderr)
+        sys.exit(1)
 ```
 
 ## Flag

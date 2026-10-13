@@ -32,15 +32,39 @@ Recover the long downlink, verify packet CRCs, reassemble dump fragments, and re
 ### Reproduction
 
 ```bash
-python3 135.py vela_band_0347.sigmf-data
+python3 135.py vela_band_0347.sigmf-data --out-dir 135_solution
 ```
 Results are saved under `135_solution/`, including plaintext, flag and verification JSON.
 
 Expected relevant output:
 
 ```text
-G723MEM1|BANK2|0x4000-0x40FF|OBC_LOG:BOOT OK;SENS OK;DL CFG B;FHSS ON;REPACK ON;SECRET_STORE:GAIANSPACE{wh4t_th3y_t00k_064CCB};TLE_CACHE:1 72301U 26001A 26284.08 .00001 00000-0 12345-4 0 9990;END
+CAPTURE: vela_band_0347.sigmf-data, 50.000000 s
+DETECTED: 13 energy intervals
+00 DL SF9 CR4/5 LEN=165 CRC=B324/B324 valid=True b'1609459220,-0.02,0.08,9.80,2.75,1.94,0.16,-0.62,-0.17,-0.47,0.46,0.12,164.86,427,24.95,47.19,996.20,28.19,38.00,380,35,0.000000,0.000000,0,0,0.00,0.00,4.63,0.00,0.00'
+01 UL SF7 CR4/8 LEN=13 CRC=DD75/DD75 valid=True b'}*\x00\x00TC GET HK'
+02 DL SF9 CR4/5 LEN=62 CRC=A8BB/A8BB valid=True b'TM,ACK,0,GET HK,HK,V=4.61,I=0.0,T=24.95,P=996.20,CO2=427,UP=10'
+03 DL SF9 CR4/5 LEN=165 CRC=B997/B997 valid=True b'1609459233,-0.01,0.07,9.79,2.76,1.97,0.18,-0.63,-0.16,-0.48,0.42,0.04,165.73,444,24.48,48.41,996.22,28.29,36.00,380,35,0.000000,0.000000,0,0,0.00,0.00,4.53,0.10,0.00'
+04 UL SF7 CR4/8 LEN=15 CRC=C86A/C86A valid=True b'}*\x01\x00TC DUMP MEM'
+05 DL SF9 CR4/5 LEN=70 CRC=20C6/20C6 valid=True b"DMP\x01\x00\x04#/\x9fe:\x94\x84o\xa0\xe9\xc9\x1e\x14\xa2'\xbc\x98'\xc3\xd8[\x1f\xe4Y\x7f\x15R\xe2/q\x99<\xdfx\xd9\xe2\xe7\x94\xf3\n\xcd\x98\xcc\x1b;\x8e\xc1\x04\xea}\xb0\x1cG*\x08'\xa8\xdc\x14\xfcu\x99\xde\x11"
+06 DL SF9 CR4/5 LEN=70 CRC=C2BE/C2BE valid=True b'DMP\x01\x01\x04\xfe\xac\x9dJ9sO\x87\xd3"\xd7\n\x0fD\x97S\x8d"<\x89\x07\xa7\xbd\x14\x95X\x9d\xad.\xe4=VQ\xa6Z\xd4\x8d\xb6\x18\x98hvO\x0c\xe3(i\x0fmV\xd9\x91\xd9\x80n\xd2 +\xbc#\xd5N\xa5\x04'
+07 DL SF9 CR4/5 LEN=70 CRC=5E79/5E79 valid=True b'DMP\x01\x02\x04%"\\\x06\x97\xa2\xe35\xda\xef\xedL\xa4\xcb\x86\xc3\xb7\xd7NwW\x9e\x08\xad\x12\x80\x8a8R)\xa2`c\'\xfe\x98\x15\xd3\xec\x90\'\xf3\x7f%_\x80\x13\xce,\xff9\xc1\xd0f\xd7P\xa2\x1f\xa1\x8e\x88#"\xde'
+08 DL SF9 CR4/5 LEN=9 CRC=7711/7711 valid=True b'DMP\x01\x03\x04A\xe1\x9f'
+09 DL SF9 CR4/5 LEN=165 CRC=AE6F/AE6F valid=True b'1609459256,-0.01,0.07,9.80,2.69,1.88,0.22,-0.62,-0.17,-0.46,0.44,0.07,164.77,441,23.54,50.90,996.22,28.42,35.00,404,40,0.000000,0.000000,0,0,0.00,0.00,4.62,0.10,0.00'
+10 UL SF7 CR4/8 LEN=11 CRC=09B8/09B8 valid=True b'}*\x02\x00TC PING'
+11 DL SF9 CR4/5 LEN=21 CRC=CBCF/CBCF valid=True b'TM,ACK,2,PING,PONG,46'
+12 DL 49.86..49.99 s: incomplete_at_capture_end
+DMP FRAGMENTS: 4/4, 195 ciphertext bytes
+KNOWN KEYSTREAM: 6418AD5677D1C9
+GF2: 56 equations, rank 32, unique=True
+FIRST OUTPUT STATE: 0xF2143764
+SEED BEFORE FIRST STEP: 0x009A293A
+HELD-OUT MAGIC: 2 bytes valid=True
+DUMP PHY CRC: 4/4 valid
+REENCRYPTION: identical=True
+PLAINTEXT: G723MEM1|BANK2|0x4000-0x40FF|OBC_LOG:BOOT OK;SENS OK;DL CFG B;FHSS ON;REPACK ON;SECRET_STORE:GAIANSPACE{wh4t_th3y_t00k_064CCB};TLE_CACHE:1 72301U 26001A 26284.08 .00001 00000-0 12345-4 0 9990;END
 FLAG: GAIANSPACE{wh4t_th3y_t00k_064CCB}
+OUTPUT: /home/jhmoon/gaianspace/13-night-shift/135/135_solution
 ```
 
 ### Exploit Code

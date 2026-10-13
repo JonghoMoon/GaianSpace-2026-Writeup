@@ -32,14 +32,31 @@ Decode the short binary downlink frames, check PHY and application CRCs, use fra
 ### Reproduction
 
 ```bash
-python3 134.py vela_band_0302.sigmf-data --last-good last_good_frame.csv
+python3 134.py vela_band_0302.sigmf-data --out-dir 134_solution
 ```
 Results are saved under `134_solution/`.
 
 Expected relevant output:
 
 ```text
+DETECTED: 12 RF bursts
+seq=02 PHY=FAFB/FAFB APP=69C7/69C7 seed=02 part=2/4 'k3d_6604'
+seq=03 PHY=4D82/4D82 APP=EE46/EE46 seed=03 part=3/4 '13}\x00\x00\x00\x00\x00'
+seq=04 PHY=0823/0823 APP=4AE7/4AE7 seed=04 part=0/4 'GAIANSPA'
+seq=05 PHY=BF5A/BF5A APP=147C/147C seed=05 part=1/4 'CE{r3p4c'
+seq=06 PHY=FA67/FA67 APP=8580/8580 seed=06 part=2/4 'k3d_6604'
+seq=07 PHY=4D1E/4D1E APP=F011/F011 seed=07 part=3/4 '13}\x00\x00\x00\x00\x00'
+seq=08 PHY=931C/931C APP=3E6B/3E6B seed=08 part=0/4 'GAIANSPA'
+seq=09 PHY=2465/2465 APP=607D/607D seed=09 part=1/4 'CE{r3p4c'
+seq=10 PHY=6158/6158 APP=0124/0124 seed=0A part=2/4 'k3d_6604'
+seq=11 PHY=D621/D621 APP=A5CB/A5CB seed=0B part=3/4 '13}\x00\x00\x00\x00\x00'
+seq=12 PHY=9380/9380 APP=66F6/66F6 seed=0C part=0/4 'GAIANSPA'
+seq=13 PHY=24F9/24F9 APP=7F89/7F89 seed=0D part=1/4 'CE{r3p4c'
+PHY CRC: 12/12 valid
+APPLICATION CRC: 12/12 valid
+FRAGMENT COPIES: 0:3, 1:3, 2:3, 3:3
 FLAG: GAIANSPACE{r3p4ck3d_660413}
+OUTPUT: /home/jhmoon/gaianspace/13-night-shift/134/134_solution
 ```
 
 ### Exploit Code
