@@ -19,7 +19,7 @@ Put the answer back together.
 
 **Attachments:**
 
-- `vela_wide_0212.sigmf-data` — the band recorder's raw capture, opened up to the whole band (too large to attach: download it from Hugging Face)
+- `vela_wide_0212.sigmf-data` — the band recorder's raw capture, opened up to the whole band (too large to attach: download it from [Hugging Face](https://huggingface.co/datasets/GaianSpace/ctf-2026-130/tree/main/133))
 - `vela_wide_0212.sigmf-meta` — the recorder's metadata for that capture
 - `chat.txt` — what came in on Aroz's phone while the recorder ran
 
