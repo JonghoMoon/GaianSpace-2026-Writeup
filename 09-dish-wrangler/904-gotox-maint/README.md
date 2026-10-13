@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Category** | 09 — Dish Wrangler |
-| **Points** | 164 |
+| **Points** | 100 |
 
 ## Description
 

@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Category** | 05 — Rad Hard Rampage |
-| **Points** | 102 |
+| **Points** | 75 |
 
 ## Description
 
