@@ -1,0 +1,94 @@
+{
+  "flag": "GAIANSPACE{s0ft_v1terbi_th3n_r33d_s0l0m0n}",
+  "symbol_phase": 0,
+  "input_symbols": 51954,
+  "decoded_information_bits": 25977,
+  "frames": [
+    {
+      "sync_bit_index": 1337,
+      "counter": 0,
+      "valid_bytes": 888,
+      "corrected_bytes_per_codeword": [
+        2,
+        2,
+        0,
+        1
+      ],
+      "corrected_positions_per_codeword": [
+        [
+          10,
+          91
+        ],
+        [
+          10,
+          95
+        ],
+        [],
+        [
+          90
+        ]
+      ],
+      "corrected_bytes": 5,
+      "all_rs_syndromes_zero": true,
+      "filler_valid": true
+    },
+    {
+      "sync_bit_index": 9529,
+      "counter": 1,
+      "valid_bytes": 888,
+      "corrected_bytes_per_codeword": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "corrected_positions_per_codeword": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "corrected_bytes": 0,
+      "all_rs_syndromes_zero": true,
+      "filler_valid": true
+    },
+    {
+      "sync_bit_index": 17721,
+      "counter": 2,
+      "valid_bytes": 274,
+      "corrected_bytes_per_codeword": [
+        1,
+        2,
+        2,
+        1
+      ],
+      "corrected_positions_per_codeword": [
+        [
+          65
+        ],
+        [
+          65,
+          238
+        ],
+        [
+          17,
+          238
+        ],
+        [
+          64
+        ]
+      ],
+      "corrected_bytes": 6,
+      "all_rs_syndromes_zero": true,
+      "filler_valid": true
+    }
+  ],
+  "corrected_bytes_total": 11,
+  "compressed_bytes": 2050,
+  "decoded_bytes": 3778,
+  "compression_wrapper": "zlib",
+  "compression_checksum_verified": true,
+  "input_sha256": "c4d79eb00906ce909d03c8a248045620d501c6cc7d3dc959faed281c5daeb459",
+  "plaintext_sha256": "896b23940c783603bba3a463935a4b1a821a58ae890bcb12d936bf87b4b61cba",
+  "earlier_attempts": []
+}

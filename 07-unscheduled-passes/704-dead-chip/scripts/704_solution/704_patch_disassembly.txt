@@ -1,0 +1,76 @@
+# Address  Word  Original  Interpretation
+004  04F0  ---       indirect entry pointer for JMPI 004
+013  5DD0  ---       JSR 5D0 (executive call)
+2E0  AC3D  640       data, constant, pointer, or return slot
+2E1  48A3  641       data, constant, pointer, or return slot
+2E2  1B69  642       data, constant, pointer, or return slot
+2E3  A442  643       data, constant, pointer, or return slot
+2E4  B97A  644       data, constant, pointer, or return slot
+2E5  F094  645       data, constant, pointer, or return slot
+2E6  365E  646       data, constant, pointer, or return slot
+2E7  43BE  647       data, constant, pointer, or return slot
+2E8  F17B  648       data, constant, pointer, or return slot
+2E9  17E5  649       data, constant, pointer, or return slot
+2EA  911C  64A       data, constant, pointer, or return slot
+2EB  582F  64B       data, constant, pointer, or return slot
+2EC  7E77  64C       data, constant, pointer, or return slot
+2ED  6710  64D       data, constant, pointer, or return slot
+2EE  21F9  64E       data, constant, pointer, or return slot
+2EF  3B44  64F       data, constant, pointer, or return slot
+2F0  9592  650       data, constant, pointer, or return slot
+2F1  0963  651       data, constant, pointer, or return slot
+2F2  828D  652       data, constant, pointer, or return slot
+2F3  601D  653       data, constant, pointer, or return slot
+2F4  F9E8  654       data, constant, pointer, or return slot
+4F0  38FF  624       LDI 0FF
+4F1  9800  625       OUT 000
+4F2  08E3  626       LDA 0E3
+4F3  9800  627       OUT 000
+4F4  6040  628       JMPI 040
+4F5  05DC  629       data, constant, pointer, or return slot
+4F6  05E1  62A       data, constant, pointer, or return slot
+4F7  0000  62B       data, constant, pointer, or return slot
+4F8  0001  62C       data, constant, pointer, or return slot
+4F9  3E11  62D       data, constant, pointer, or return slot
+4FA  0042  62E       data, constant, pointer, or return slot
+4FB  1D2B  62F       data, constant, pointer, or return slot
+4FC  0015  630       data, constant, pointer, or return slot
+4FD  0000  631       data, constant, pointer, or return slot
+4FE  02E0  632       data, constant, pointer, or return slot
+5D0  0000  600       data, constant, pointer, or return slot
+5D1  3FE5  601       LDI 7E5
+5D2  9800  602       OUT 000
+5D3  08E3  603       LDA 0E3
+5D4  C801  604       ADDI 001
+5D5  10E3  605       STA 0E3
+5D6  9800  606       OUT 000
+5D7  2CF8  607       AND 4F8
+5D8  B800  608       TAX 000
+5D9  7CF5  609       LDAX 4F5
+5DA  14F7  60A       STA 4F7
+5DB  64F7  60B       JMPI 4F7
+5DC  0CF9  60C       LDA 4F9
+5DD  9800  60D       OUT 000
+5DE  0CFA  60E       LDA 4FA
+5DF  9800  60F       OUT 000
+5E0  45E3  610       JMP 5E3
+5E1  3DC1  611       LDI 5C1
+5E2  9800  612       OUT 000
+5E3  0CFE  613       LDA 4FE
+5E4  34FB  614       XOR 4FB
+5E5  30E6  615       XOR 0E6
+5E6  10E0  616       STA 0E0
+5E7  3800  617       LDI 000
+5E8  10E1  618       STA 0E1
+5E9  D800  619       LDXI 000
+5EA  58C0  61A       JSR 0C0
+5EB  14FD  61B       STA 4FD
+5EC  7AE0  61C       LDAX 2E0
+5ED  34FD  61D       XOR 4FD
+5EE  4770  ---       JMP 770 (fall-through bridge)
+770  9800  61E       OUT 000
+771  8800  61F       INX 000
+772  C000  620       TXA 000
+773  24FC  621       SUB 4FC
+774  55EA  622       JNZ 5EA
+775  65D0  623       JMPI 5D0

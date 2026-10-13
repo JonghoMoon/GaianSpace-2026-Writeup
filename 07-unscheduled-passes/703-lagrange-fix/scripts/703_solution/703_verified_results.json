@@ -1,0 +1,374 @@
+{
+  "flag": "GAIANSPACE{CLK_+2213481}",
+  "clock_bias_definition": "receiver clock minus TDB",
+  "clock_bias_seconds": 2213.481252852647,
+  "rounded_clock_bias_ms": 2213481,
+  "selected_fit": {
+    "excluded_beacon": "SAT-L5",
+    "clock_bias_s": 2213.481252852647,
+    "initial_clock_bias_s": 2213.4812510853767,
+    "rms_s": 2.42029005957537e-08,
+    "max_abs_residual_s": 5.6883436627686024e-08,
+    "retained_observations": 21,
+    "optimizer_success": true,
+    "optimizer_message": "`xtol` termination condition is satisfied.",
+    "function_evaluations": 4,
+    "jacobian_condition_number": 2249.4163439047143
+  },
+  "exclusion_trials": [
+    {
+      "excluded_beacon": null,
+      "clock_bias_s": 2279.9076058436467,
+      "initial_clock_bias_s": 2276.04035846073,
+      "rms_s": 0.18391663863246702,
+      "max_abs_residual_s": 0.44049838076171,
+      "retained_observations": 24,
+      "optimizer_success": true,
+      "optimizer_message": "`xtol` termination condition is satisfied.",
+      "function_evaluations": 8,
+      "jacobian_condition_number": 2251.5629553290223
+    },
+    {
+      "excluded_beacon": "JUP-L4",
+      "clock_bias_s": 2273.578004801806,
+      "initial_clock_bias_s": 2140.118921619027,
+      "rms_s": 0.19639191629523256,
+      "max_abs_residual_s": 0.4394984732789453,
+      "retained_observations": 21,
+      "optimizer_success": true,
+      "optimizer_message": "`xtol` termination condition is satisfied.",
+      "function_evaluations": 10,
+      "jacobian_condition_number": 2622.084358850635
+    },
+    {
+      "excluded_beacon": "JUP-L5",
+      "clock_bias_s": 2315.569361028315,
+      "initial_clock_bias_s": 2301.2589574601748,
+      "rms_s": 0.18258203335582432,
+      "max_abs_residual_s": 0.37985756783746183,
+      "retained_observations": 21,
+      "optimizer_success": true,
+      "optimizer_message": "`xtol` termination condition is satisfied.",
+      "function_evaluations": 13,
+      "jacobian_condition_number": 2388.54286065967
+    },
+    {
+      "excluded_beacon": "NEP-L4",
+      "clock_bias_s": 2297.412288174272,
+      "initial_clock_bias_s": 2273.3562634952186,
+      "rms_s": 0.1916559579085257,
+      "max_abs_residual_s": 0.41855883804964833,
+      "retained_observations": 21,
+      "optimizer_success": true,
+      "optimizer_message": "`xtol` termination condition is satisfied.",
+      "function_evaluations": 10,
+      "jacobian_condition_number": 2297.832530602578
+    },
+    {
+      "excluded_beacon": "NEP-L5",
+      "clock_bias_s": 2248.580409600505,
+      "initial_clock_bias_s": 2274.7832703878994,
+      "rms_s": 0.16672783430763105,
+      "max_abs_residual_s": 0.3167523935553618,
+      "retained_observations": 21,
+      "optimizer_success": true,
+      "optimizer_message": "`xtol` termination condition is satisfied.",
+      "function_evaluations": 6,
+      "jacobian_condition_number": 2219.699616139582
+    },
+    {
+      "excluded_beacon": "SAT-L4",
+      "clock_bias_s": 2336.5439813905487,
+      "initial_clock_bias_s": 2329.5983516954193,
+      "rms_s": 0.1779518749003302,
+      "max_abs_residual_s": 0.3608348522830056,
+      "retained_observations": 21,
+      "optimizer_success": true,
+      "optimizer_message": "`xtol` termination condition is satisfied.",
+      "function_evaluations": 20,
+      "jacobian_condition_number": 2621.83173721435
+    },
+    {
+      "excluded_beacon": "SAT-L5",
+      "clock_bias_s": 2213.481252852647,
+      "initial_clock_bias_s": 2213.4812510853767,
+      "rms_s": 2.42029005957537e-08,
+      "max_abs_residual_s": 5.6883436627686024e-08,
+      "retained_observations": 21,
+      "optimizer_success": true,
+      "optimizer_message": "`xtol` termination condition is satisfied.",
+      "function_evaluations": 4,
+      "jacobian_condition_number": 2249.4163439047143
+    },
+    {
+      "excluded_beacon": "URA-L4",
+      "clock_bias_s": 2278.9260031001218,
+      "initial_clock_bias_s": 2257.172508761196,
+      "rms_s": 0.19659149850399263,
+      "max_abs_residual_s": 0.4403917487943545,
+      "retained_observations": 21,
+      "optimizer_success": true,
+      "optimizer_message": "`xtol` termination condition is satisfied.",
+      "function_evaluations": 11,
+      "jacobian_condition_number": 2233.453921000224
+    },
+    {
+      "excluded_beacon": "URA-L5",
+      "clock_bias_s": 2277.7905365106208,
+      "initial_clock_bias_s": 2282.0406608081803,
+      "rms_s": 0.19628199812530192,
+      "max_abs_residual_s": 0.43900808843318373,
+      "retained_observations": 21,
+      "optimizer_success": true,
+      "optimizer_message": "`xtol` termination condition is satisfied.",
+      "function_evaluations": 7,
+      "jacobian_condition_number": 2149.160808291212
+    }
+  ],
+  "snapshot_checks": [
+    {
+      "receiver_clock_s": 844799813.48127,
+      "clock_bias_s": 2213.4812503975127,
+      "rounded_bias_ms": 2213481
+    },
+    {
+      "receiver_clock_s": 844803413.48127,
+      "clock_bias_s": 2213.481262099841,
+      "rounded_bias_ms": 2213481
+    },
+    {
+      "receiver_clock_s": 844807013.48127,
+      "clock_bias_s": 2213.48124606005,
+      "rounded_bias_ms": 2213481
+    }
+  ],
+  "receiver_states": [
+    {
+      "receiver_clock_s": 844799813.48127,
+      "true_receive_tdb_s": 844797600.000017,
+      "position_ssb_j2000_km": [
+        9249193836.628185,
+        -24096137125.84026,
+        -2712990109.1243043
+      ]
+    },
+    {
+      "receiver_clock_s": 844803413.48127,
+      "true_receive_tdb_s": 844801200.000017,
+      "position_ssb_j2000_km": [
+        9249216327.545229,
+        -24096195007.400246,
+        -2712996051.6945634
+      ]
+    },
+    {
+      "receiver_clock_s": 844807013.48127,
+      "true_receive_tdb_s": 844804800.000017,
+      "position_ssb_j2000_km": [
+        9249238818.72163,
+        -24096252888.840355,
+        -2713001994.432046
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "receiver_clock_s": 844799813.48127,
+      "beacon": "JUP-L4",
+      "tx_stamp_tdb_s": 844710567.1565231,
+      "cn0_dbhz": 36.4,
+      "retained": true,
+      "predicted_minus_observed_s": 1.5876139514148235e-08
+    },
+    {
+      "receiver_clock_s": 844799813.48127,
+      "beacon": "JUP-L5",
+      "tx_stamp_tdb_s": 844709056.7752432,
+      "cn0_dbhz": 33.9,
+      "retained": true,
+      "predicted_minus_observed_s": 4.2316969484090805e-08
+    },
+    {
+      "receiver_clock_s": 844799813.48127,
+      "beacon": "SAT-L4",
+      "tx_stamp_tdb_s": 844707506.9953556,
+      "cn0_dbhz": 37.3,
+      "retained": true,
+      "predicted_minus_observed_s": -4.077446646988392e-08
+    },
+    {
+      "receiver_clock_s": 844799813.48127,
+      "beacon": "SAT-L5",
+      "tx_stamp_tdb_s": 844715265.899035,
+      "cn0_dbhz": 36.2,
+      "retained": false,
+      "predicted_minus_observed_s": 0.6143078927416354
+    },
+    {
+      "receiver_clock_s": 844799813.48127,
+      "beacon": "URA-L4",
+      "tx_stamp_tdb_s": 844701845.3154343,
+      "cn0_dbhz": 32.2,
+      "retained": true,
+      "predicted_minus_observed_s": -1.2936652638018131e-08
+    },
+    {
+      "receiver_clock_s": 844799813.48127,
+      "beacon": "URA-L5",
+      "tx_stamp_tdb_s": 844713531.7910414,
+      "cn0_dbhz": 33.1,
+      "retained": true,
+      "predicted_minus_observed_s": 2.731394488364458e-08
+    },
+    {
+      "receiver_clock_s": 844799813.48127,
+      "beacon": "NEP-L4",
+      "tx_stamp_tdb_s": 844700834.8395455,
+      "cn0_dbhz": 31.4,
+      "retained": true,
+      "predicted_minus_observed_s": -1.2136297300457954e-08
+    },
+    {
+      "receiver_clock_s": 844799813.48127,
+      "beacon": "NEP-L5",
+      "tx_stamp_tdb_s": 844724971.0747733,
+      "cn0_dbhz": 36.9,
+      "retained": true,
+      "predicted_minus_observed_s": -1.9659637473523617e-08
+    },
+    {
+      "receiver_clock_s": 844803413.48127,
+      "beacon": "JUP-L4",
+      "tx_stamp_tdb_s": 844714167.0918711,
+      "cn0_dbhz": 31.7,
+      "retained": true,
+      "predicted_minus_observed_s": 1.877197064459324e-09
+    },
+    {
+      "receiver_clock_s": 844803413.48127,
+      "beacon": "JUP-L5",
+      "tx_stamp_tdb_s": 844712656.4701301,
+      "cn0_dbhz": 36.9,
+      "retained": true,
+      "predicted_minus_observed_s": -3.058812581002712e-08
+    },
+    {
+      "receiver_clock_s": 844803413.48127,
+      "beacon": "SAT-L4",
+      "tx_stamp_tdb_s": 844711106.7227979,
+      "cn0_dbhz": 37.7,
+      "retained": true,
+      "predicted_minus_observed_s": 5.6883436627686024e-08
+    },
+    {
+      "receiver_clock_s": 844803413.48127,
+      "beacon": "SAT-L5",
+      "tx_stamp_tdb_s": 844718865.6448519,
+      "cn0_dbhz": 35.9,
+      "retained": false,
+      "predicted_minus_observed_s": 0.6143079286703141
+    },
+    {
+      "receiver_clock_s": 844803413.48127,
+      "beacon": "URA-L4",
+      "tx_stamp_tdb_s": 844705445.1246485,
+      "cn0_dbhz": 37.1,
+      "retained": true,
+      "predicted_minus_observed_s": -1.2427335605025291e-08
+    },
+    {
+      "receiver_clock_s": 844803413.48127,
+      "beacon": "URA-L5",
+      "tx_stamp_tdb_s": 844717131.5081121,
+      "cn0_dbhz": 36.3,
+      "retained": true,
+      "predicted_minus_observed_s": -2.0372681319713593e-09
+    },
+    {
+      "receiver_clock_s": 844803413.48127,
+      "beacon": "NEP-L4",
+      "tx_stamp_tdb_s": 844704434.590974,
+      "cn0_dbhz": 31.0,
+      "retained": true,
+      "predicted_minus_observed_s": -9.968061931431293e-09
+    },
+    {
+      "receiver_clock_s": 844803413.48127,
+      "beacon": "NEP-L5",
+      "tx_stamp_tdb_s": 844728570.8517038,
+      "cn0_dbhz": 34.3,
+      "retained": true,
+      "predicted_minus_observed_s": -3.7834979593753815e-09
+    },
+    {
+      "receiver_clock_s": 844807013.48127,
+      "beacon": "JUP-L4",
+      "tx_stamp_tdb_s": 844717767.0272208,
+      "cn0_dbhz": 37.7,
+      "retained": true,
+      "predicted_minus_observed_s": -1.941225491464138e-08
+    },
+    {
+      "receiver_clock_s": 844807013.48127,
+      "beacon": "JUP-L5",
+      "tx_stamp_tdb_s": 844716256.1650238,
+      "cn0_dbhz": 31.8,
+      "retained": true,
+      "predicted_minus_observed_s": 2.735760062932968e-09
+    },
+    {
+      "receiver_clock_s": 844807013.48127,
+      "beacon": "SAT-L4",
+      "tx_stamp_tdb_s": 844714706.450242,
+      "cn0_dbhz": 33.0,
+      "retained": true,
+      "predicted_minus_observed_s": -3.176683094352484e-08
+    },
+    {
+      "receiver_clock_s": 844807013.48127,
+      "beacon": "SAT-L5",
+      "tx_stamp_tdb_s": 844722465.3906661,
+      "cn0_dbhz": 35.8,
+      "retained": false,
+      "predicted_minus_observed_s": 0.6143078981258441
+    },
+    {
+      "receiver_clock_s": 844807013.48127,
+      "beacon": "URA-L4",
+      "tx_stamp_tdb_s": 844709044.9338632,
+      "cn0_dbhz": 32.2,
+      "retained": true,
+      "predicted_minus_observed_s": 3.341119736433029e-08
+    },
+    {
+      "receiver_clock_s": 844807013.48127,
+      "beacon": "URA-L5",
+      "tx_stamp_tdb_s": 844720731.2251828,
+      "cn0_dbhz": 31.9,
+      "retained": true,
+      "predicted_minus_observed_s": 1.1088559404015541e-08
+    },
+    {
+      "receiver_clock_s": 844807013.48127,
+      "beacon": "NEP-L4",
+      "tx_stamp_tdb_s": 844708034.3424027,
+      "cn0_dbhz": 37.6,
+      "retained": true,
+      "predicted_minus_observed_s": -3.550667315721512e-09
+    },
+    {
+      "receiver_clock_s": 844807013.48127,
+      "beacon": "NEP-L5",
+      "tx_stamp_tdb_s": 844732170.628634,
+      "cn0_dbhz": 34.7,
+      "retained": true,
+      "predicted_minus_observed_s": 7.508788257837296e-09
+    }
+  ],
+  "model": "One common clock bias; independent receiver position per snapshot; beacon position evaluated at its transmit stamp; no 701 trajectory used.",
+  "residual_definition": "predicted_range_seconds + receiver_bias - (receiver_clock - beacon_tx_stamp)",
+  "inputs_sha256": {
+    "ssps_receiver_log.csv": "1ed3cd95dbc6c87a93da4b2e1942e549fa45eff2bb0ccb14cdb91710c6c37157",
+    "de440s.bsp": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2"
+  }
+}

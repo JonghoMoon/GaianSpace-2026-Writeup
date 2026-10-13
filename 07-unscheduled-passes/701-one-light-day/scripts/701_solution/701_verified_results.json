@@ -1,0 +1,42 @@
+{
+  "flag": "GAIANSPACE{FDS_3C0AB555}",
+  "reception_utc": "2026-10-08T18:54:50.1",
+  "reception_tdb_s": 844757759.2823454,
+  "event_utc": "2026-10-07T18:53:05.057127Z",
+  "event_tdb_s": 844671254.239471,
+  "one_way_light_time_s": 86505.04287449889,
+  "iterations": 5,
+  "observer": "Earth center (399), as represented by the supplied SPK",
+  "event_sclk": {
+    "partition": 2,
+    "sclk": "2/0238864906.254",
+    "local_seconds": 238864906.99107385,
+    "subsecond_tick_size_s": 0.00390625
+  },
+  "encoded_sclk_ticks": 396740028925.7149,
+  "selected_frame": {
+    "frame": "43430",
+    "sclk": "2/0238864897.000",
+    "fds_word": "3C0AB555",
+    "bus_dv": "24",
+    "pa_temp_c": "11.82",
+    "agc_db": "-160.2"
+  },
+  "next_frame": {
+    "frame": "43431",
+    "sclk": "2/0238864945.000",
+    "fds_word": "03C0FD95",
+    "bus_dv": "25",
+    "pa_temp_c": "11.85",
+    "agc_db": "-161.0"
+  },
+  "elapsed_sclk_seconds": 9.991073846817017,
+  "elapsed_tdb_seconds": 9.991161704063416,
+  "seconds_to_next_frame_tdb": 38.00926065444946,
+  "kernel_sha256": {
+    "naif0012.tls": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+    "pilgrim1_sclk_v07.tsc": "edd0f7ade557bf227c1ef5bc3d25f04c2b836e248bf7c3888712bfaa8c65632b",
+    "pilgrim1_recon_2026.bsp": "f341ec31645ed899a2a32ced00e7dbb263a03f5adf480e582469afbb94e56ad1"
+  },
+  "frame_log_sha256": "3a0c5caf5570f5891245f378b09f7a7f4b5db2abdb2fedef7d7bc4e5378de6a4"
+}
