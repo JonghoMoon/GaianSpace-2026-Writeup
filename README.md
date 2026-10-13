@@ -172,7 +172,7 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 
 | # | Challenge | Points | Flags |
 |---:|---|---:|---|
-| 1 | [121-channel-hop](./12-spectral-forensics/121-channel-hop/) | 100 | Read `121_output/delivery_stamp.png` |
+| 1 | [121-channel-hop](./12-spectral-forensics/121-channel-hop/) | 100 | `GAIANSPACE{AL-STAMP-Q9VRR9}` |
 | 2 | [122-true-color-is-a-lie](./12-spectral-forensics/122-true-color-is-a-lie/) | 125 | `GAIANSPACE{TRUE-NDVI-HR6TNM}` |
 | 3 | [123-isodata-seven](./12-spectral-forensics/123-isodata-seven/) | 150 | `GAIANSPACE{7TH-CLASS-XHTXWX}` |
 | 4 | [124-subsidy-claim](./12-spectral-forensics/124-subsidy-claim/) | 175 | `GAIANSPACE{CUVE-UKEJ-TRP6}` |

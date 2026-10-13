@@ -167,4 +167,8 @@ if __name__ == "__main__":
 
 ## Flag
 
-**Visual result:** Delivery stamp in `121_output/delivery_stamp.png` (three lines; manually transcribe).
+![flag](./images/delivery_stamp.png)
+
+```
+GAIANSPACE{AL-STAMP-Q9VRR9}
+```
