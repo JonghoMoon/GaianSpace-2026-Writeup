@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 """Reassemble CRC-valid DVB MPE sections from a continuous MPEG-TS capture."""
 from pathlib import Path
 import re

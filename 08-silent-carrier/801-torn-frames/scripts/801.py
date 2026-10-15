@@ -1,5 +1,6 @@
 
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 
 import re
 from pathlib import Path
@@ -86,7 +87,7 @@ def main() -> None:
 
     unique_names = sorted(set(names))
 
-    print(f"Recovered SDT entries: {len(names)}")
+    print(f"Matching service-name occurrences: {len(names)}")
 
     for name in unique_names:
         print(f"FLAG: {name}")

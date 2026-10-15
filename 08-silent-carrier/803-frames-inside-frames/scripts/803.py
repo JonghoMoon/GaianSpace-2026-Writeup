@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 """Recover CRC-valid fragmented GSE packets from a TS-carried BBFRAME grab."""
 from collections import defaultdict
 from pathlib import Path
@@ -17,6 +18,16 @@ def crc32_mpeg(data: bytes) -> int:
             crc = ((crc << 1) ^ (0x04C11DB7 if crc & 0x80000000 else 0)) & 0xFFFFFFFF
     return crc
 
+
+
+def crc8_bbheader(data: bytes) -> int:
+    # DVB-S2-style BBHEADER CRC-8: polynomial 0xD5, init 0.
+    crc = 0
+    for value in data:
+        crc ^= int(value)
+        for _ in range(8):
+            crc = ((crc << 1) ^ (0xD5 if (crc & 0x80) else 0)) & 0xFF
+    return crc
 
 def gse_bytes(ts: bytes):
     if len(ts) % TS_SIZE:
@@ -38,6 +49,8 @@ def gse_bytes(ts: bytes):
             continue
         # Private section content: marker byte, 10-byte BBHEADER, then BB payload.
         bbheader = section[4:14]
+        if len(bbheader) != 10 or crc8_bbheader(bbheader[:9]) != bbheader[9]:
+            raise ValueError(f'Invalid BBHEADER CRC-8 at TS offset {off}')
         dfl_bits = int.from_bytes(bbheader[4:6], 'big')
         if dfl_bits % 8 != 0:
             raise ValueError('Non byte-aligned BBFRAME payload')
@@ -47,6 +60,7 @@ def gse_bytes(ts: bytes):
 def main() -> None:
     ts = FILE.read_bytes()
     partial: dict[int, bytearray] = {}
+    expected_lengths: dict[int, int] = {}
     for bb in gse_bytes(ts):
         pos = 0
         while pos + 2 <= len(bb):
@@ -69,6 +83,7 @@ def main() -> None:
                 # Total length is in body[1:3], protocol type in body[3:5].
                 if body[3:5] != b'\x08\x00':
                     continue
+                expected_lengths[fragment_id] = int.from_bytes(body[1:3], "big")
                 partial[fragment_id] = bytearray(body[5:])
             elif not start and not end and fragment_id in partial:
                 partial[fragment_id].extend(body[1:])
@@ -76,6 +91,12 @@ def main() -> None:
                 if len(body) < 5:
                     continue
                 full_datagram = bytes(partial.pop(fragment_id)) + body[1:-4]
+                expected_length = expected_lengths.pop(fragment_id)
+                if len(full_datagram) + 2 != expected_length:
+                    raise ValueError(
+                        f'Fragment 0x{fragment_id:02X}: total length mismatch '
+                        f'{len(full_datagram)}+2 != {expected_length}'
+                    )
                 expected_crc = int.from_bytes(body[-4:], 'big')
                 actual_crc = crc32_mpeg(full_datagram)
                 print(f'Fragment 0x{fragment_id:02X}: CRC expected={expected_crc:08X} actual={actual_crc:08X}')

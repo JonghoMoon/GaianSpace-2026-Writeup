@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
+# Dependencies:
+#   python3 -m pip install numpy scipy
 """Recover HALCYON-7's QPSK last carrier from raw CS16 IQ."""
 
 import re
+import json
 from pathlib import Path
 
 import numpy as np
 from scipy.signal import fftconvolve
 
-SAMPLE_RATE = 2_000_000.0
-SYMBOL_RATE = 250_000.0
-SPS = 8
-RRC_ALPHA = 0.35
+# Receiver parameters are loaded from the challenge metadata.
+METADATA_FILE = Path("halcyon_iq.json")
+SAMPLE_RATE = 0.0
+SYMBOL_RATE = 0.0
+SPS = 0
+RRC_ALPHA = 0.0
 SYNC = 0x1ACFFC1D
 CONSTELLATION = np.array([1+1j, -1+1j, -1-1j, 1-1j]) / np.sqrt(2)
 DIBITS = ("00", "01", "11", "10")
@@ -36,6 +41,14 @@ def rrc_taps(alpha: float, sps: int, span: int) -> np.ndarray:
 
 
 def main() -> None:
+    global SAMPLE_RATE, SYMBOL_RATE, SPS, RRC_ALPHA
+    metadata = json.loads(METADATA_FILE.read_text(encoding="utf-8"))
+    SAMPLE_RATE = float(metadata["samp_rate_hz"])
+    SYMBOL_RATE = float(metadata["symbol_rate_hz"])
+    SPS = int(metadata["samples_per_symbol"])
+    RRC_ALPHA = float(metadata["rrc_alpha"])
+    if abs(SAMPLE_RATE / SYMBOL_RATE - float(SPS)) > 1e-6:
+        raise ValueError("Inconsistent IQ sample rate and samples-per-symbol")
     raw = np.fromfile(Path(__file__).with_name("halcyon_iq.cs16"), dtype="<i2")
     if raw.size % 2:
         raise ValueError("Uneven I/Q sample count")

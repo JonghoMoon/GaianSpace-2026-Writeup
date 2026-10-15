@@ -49,22 +49,32 @@ Recovered payload: b'FLAG:GAIANSPACE{qpsk_sof_lock_carrier}*rR'
 FLAG: GAIANSPACE{qpsk_sof_lock_carrier}
 ```
 
+
+### Receiver parameters and synchronization marker
+
+Sample rate, symbol rate, samples per symbol, and RRC rolloff are now read directly from `halcyon_iq.json` rather than copied into the solver as constants. The sync word `0x1ACFFC1D` is the conventional CCSDS Attached Sync Marker (ASM), here searched twice in succession. This is a protocol-informed hypothesis, not a value explicitly stated in the short `plheader_ref.md`. The existing fourth-power CFO estimator, matched filter, timing/phase recovery, QPSK slicer, and flag detection are unchanged. Install dependencies with `python3 -m pip install numpy scipy`.
+
 ### Exploit Code
 
 ```python
 #!/usr/bin/env python3
+# Dependencies:
+#   python3 -m pip install numpy scipy
 """Recover HALCYON-7's QPSK last carrier from raw CS16 IQ."""
 
 import re
+import json
 from pathlib import Path
 
 import numpy as np
 from scipy.signal import fftconvolve
 
-SAMPLE_RATE = 2_000_000.0
-SYMBOL_RATE = 250_000.0
-SPS = 8
-RRC_ALPHA = 0.35
+# Receiver parameters are loaded from the challenge metadata.
+METADATA_FILE = Path("halcyon_iq.json")
+SAMPLE_RATE = 0.0
+SYMBOL_RATE = 0.0
+SPS = 0
+RRC_ALPHA = 0.0
 SYNC = 0x1ACFFC1D
 CONSTELLATION = np.array([1+1j, -1+1j, -1-1j, 1-1j]) / np.sqrt(2)
 DIBITS = ("00", "01", "11", "10")
@@ -90,6 +100,14 @@ def rrc_taps(alpha: float, sps: int, span: int) -> np.ndarray:
 
 
 def main() -> None:
+    global SAMPLE_RATE, SYMBOL_RATE, SPS, RRC_ALPHA
+    metadata = json.loads(METADATA_FILE.read_text(encoding="utf-8"))
+    SAMPLE_RATE = float(metadata["samp_rate_hz"])
+    SYMBOL_RATE = float(metadata["symbol_rate_hz"])
+    SPS = int(metadata["samples_per_symbol"])
+    RRC_ALPHA = float(metadata["rrc_alpha"])
+    if abs(SAMPLE_RATE / SYMBOL_RATE - float(SPS)) > 1e-6:
+        raise ValueError("Inconsistent IQ sample rate and samples-per-symbol")
     raw = np.fromfile(Path(__file__).with_name("halcyon_iq.cs16"), dtype="<i2")
     if raw.size % 2:
         raise ValueError("Uneven I/Q sample count")

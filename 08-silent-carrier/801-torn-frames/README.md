@@ -43,15 +43,21 @@ python3 801.py
 Expected relevant output:
 
 ```text
-Recovered SDT entries: 6
+Matching service-name occurrences: 6
 FLAG: GAIANSPACE{burst_r3align_sdt_r3ad}
 ```
+
+
+### Validation scope
+
+The capture is damaged and contains interruptions, so the solver scans for individual 188-byte transport-packet candidates rather than assuming a single global alignment. It filters for PID `0x0011`, requires the payload-unit-start indicator, then recognizes the DVB service descriptor (`0x48`). The `0x11` character-set identifier indicates UTF-16BE for the service name. **Six occurrences** are reported, not necessarily six distinct services. The approach validates the relevant packet/descriptor fields but does **not** claim to implement a full SDT section-length and CRC parser.
 
 ### Exploit Code
 
 ```python
 
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 
 import re
 from pathlib import Path
@@ -138,7 +144,7 @@ def main() -> None:
 
     unique_names = sorted(set(names))
 
-    print(f"Recovered SDT entries: {len(names)}")
+    print(f"Matching service-name occurrences: {len(names)}")
 
     for name in unique_names:
         print(f"FLAG: {name}")
