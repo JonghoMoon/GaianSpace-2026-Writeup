@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Dependencies (install if needed):
+#   python3 -m pip install numpy scipy matplotlib scikit-learn threadpoolctl Pillow
 """GaianSpace 127: recover forged AgriLink and Johnripper parcel decisions.
 
 Requires lora_explicit.py (the 122 receiver) and lora_implicit.py (the 123
@@ -16,7 +18,8 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import Counter, defaultdict
+import re
+from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -27,7 +30,8 @@ from threadpoolctl import threadpool_limits
 import lora_explicit
 import lora_implicit
 
-BAND_ORDER = ("B11", "B04", "B02", "B08", "B03")
+CLASS_CONCENTRATION_THRESHOLD = 0.99  # Analyst-defined tolerance for stray pixels.
+CLUSTER_SEEDS = (0, 1, 2, 3, 4)
 READY_THRESHOLD = 0.44
 WEST_WIDTH = 128
 HEIGHT = 128
@@ -219,16 +223,72 @@ def polygon_mask(feature: dict, offset: int) -> np.ndarray:
     return result.reshape(128, 128)
 
 
-def ndvi(cube: np.ndarray) -> np.ndarray:
-    """Compute NDVI from the independently identified channel order."""
-    red = cube[BAND_ORDER.index("B04")].astype(np.float64)
-    nir = cube[BAND_ORDER.index("B08")].astype(np.float64)
+def read_current_band_order(path: Path) -> tuple[str, ...]:
+    """Read the current mast settings, which may postdate the recording."""
+    content = path.read_text(encoding="utf-8")
+    entries = {
+        int(channel): band
+        for channel, band in re.findall(r"^ch([0-4])\s*=\s*(B\d+)\s*$", content, re.M)
+    }
+    if set(entries) != set(range(5)) or set(entries.values()) != {
+        "B02", "B03", "B04", "B08", "B11"
+    }:
+        raise ValueError("Unexpected band_order.conf channel assignments")
+    return tuple(entries[index] for index in range(5))
+
+
+def ndvi(cube: np.ndarray, order: tuple[str, ...]) -> np.ndarray:
+    """Compute NDVI using an explicit candidate channel-to-band mapping."""
+    red = cube[order.index("B04")].astype(np.float64)
+    nir = cube[order.index("B08")].astype(np.float64)
     return (nir - red) / np.maximum(nir + red, 1.0)
 
 
-def find_sprayed_green(genuine: np.ndarray, forged: np.ndarray, features: list[dict]):
-    real_ndvi = ndvi(genuine)
-    forged_ndvi = ndvi(forged)
+def infer_morning_band_order(
+    genuine: np.ndarray, features: list[dict], current: tuple[str, ...]
+) -> tuple[str, ...]:
+    """Choose between post-capture settings and a B08/B11 swap using crops."""
+    changed = list(current)
+    idx_nir, idx_swir = changed.index("B08"), changed.index("B11")
+    changed[idx_nir], changed[idx_swir] = changed[idx_swir], changed[idx_nir]
+    candidates = [current, tuple(changed)]
+    decisions: list[tuple[float, tuple[str, ...]]] = []
+    for candidate in candidates:
+        index = ndvi(genuine, candidate)
+        stubble: list[float] = []
+        corn: list[float] = []
+        for feature in features:
+            mask = polygon_mask(feature, 0)
+            if not np.any(mask):
+                continue
+            crop = str(feature["properties"]["crop_2025"])
+            value = float(np.median(index[mask]))
+            if crop == "kukorica":
+                corn.append(value)
+            elif "tarló" in crop:
+                stubble.append(value)
+        if not stubble or not corn:
+            raise ValueError("Reference corn and harvested-wheat parcels missing")
+        stubble_median = float(np.median(stubble))
+        corn_median = float(np.median(corn))
+        separation = corn_median - stubble_median
+        print(
+            f"Band mapping {candidate}: corn NDVI={corn_median:.3f}, "
+            f"stubble NDVI={stubble_median:.3f}, separation={separation:.3f}"
+        )
+        decisions.append((separation, candidate))
+    best_score, best_order = max(decisions, key=lambda item: item[0])
+    if best_score <= 0.0:
+        raise RuntimeError("Neither candidate mapping matches the crop reference")
+    print(f"Inferred capture-time band order: {best_order}")
+    return best_order
+
+
+def find_sprayed_green(
+    genuine: np.ndarray, forged: np.ndarray, features: list[dict], order: tuple[str, ...]
+):
+    real_ndvi = ndvi(genuine, order)
+    forged_ndvi = ndvi(forged, order)
     green = []
     for feature in features:
         name = feature["properties"]["parcel"]
@@ -245,48 +305,82 @@ def find_sprayed_green(genuine: np.ndarray, forged: np.ndarray, features: list[d
     return green
 
 
+def classify_parcel_concentration(
+    labels: np.ndarray, features: list[dict], threshold: float
+) -> list[tuple[str, list[tuple[int, int, int, float]]]]:
+    """Identify sunflower parcels that dominate a spectral class estate-wide."""
+    registered: list[tuple[str, str, np.ndarray]] = []
+    for feature in features:
+        mask = polygon_mask(feature, 128)
+        if np.any(mask):
+            registered.append((
+                str(feature["properties"]["parcel"]),
+                str(feature["properties"]["crop_2025"]),
+                mask,
+            ))
+
+    class_totals = np.bincount(labels.ravel(), minlength=7)
+    candidates: list[tuple[str, list[tuple[int, int, int, float]]]] = []
+    for parcel, crop, mask in registered:
+        if crop != "napraforgó":
+            continue
+        occupied = np.bincount(labels[mask], minlength=7)
+        concentrated: list[tuple[int, int, int, float]] = []
+        for label, count in enumerate(occupied):
+            total = int(class_totals[label])
+            share = float(count) / float(total) if total else 0.0
+            if int(count) > 0 and share >= threshold:
+                concentrated.append((label, int(count), total, share))
+        if concentrated:
+            candidates.append((parcel, concentrated))
+    return candidates
+
+
 def find_tonight(cube: np.ndarray, features: list[dict], out: Path) -> str:
-    """Find the sunflower parcel holding a class unique to that parcel."""
+    """Select the unique target using estate-wide class concentration for five seeds."""
     data = cube.transpose(1, 2, 0).reshape(-1, 5).astype(np.float64)
-    with threadpool_limits(limits=1):
-        model = KMeans(n_clusters=7, n_init=20, random_state=0).fit(data)
-    labels = model.labels_.reshape(128, 128)
-    np.save(out / "dealer_classes.npy", labels)
+    selections: list[str] = []
+    seed_evidence = []
+    for seed in CLUSTER_SEEDS:
+        with threadpool_limits(limits=1):
+            model = KMeans(n_clusters=7, n_init=20, random_state=seed).fit(data)
+        labels = model.labels_.reshape(128, 128)
+        if seed == CLUSTER_SEEDS[0]:
+            np.save(out / "dealer_classes.npy", labels)
 
-    sunflower = []
-    for feature in features:
-        if feature["properties"]["crop_2025"] != "napraforgó":
-            continue
-        mask = polygon_mask(feature, 128)
-        if int(mask.sum()) == 0:
-            continue
-        present = set(int(value) for value in np.unique(labels[mask]))
-        sunflower.append((feature["properties"]["parcel"], present, mask))
+        candidates = classify_parcel_concentration(
+            labels, features, CLASS_CONCENTRATION_THRESHOLD
+        )
+        print(f"Seed {seed}: estate-wide candidate parcels={len(candidates)}")
+        for parcel, classes in candidates:
+            for label, count, total, share in classes:
+                print(
+                    f"  {parcel}: class={label}, inside={count}/{total} "
+                    f"({share:.2%} of all class pixels)"
+                )
+        if len(candidates) != 1:
+            raise RuntimeError(f"Seed {seed}: target not uniquely established: {candidates}")
+        parcel, classes = candidates[0]
+        selections.append(parcel)
+        seed_evidence.append({
+            "seed": seed, "parcel": parcel,
+            "concentrated_classes": [
+                {"label": label, "inside": count, "total": total, "fraction": share}
+                for label, count, total, share in classes
+            ],
+        })
 
-    # A candidate class must occur in exactly one registered east-block parcel,
-    # not merely one of the five sunflower fields.
-    all_fields = []
-    for feature in features:
-        mask = polygon_mask(feature, 128)
-        if int(mask.sum()) > 0:
-            all_fields.append((feature["properties"]["parcel"], mask))
-            
-    class_owners = defaultdict(set)
-
-    for name, present, _mask in sunflower:
-        for label in present:
-            class_owners[label].add(name)
-
-    candidates = []
-    for name, present, mask in sunflower:
-        unique = sorted(label for label in present if class_owners[label] == {name})
-        if unique:
-            candidates.append((name, unique))
-        print(f"EAST {name}: classes={sorted(present)}, unique={unique}")
-    if len(candidates) != 1:
-        raise RuntimeError(f"Unique destination not established: {candidates}")
-    print(f"Tonight's field: {candidates[0][0]} (unique classes={candidates[0][1]})")
-    return str(candidates[0][0])
+    if len(set(selections)) != 1:
+        raise RuntimeError(f"Seed-dependent target: {selections}")
+    (out / "dealer_concentration.json").write_text(
+        json.dumps({
+            "threshold": CLASS_CONCENTRATION_THRESHOLD,
+            "threshold_is_analyst_choice": True,
+            "seeds": seed_evidence,
+        }, indent=2), encoding="utf-8"
+    )
+    print(f"Tonight's field: {selections[0]} (agreed across {len(selections)} seeds)")
+    return selections[0]
 
 
 def main() -> None:
@@ -296,13 +390,16 @@ def main() -> None:
     parser.add_argument("--dealer-data", type=Path, default=Path("szot_sdr_0705.sigmf-data"))
     parser.add_argument("--dealer-meta", type=Path, default=Path("szot_sdr_0705.sigmf-meta"))
     parser.add_argument("--parcels", type=Path, default=Path("szotyola_parcels_2025.geojson"))
+    parser.add_argument("--band-order", type=Path, default=Path("band_order.conf"))
     parser.add_argument("--out", type=Path, default=Path("127_output"))
     args = parser.parse_args()
 
     args.out.mkdir(parents=True, exist_ok=True)
     features = json.loads(args.parcels.read_text(encoding="utf-8"))["features"]
     genuine, forged = decode_morning(args.morning_data, args.morning_meta, args.out)
-    green = find_sprayed_green(genuine, forged, features)
+    current_order = read_current_band_order(args.band_order)
+    capture_order = infer_morning_band_order(genuine, features, current_order)
+    green = find_sprayed_green(genuine, forged, features, capture_order)
     dealer = decode_dealer(args.dealer_data, args.dealer_meta, args.out)
     tonight = find_tonight(dealer, features, args.out)
     flag = f"GAIANSPACE{{{'-'.join(green)}_{tonight}}}"

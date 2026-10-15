@@ -41,6 +41,8 @@ Contains modified Copernicus Sentinel data 2025.
 4. Classify parcel pixels with the restored class and compare dominant classes to the submitted declarations.
 5. Verify that the restored-statistics classifier agrees with a fully recomputed training classifier, then list false claims in transmitted order.
 
+The code reconstructs the omitted `kukorica` class from training-field pixels; the published-plus-restored classifier and a fully recomputed training classifier can differ at one pixel without changing the parcel-level decisions.
+
 ### Reproduction
 
 Run the original solver from its challenge directory with its original input files:
@@ -68,11 +70,13 @@ FLAG: GAIANSPACE{CUVE-UKEJ-TRP6}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies (install if needed):
+#   python3 -m pip install numpy rasterio
 """GaianSpace 124 - recover the claim batch and audit the missing crop class.
 
 Usage:
-    python3 124_v1.py
-    python3 124_v1.py --input-dir /path/to/files --output-dir 124_recovered
+    python3 124.py
+    python3 124.py --input-dir /path/to/files --output-dir 124_recovered
 
 Dependencies: numpy, rasterio
 

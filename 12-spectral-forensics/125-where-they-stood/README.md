@@ -44,7 +44,7 @@ EOV Y = 788457.44
 EOV X = 111015.67
 ```
 
-Transform the corrected EOV location (`EPSG:23700`) to WGS84 and then to UTM zone 34N (`EPSG:32634`), which is the coordinate reference system of `parcels.geojson`. The corrected pivot-7 position is approximately **(488120, 5130650) m UTM**. Using the obsolete pump-house location produces a misleading fix.
+Transform the corrected EOV location (`EPSG:23700`) to WGS84 and then to UTM zone 34N (`EPSG:32634`), which is the coordinate reference system of `parcels.geojson`. The revised solver parses the EOV coordinates from the work log rather than embedding them in the source. The corrected pivot-7 position is approximately **(488120, 5130650) m UTM**. Using the obsolete pump-house location produces a misleading fix.
 
 ### 3. Compute arrival-time differences
 
@@ -70,7 +70,7 @@ $$
 
 ### 4. Reject poorly conditioned fixes
 
-The transmitter is southwest of the gateway array, so the geometry is weak. Fitting all observations as one unweighted least-squares problem is vulnerable to bad packet timestamps and local minima. Instead, fit each packet separately, retain only fixes with RMS range-difference residual below **5 m**, and combine the reliable positions with a coordinate-wise median. Use the parcel polygons to check each reliable fix and the median.
+The accepted fixes place the transmitter southwest of the gateway array, where the geometry is weak. Fitting all observations as one unweighted least-squares problem is vulnerable to bad packet timestamps and local minima. Instead, fit each packet separately from **five independent, data-derived initial positions** (the centroid of all four gateways plus each gateway location); retain the converged solution with the lowest residual, filter fixes with RMS range-difference residual below **5 m**, and combine the reliable positions with a coordinate-wise median. The threshold is an analyst-chosen outlier filter, not a value dictated by the challenge. Use the parcel polygons to check each reliable fix and the median.
 
 For the attached copies, the reliable fixes vote **4 for MZH-3240** and **1 for MZH-4631**. The median location, **(483529.54, 5127811.95) m UTM**, lies in **MZH-3240**. The earlier independent robust grid search reported approximately (483498, 5127787), also inside MZH-3240; the two methods agree on the parcel even though their point estimates differ.
 
@@ -79,6 +79,7 @@ For the attached copies, the reliable fixes vote **4 for MZH-3240** and **1 for 
 - **Obsolete survey sheet:** the PUMP gateway moved, but the sheet did not. The work log supersedes it.
 - **Uncorrected coax delays:** different LMR-400 feeder lengths introduce non-negligible differential timing offsets.
 - **One joint fit:** weak receiver geometry and timing outliers can move an unweighted fit outside the true parcel. Use low-residual packet fixes and robust aggregation.
+- **Answer-adjacent initialization:** an initial estimate near the eventual flag location would make the process circular. The solver instead starts from gateway geometry (centroid and each receiver) and chooses the best converged solution.
 - **Other LoRa traffic:** match the specific claim-batch payloads, not every packet heard during the ten-minute window.
 
 ### Reproduction
@@ -111,12 +112,15 @@ FLAG: GAIANSPACE{MZH-3240}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies (install if needed):
+#   python3 -m pip install numpy scipy pyproj shapely
 """Locate the 125 challenge transmitter from four GPS-timed LoRa gateways."""
 
 import argparse
 import base64
 import csv
 import json
+import re
 from collections import Counter
 from pathlib import Path
 
@@ -162,7 +166,20 @@ def read_tower(path: Path) -> dict[bytes, int]:
     return packets
 
 
-def read_gateways(path: Path) -> tuple[np.ndarray, np.ndarray]:
+def read_pivot7_eov(path: Path) -> tuple[float, float]:
+    """Extract the surveyed replacement gateway location from the work log."""
+    content = path.read_text(encoding="utf-8")
+    match = re.search(
+        r"2025-05-14\s+PUMP\b[\s\S]*?EOV\s+Y\s+"
+        r"([0-9]+(?:\.[0-9]+)?)\s+X\s+([0-9]+(?:\.[0-9]+)?)",
+        content,
+    )
+    if match is None:
+        raise ValueError("PUMP EOV coordinates not found in coop_worklog.txt")
+    return float(match.group(1)), float(match.group(2))
+
+
+def read_gateways(path: Path, worklog: Path) -> tuple[np.ndarray, np.ndarray]:
     """Convert corrected gateway positions into parcel-register UTM coordinates."""
     to_utm = Transformer.from_crs("EPSG:4326", "EPSG:32634", always_xy=True)
     from_eov = Transformer.from_crs("EPSG:23700", "EPSG:4326", always_xy=True)
@@ -170,13 +187,14 @@ def read_gateways(path: Path) -> tuple[np.ndarray, np.ndarray]:
     with path.open(encoding="utf-8", newline="") as handle:
         rows = {row["site"]: row for row in csv.DictReader(handle)}
 
+    pump_eov_y, pump_eov_x = read_pivot7_eov(worklog)
     positions: list[tuple[float, float]] = []
     feeders: list[float] = []
     for site in SITES:
         row = rows[site]
         if site == "PUMP":
             # The worklog supersedes the obsolete survey-sheet location.
-            longitude, latitude = from_eov.transform(788457.44, 111015.67)
+            longitude, latitude = from_eov.transform(pump_eov_y, pump_eov_x)
         else:
             longitude = float(row["lon"])
             latitude = float(row["lat"])
@@ -196,15 +214,24 @@ def find_parcel(point: np.ndarray, features: list[dict]) -> str | None:
 
 
 def solve_packet(observed: np.ndarray, gateways: np.ndarray) -> tuple[np.ndarray, float]:
-    """Fit a 2D TDOA position using three range differences."""
+    """Fit TDOA from independent geometry-derived initial guesses."""
     def residual(position: np.ndarray) -> np.ndarray:
         distances = np.linalg.norm(gateways - position, axis=1)
         return distances[1:] - distances[0] - observed
 
-    initial = np.array([483500.0, 5127800.0], dtype=float)
-    result = least_squares(residual, initial, max_nfev=300)
-    rms = float(np.sqrt(np.mean(result.fun ** 2)))
-    return np.asarray(result.x, dtype=float), rms
+    # Multiple starts reduce sensitivity to local minima outside the array.
+    centroid = np.mean(gateways, axis=0)
+    starts = [centroid, *gateways]
+    solutions: list[tuple[float, np.ndarray]] = []
+    for start in starts:
+        result = least_squares(residual, np.asarray(start, dtype=float), max_nfev=300)
+        rms = float(np.sqrt(np.mean(result.fun ** 2)))
+        if result.success and np.all(np.isfinite(result.x)):
+            solutions.append((rms, np.asarray(result.x, dtype=float)))
+    if not solutions:
+        raise RuntimeError("No TDOA fit converged from the gateway-derived starts")
+    best_rms, best_position = min(solutions, key=lambda item: item[0])
+    return best_position, best_rms
 
 
 def main() -> None:
@@ -232,7 +259,7 @@ def main() -> None:
     if not batch:
         raise RuntimeError("No matching CLAIM-BATCH packets were received by all gateways")
 
-    gateways, feeder_lengths = read_gateways(directory / "coop_gateways.csv")
+    gateways, feeder_lengths = read_gateways(directory / "coop_gateways.csv", directory / "coop_worklog.txt")
     feeder_ranges = feeder_lengths / FEEDER_VELOCITY_FACTOR
     features = json.loads((directory / "parcels.geojson").read_text(encoding="utf-8"))["features"]
 

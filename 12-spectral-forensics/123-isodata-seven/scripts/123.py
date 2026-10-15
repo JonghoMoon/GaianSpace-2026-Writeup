@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
+# Dependencies (install if needed):
+#   python3 -m pip install numpy Pillow scikit-learn threadpoolctl
 """GaianSpace CTF 123: recover the FieldLink image and its spectral lettering.
 
 Usage:
-    python3 123_v1.py
-    python3 123_v1.py --cube 123_verified/cube.npy --out 123_rerun
+    python3 123.py
+    python3 123.py --cube 123_recovered/cube.npy --out 123_rerun
 
 Dependencies: numpy, Pillow, scikit-learn
 
@@ -14,7 +16,7 @@ K-means analysis, not an implementation of adaptive split/merge ISODATA.
 No flag text, token suffix, text coordinates, or class IDs are hard-coded.
 The RF decoder is specialized to the supplied SF7/BW500k capture.
 
-LoRa symbol processing follows the earlier 122_v1.py decoder, checked against
+LoRa symbol processing follows the earlier 122.py decoder, checked against
 jkadbear/LoRaPHY (MIT): https://github.com/jkadbear/LoRaPHY
 """
 from __future__ import annotations

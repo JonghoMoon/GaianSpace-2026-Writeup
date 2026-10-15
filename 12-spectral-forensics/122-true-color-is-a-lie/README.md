@@ -32,15 +32,17 @@ Contains modified Copernicus Sentinel data 2025.
 
 ### Steps
 
-1. Decode the SDR bursts, check their CRCs, and group transmissions by RF frequency offset.
+1. Decode the SDR bursts and verify their CRCs. Separate the two RF populations at the largest gap in **log received power**; use their reported CFO values as a diagnostic cross-check, not as the clustering variable.
 2. Reassemble the image cube using the actual radio packet order rather than the altered band-order configuration.
 3. Compare the original red channel against the later replacement; 586 red pixels were overwritten.
 4. Recover the bitmap stencil from the changed pixels, then decode the three text lines with the exact bitmap font.
 5. Cross-check NIR/red combinations using NDVI to understand why the tablet's true-color view was misleading.
 
+The captured packets were independently re-decoded from the original `coop_sdr_0655.sigmf-data`; all **781/781** decoded packets passed their application CRC checks. The two received-power groups, which also have distinct median CFOs, contain different packet counts (642 vs. 139), so the later transmission is a partial replacement, not an entirely separate full cube. The red-channel comparison finds **586** overwritten pixels.
+
 ### Reproduction
 
-Run the original solver from its challenge directory with its original input files:
+Run the solver with the original SigMF data and metadata:
 
 ```bash
 python3 122.py
@@ -63,6 +65,8 @@ FLAG: GAIANSPACE{TRUE-NDVI-HR6TNM}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies (install if needed):
+#   python3 -m pip install numpy Pillow
 """Reproduce the GaianSpace CTF 122 radio and image recovery.
 
 Dependencies: numpy, Pillow. No radio transmission or external service is used.

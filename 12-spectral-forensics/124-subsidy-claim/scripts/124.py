@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
+# Dependencies (install if needed):
+#   python3 -m pip install numpy rasterio
 """GaianSpace 124 - recover the claim batch and audit the missing crop class.
 
 Usage:
-    python3 124_v1.py
-    python3 124_v1.py --input-dir /path/to/files --output-dir 124_recovered
+    python3 124.py
+    python3 124.py --input-dir /path/to/files --output-dir 124_recovered
 
 Dependencies: numpy, rasterio
 

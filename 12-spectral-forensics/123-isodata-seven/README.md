@@ -38,6 +38,8 @@ Contains modified Copernicus Sentinel data 2025.
 4. Combine their masks (769 pixels) and decode the embedded bitmap text.
 5. Confirm an exact font match with zero mismatches.
 
+The seven-class analysis uses **fixed-k K-means** rather than the adaptive split/merge operations of a full ISODATA implementation. This is a stated approximation to the course exercise, not a claim of an exact ISODATA implementation. The raw SDR recording was re-decoded and all **1,280/1,280** row halves passed CRC verification.
+
 ### Reproduction
 
 Run the original solver from its challenge directory with its original input files:
@@ -65,11 +67,13 @@ FLAG: GAIANSPACE{7TH-CLASS-XHTXWX}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies (install if needed):
+#   python3 -m pip install numpy Pillow scikit-learn threadpoolctl
 """GaianSpace CTF 123: recover the FieldLink image and its spectral lettering.
 
 Usage:
-    python3 123_v1.py
-    python3 123_v1.py --cube 123_verified/cube.npy --out 123_rerun
+    python3 123.py
+    python3 123.py --cube 123_recovered/cube.npy --out 123_rerun
 
 Dependencies: numpy, Pillow, scikit-learn
 
@@ -80,7 +84,7 @@ K-means analysis, not an implementation of adaptive split/merge ISODATA.
 No flag text, token suffix, text coordinates, or class IDs are hard-coded.
 The RF decoder is specialized to the supplied SF7/BW500k capture.
 
-LoRa symbol processing follows the earlier 122_v1.py decoder, checked against
+LoRa symbol processing follows the earlier 122.py decoder, checked against
 jkadbear/LoRaPHY (MIT): https://github.com/jkadbear/LoRaPHY
 """
 from __future__ import annotations

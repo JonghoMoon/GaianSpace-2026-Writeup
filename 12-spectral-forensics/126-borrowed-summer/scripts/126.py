@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Dependencies (install if needed):
+#   python3 -m pip install numpy matplotlib
 """Detect temporally inconsistent AgriLink deliveries using wheat phenology."""
 
 import argparse

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Dependencies (install if needed):
+#   python3 -m pip install numpy Pillow
 """Recover the AgriLink delivery stamp from the LoRa mast journal."""
 
 import argparse

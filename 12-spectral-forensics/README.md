@@ -4,7 +4,7 @@ Challenges involving LoRa/SDR packet recovery, multispectral satellite imagery, 
 
 | # | Challenge | Points | Flag |
 |---|-----------|--------|------|
-| 1 | [121-channel-hop](./121-channel-hop/) | 100 | Read `121_output/delivery_stamp.png` |
+| 1 | [121-channel-hop](./121-channel-hop/) | 100 | `GAIANSPACE{AL-STAMP-Q9VRR9}` |
 | 2 | [122-true-color-is-a-lie](./122-true-color-is-a-lie/) | 125 | `GAIANSPACE{TRUE-NDVI-HR6TNM}` |
 | 3 | [123-isodata-seven](./123-isodata-seven/) | 150 | `GAIANSPACE{7TH-CLASS-XHTXWX}` |
 | 4 | [124-subsidy-claim](./124-subsidy-claim/) | 193 | `GAIANSPACE{CUVE-UKEJ-TRP6}` |

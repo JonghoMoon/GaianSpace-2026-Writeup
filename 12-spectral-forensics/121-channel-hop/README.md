@@ -57,11 +57,13 @@ Saved: 121_output/delivery_stamp.png
 Read the three lines in the saved B08 image and join them without newlines.
 ```
 
-The flag is displayed visually in the generated `121_output/delivery_stamp.png`; the script does not print it. The exact characters should be transcribed from the saved image before final publication.
+The flag is displayed visually in the generated `121_output/delivery_stamp.png`; the script does not print it. The stamp was visually transcribed from the generated image as `GAIANSPACE{AL-STAMP-Q9VRR9}`. The script writes the image rather than using OCR; the final transcription is a visual step.
 ### Exploit Code
 
 ```python
 #!/usr/bin/env python3
+# Dependencies (install if needed):
+#   python3 -m pip install numpy Pillow
 """Recover the AgriLink delivery stamp from the LoRa mast journal."""
 
 import argparse

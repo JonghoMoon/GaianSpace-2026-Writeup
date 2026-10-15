@@ -72,6 +72,8 @@ Use `rica_mast_journal.log` to preserve the **mast's reception order**, not ZIP 
 - **Assuming a checksum failure:** A complete, CRC-valid delivery can still contain substituted image data.
 - **Calling it cryptographic proof:** The evidence is strong temporal/phenological inconsistency, not a byte-for-byte comparison against original Copernicus scenes.
 
+The `0.45` NDVI anomaly threshold is an analyst-selected test of post-harvest winter-wheat behavior, not a threshold supplied by the challenge. The four delivery IDs are recovered from the mast journal rather than hardcoded into the classifier.
+
 ## Reproduction
 
 Place `126.py` beside the four original challenge files. Install dependencies:
@@ -102,6 +104,8 @@ FLAG: GAIANSPACE{ZDJ7-UCZA-JADX-7JEY}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies (install if needed):
+#   python3 -m pip install numpy matplotlib
 """Detect temporally inconsistent AgriLink deliveries using wheat phenology."""
 
 import argparse
