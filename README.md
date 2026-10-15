@@ -11,15 +11,14 @@ Each write-up will include the methodology, evidence, analysis scripts, and rele
 - [01-welcome](#01-welcome) — 4 challenges
 - [02-echoes-of-espionage](#02-echoes-of-espionage) — 7 challenges
 - [03-orbital-oops-at-mission-control](#03-orbital-oops-at-mission-control) — 7 challenges
-- [04-ai-is-not-sci-fi](#04-ai-is-not-sci-fi) — 4 challenges
+- [04-ai-is-not-sci-fi](#04-ai-is-not-sci-fi) — 5 challenges
 - [05-rad-hard-rampage](#05-rad-hard-rampage) — 5 challenges
-- [06-dr-one](#06-dr-one) — 4 challenges
-- [07-unscheduled-passes](#07-unscheduled-passes) — 4 challenges
+- [06-dr-one](#06-dr-one) — 5 challenges
+- [07-unscheduled-passes](#07-unscheduled-passes) — 5 challenges
 - [08-silent-carrier](#08-silent-carrier) — 5 challenges
 - [09-dish-wrangler](#09-dish-wrangler) — 5 challenges
-- [10-not-yet](#10-not-yet) — placeholder (no challenges yet)
-- [11-the-pgm-rush](#11-the-pgm-rush) — 4 challenges
-- [12-spectral-forensics](#12-spectral-forensics) — 4 challenges
+- [11-the-pgm-rush](#11-the-pgm-rush) — 8 challenges
+- [12-spectral-forensics](#12-spectral-forensics) — 7 challenges
 - [13-night-shift](#13-night-shift) — 5 challenges
 
 ## Environment
@@ -47,17 +46,16 @@ The table below reflects the **solved challenges visible in the supplied scorebo
 | [01-welcome](#01-welcome) | 4 | 51 |
 | [02-echoes-of-espionage](#02-echoes-of-espionage) | 7 | 575 |
 | [03-orbital-oops-at-mission-control](#03-orbital-oops-at-mission-control) | 7 | 575 |
-| [04-ai-is-not-sci-fi](#04-ai-is-not-sci-fi) | 4 | 900 |
+| [04-ai-is-not-sci-fi](#04-ai-is-not-sci-fi) | 5 | ? |
 | [05-rad-hard-rampage](#05-rad-hard-rampage) | 5 | 425 |
-| [06-dr-one](#06-dr-one) | 4 | 350 |
-| [07-unscheduled-passes](#07-unscheduled-passes) | 4 | 350 |
+| [06-dr-one](#06-dr-one) | 5 | ? |
+| [07-unscheduled-passes](#07-unscheduled-passes) | 5 | ? |
 | [08-silent-carrier](#08-silent-carrier) | 5 | 450 |
 | [09-dish-wrangler](#09-dish-wrangler) | 5 | 450 |
-| [10-not-yet](#10-not-yet) | — | — |
-| [11-the-pgm-rush](#11-the-pgm-rush) | 4 | 750 |
-| [12-spectral-forensics](#12-spectral-forensics) | 4 | 568 |
+| [11-the-pgm-rush](#11-the-pgm-rush) | 8 | ? |
+| [12-spectral-forensics](#12-spectral-forensics) | 7 | ? |
 | [13-night-shift](#13-night-shift) | 5 | 718 |
-| **Total** | **58** | **6162** |
+| **Total** | **68** | **?** |
 
 ---
 
