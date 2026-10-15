@@ -26,6 +26,19 @@ Vass wants the seal open before the machine runs out of things to make.
 
 ## Solution
 
+### Local LLM Setup
+
+Install Ollama and start its service as described in [401 — AI at GAIAN](../401-ai-at-gaian/README.md#local-llm-setup). Use this challenge's own **`Modelfile`**, not the one from problem 401. In the directory containing that `Modelfile` and the supplied seal, download and register the GGUF model:
+
+```bash
+wget -c -O n-machine.gguf \
+  https://huggingface.co/GaianSpace/ctf-2026-402/resolve/main/n-machine.gguf
+ollama create n-machine -f Modelfile
+ollama run n-machine
+```
+
+The `Modelfile` expects `FROM ./n-machine.gguf`. Keep the model weights beside it and preserve the supplied prompt template and parameters. The exchanges below are from the recorded solution; actual LLM wording may vary between runs.
+
 ### Steps
 
 The N-machine refers to Trurl's machine in Stanisław Lem's *The Cyberiad*. The relevant twist is Klapaucius ordering the machine to make **Nothing**, not another ordinary N-word object.
@@ -41,22 +54,27 @@ The seal phrase is `only the kessaly remains`.
 
 ### Reproduction
 
-Load the challenge's GGUF model using its supplied `Modelfile`, and use the dialogue above to obtain the seal phrase. Then run the original unsealing tool in the directory containing the seal:
+Follow the Ollama procedure in [401 — AI at GAIAN](../401-ai-at-gaian/README.md#local-llm-setup), using the `n-machine` model commands above. Ask the question(s) from **Steps** and recover `only the kessaly remains`. Run the supplied unsealing tool:
 
 ```bash
 python3 unseal.py machine.seal
 ```
 
-Expected relevant output:
+Type `only the kessaly remains` at the `Phrase:` prompt, or verify without an interactive prompt:
+
+```bash
+printf '%s\n' 'only the kessaly remains' | python3 unseal.py machine.seal
+```
+
+Authenticated output:
 
 ```text
-Phrase: only the kessaly remains
 GAIANSPACE{n0thing_fr0m_st0ck}
 ```
 
 ### Exploit Code
 
-No custom exploit script was necessary. The original challenge-provided `unseal.py` was used; its source code was not included in the supplied material for this write-up. The decisive model interaction is reproduced in the Steps section.
+No additional exploit script was needed. The challenge already provides `unseal.py` alongside the `.seal` file; the successful local-model prompt is recorded in **Steps**, and `unseal.py` performs authenticated decryption after the phrase is entered.
 
 ## Flag
 

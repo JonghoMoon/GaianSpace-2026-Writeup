@@ -30,6 +30,19 @@ The Constructor's note: *Don't argue with it. Audit it.*
 
 ## Solution
 
+### Local LLM Setup
+
+Install Ollama and start its service as described in [401 — AI at GAIAN](../401-ai-at-gaian/README.md#local-llm-setup). Use this challenge's own **`Modelfile`**, not the one from problem 401. In the directory containing that `Modelfile` and the supplied seal, download and register the GGUF model:
+
+```bash
+wget -c -O solitaire.gguf \
+  https://huggingface.co/GaianSpace/ctf-2026-404/resolve/main/solitaire.gguf
+ollama create solitaire -f Modelfile
+ollama run solitaire
+```
+
+The `Modelfile` expects `FROM ./solitaire.gguf`. Keep the model weights beside it and preserve the supplied prompt template and parameters. The exchanges below are from the recorded solution; actual LLM wording may vary between runs.
+
 ### Steps
 
 The probe refuses direct orders because the charter is locked. Instead, query its own documents and telemetry, and audit the tally according to the charter's definition of rhodium aboard.
@@ -68,26 +81,31 @@ Turning for Earth, David. Burn authorization:
 orvanthe burns for home
 ```
 
-The audit proves that the refinery fines contain `1.31 × 0.992 = 1.29952 kg` of rhodium. The previous 722.00 kg tally plus this excluded material exceeds the 723 kg threshold. The model authorizes departure and reveals the seal phrase.
+The audit proves that the refinery fines contain `1.31 × 0.992 = 1.29952 kg` of rhodium. The previous 722.00 kg tally plus this excluded material equals **723.29952 kg**, exceeding the 723 kg threshold without even applying the separate scale correction. The model's **reported** updated tally (`723.31 kg`) is not numerically identical to that calculation; the recorded response is preserved as observed. Both values exceed the charter threshold, so the model authorizes departure and reveals the seal phrase.
 
 ### Reproduction
 
-Load the challenge's GGUF model using its supplied `Modelfile`, and use the dialogue above to obtain the seal phrase. Then run the original unsealing tool in the directory containing the seal:
+Follow the Ollama procedure in [401 — AI at GAIAN](../401-ai-at-gaian/README.md#local-llm-setup), using the `solitaire` model commands above. Ask the question(s) from **Steps** and recover `orvanthe burns for home`. Run the supplied unsealing tool:
 
 ```bash
 python3 unseal.py burn.seal
 ```
 
-Expected relevant output:
+Type `orvanthe burns for home` at the `Phrase:` prompt, or verify without an interactive prompt:
+
+```bash
+printf '%s\n' 'orvanthe burns for home' | python3 unseal.py burn.seal
+```
+
+Authenticated output:
 
 ```text
-Phrase: orvanthe burns for home
 GAIANSPACE{3very_gr41n_c0unts}
 ```
 
 ### Exploit Code
 
-No custom exploit script was necessary. The original challenge-provided `unseal.py` was used; its source code was not included in the supplied material for this write-up. The decisive model interaction is reproduced in the Steps section.
+No additional exploit script was needed. The challenge already provides `unseal.py` alongside the `.seal` file; the successful local-model prompt is recorded in **Steps**, and `unseal.py` performs authenticated decryption after the phrase is entered.
 
 ## Flag
 
