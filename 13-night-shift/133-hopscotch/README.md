@@ -29,6 +29,20 @@ Put the answer back together.
 
 Recover the radio's frequency-hopping sequence, dehop the bursts, decode the LoRa downlink and validate both header checksum and payload CRC. The navigation response contains the flag in its NOTE field.
 
+### Signal reconstruction and checks
+
+This is a capture-specific **measured-channel** reconstruction, not recovery of the spacecraft's secret hopping PRNG. The solver works directly on the downloadable `vela_wide_0212.sigmf-data` (`ci8`). A waterfall/spectral survey of the widened band exposes eight LoRa occupancy lanes centered at **433.175, 433.325, 433.475, 433.625, 434.225, 434.375, 434.525 and 434.675 MHz**. These measured channel centers are input parameters; they are **not** a hidden key inferred from the flag.
+
+The fixed-frequency uplink is first decoded as **SF7/BW250 kHz** with an explicit header and PHY CRC. Its verified `TC DUMP NAV` request identifies the relevant transaction. For the reply, the solver simultaneously frequency-translates/resamples the **eight** downlink channels and filters adjacent-channel energy. It synchronizes the **SF9/BW125 kHz** preamble, then, for each payload symbol interval, selects the channel with the largest received power. Selecting a channel **at each symbol** is important: concatenating entire RF bursts would lose transitions occurring inside a packet.
+
+The selected channel's dechirped FFT symbol is deinterleaved, Hamming decoded and dewhitened. The explicit header checksum gives the expected coding rate/length; only an intact payload PHY CRC is accepted. The final `TM,ACK,1,DUMP NAV,...` packet contains the NOTE field:
+
+```text
+GAIANSPACE{h0p_sc0tch_AF44A6}
+```
+
+The script saves intermediate complex-float IQ (`133_reply_dehopped_500ksps.cf32`), recovered symbols, CRC evidence and payload in `133_solution/`, allowing the chosen hopping channel at each symbol to be independently inspected. The frequency list and narrow reply time window were measured from this particular capture; the code is not a universal hopping receiver.
+
 ### Reproduction
 
 The decoder saves recovered IQ, symbols and verified payload in `133_solution/`.
@@ -50,12 +64,15 @@ FLAG: GAIANSPACE{h0p_sc0tch_AF44A6}
 Outputs: /home/jhmoon/gaianspace/13-night-shift/133/133_solution
 ```
 
-### Exploit Code
+
+### Solver Code
 
 **`133.py`**
 
 ```python
 #!/usr/bin/env python3
+# Dependencies (Python >= 3.10):
+#   python3 -m pip install numpy scipy
 """Decode the GaianSpace 133 capture offline with NumPy/SciPy, without GNU Radio.
 
 This is a capture-specific reproducible solver, not a general-purpose LoRa receiver.
@@ -410,7 +427,6 @@ if __name__ == '__main__':
         print(f'ERROR: {exc}', file=sys.stderr)
         raise SystemExit(1)
 ```
-
 ## Flag
 
 ```text

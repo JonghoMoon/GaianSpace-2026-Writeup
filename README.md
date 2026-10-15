@@ -156,10 +156,6 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 | 4 | [904-gotox-maint](./09-dish-wrangler/904-gotox-maint/) | 100 | `GAIANSPACE{m41nt_m0de_unl0cked}` |
 | 5 | [905-hand-on-the-wheel](./09-dish-wrangler/905-hand-on-the-wheel/) | 125 | `GAIANSPACE{f0rged_slew_t0_h0me}` |
 
-### <a id="10-not-yet"></a>[10-not-yet](./10-not-yet/)
-
-*No challenges listed yet.*
-
 ### <a id="11-the-pgm-rush"></a>[11-the-pgm-rush](./11-the-pgm-rush/)
 
 | # | Challenge | Points | Flags |

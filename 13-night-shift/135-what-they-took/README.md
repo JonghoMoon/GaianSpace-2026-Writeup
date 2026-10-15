@@ -29,6 +29,30 @@ Recover it.
 
 Recover the long downlink, verify packet CRCs, reassemble dump fragments, and reverse the intruder's lightweight encryption using the known `G723MEM` dump prefix. The recovered memory plaintext contains `SECRET_STORE` and the flag.
 
+### Known-plaintext state recovery over GF(2)
+
+The capture includes an unauthorized `TC DUMP MEM` and four downlink `DMP` fragments, all accepted only after LoRa explicit-header and PHY CRC checks. The fragment counter/index fields reassemble **195 ciphertext bytes**. The header clue `G723MEM` provides **seven known plaintext bytes** (56 known keystream bits); the rest of the dump is unknown before decryption.
+
+A byte-wise XOR stream cipher implies `K_i = C_i XOR P_i` for the known prefix. The inferred generator is xorshift32, advancing once before output and using the lowest eight state bits per byte:
+
+```text
+x ^= (x << 13) & 0xFFFFFFFF
+x ^= x >> 17
+x ^= (x << 5) & 0xFFFFFFFF
+K_i = x & 0xFF
+```
+
+Xorshift is **linear over GF(2)**, so each observed keystream bit produces one linear equation in the 32 unknown bits of the first output state. The solver propagates 32 basis states through successive xorshift updates, constructs the binary coefficient matrix and uses GF(2) elimination. The 56 equations have **rank 32**, giving a unique state rather than a guessed seed. The code checks the minimum number of known bytes needed to reach full rank, withholds the remaining magic bytes for verification, and reverses one xorshift step to recover the initial seed.
+
+```text
+Known keystream:       6418AD5677D1C9
+First output state:    0xF2143764
+Seed before first step: 0x009A293A
+GF(2) system:          56 equations, rank 32
+```
+
+The full keystream decrypts the memory dump, whose `SECRET_STORE` contains `GAIANSPACE{wh4t_th3y_t00k_064CCB}`. Re-encryption byte-for-byte reproduces the ciphertext. **This is a consistency check, not cryptographic authentication:** no separate MAC over the plaintext was found. The xorshift model and use of the low output byte are inferred and cross-checked against the dump, not obtained from source code for the sender.
+
 ### Reproduction
 
 Results are saved under `135_solution/`, including plaintext, flag and verification JSON.
@@ -65,15 +89,18 @@ DUMP PHY CRC: 4/4 valid
 REENCRYPTION: identical=True
 PLAINTEXT: G723MEM1|BANK2|0x4000-0x40FF|OBC_LOG:BOOT OK;SENS OK;DL CFG B;FHSS ON;REPACK ON;SECRET_STORE:GAIANSPACE{wh4t_th3y_t00k_064CCB};TLE_CACHE:1 72301U 26001A 26284.08 .00001 00000-0 12345-4 0 9990;END
 FLAG: GAIANSPACE{wh4t_th3y_t00k_064CCB}
-OUTPUT: /home/jhmoon/gaianspace/13-night-shift/135/135_solution
+OUTPUT: <output-directory>
 ```
 
-### Exploit Code
+
+### Solver Code
 
 **`135.py`**
 
 ```python
 #!/usr/bin/env python3
+# Dependencies (Python >= 3.10):
+#   python3 -m pip install numpy scipy
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Recover GaianSpace 135 directly from its ci8 SigMF recording.
 
@@ -652,7 +679,6 @@ if __name__ == '__main__':
         print(f'ERROR: {exc}', file=sys.stderr)
         raise SystemExit(1)
 ```
-
 ## Flag
 
 ```text

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Dependencies (Python >= 3.10):
+#   python3 -m pip install numpy scipy
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Recover GaianSpace 135 directly from its ci8 SigMF recording.
 

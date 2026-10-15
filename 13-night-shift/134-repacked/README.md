@@ -29,6 +29,27 @@ Somewhere in the repacked frames, GAIAN-723 is carrying something it was never d
 
 Decode the short binary downlink frames, check PHY and application CRCs, use frame counters to restore order, and interpret telemetry with the last known good CSV baseline. Extract the hidden message from the repacked stream.
 
+### Binary frame structure and whitening verification
+
+The capture contains 12 validated short downlink frames. The per-frame payload is 48 bytes; the explicit LoRa packet header and **PHY CRC** must be accepted before interpreting application bytes. After the LoRa receive layer, the application frame is:
+
+| Offset | Size | Field |
+|---|---:|---|
+| `0x00` | 2 | Clear marker `3A 72` |
+| `0x02` | 2 | Little-endian frame counter |
+| `0x04` | 42 | Whitened application body |
+| `0x2E` | 2 | Application CRC-16, stored big-endian |
+
+For every frame, the solver tests **all 256** possible LFSR whitening seed bytes. Each candidate dewhitens the 42-byte body and checks the application CRC-16/CCITT-FALSE computed over `marker || counter || recovered body` with initial value `0xFFFF`. Exactly one seed passes for each received frame, and the successful seed is verified to match the **low byte of the frame counter**. This relation is therefore *checked*, not assumed as an initial unknown.
+
+Within each dewhitened body, bytes 30 and 31 carry the fragment index and total count; bytes 32–39 contain eight text bytes. The 12 accepted frames provide **three identical copies of each of four fragments**, which are ordered by fragment index instead of RF arrival order. The concatenation yields:
+
+```text
+GAIANSPACE{r3p4ck3d_660413}
+```
+
+The other dewhitened fields are interpreted as sensor engineering readings by comparing their scales against `last_good_frame.csv`; this is an inference from the capture, not evidence of the original on-orbit struct definition. All 12 LoRa PHY and all 12 application CRC checks succeeded.
+
 ### Reproduction
 
 Results are saved under `134_solution/`.
@@ -57,15 +78,18 @@ PHY CRC: 12/12 valid
 APPLICATION CRC: 12/12 valid
 FRAGMENT COPIES: 0:3, 1:3, 2:3, 3:3
 FLAG: GAIANSPACE{r3p4ck3d_660413}
-OUTPUT: /home/jhmoon/gaianspace/13-night-shift/134/134_solution
+OUTPUT: <output-directory>
 ```
 
-### Exploit Code
+
+### Solver Code
 
 **`134.py`**
 
 ```python
 #!/usr/bin/env python3
+# Dependencies (Python >= 3.10):
+#   python3 -m pip install numpy scipy
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Recover GaianSpace 134 directly from its ci8 SigMF recording.
 
@@ -526,7 +550,6 @@ if __name__ == '__main__':
         print(f'ERROR: {exc}', file=sys.stderr)
         raise SystemExit(1)
 ```
-
 ## Flag
 
 ```text

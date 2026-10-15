@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Dependencies (Python >= 3.10):
+#   python3 -m pip install numpy scipy
 """Decode the GaianSpace 133 capture offline with NumPy/SciPy, without GNU Radio.
 
 This is a capture-specific reproducible solver, not a general-purpose LoRa receiver.
