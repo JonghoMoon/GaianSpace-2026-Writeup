@@ -22,24 +22,32 @@ The token it prints, once it believes you, is what the bridge asked for.
 
 ## Solution
 
-### Steps
+### Analysis
 
-1. Inspect the Linux x86-64 ELF binary and locate its `MAINT-%04X-%04X` format string.
-2. Extract nearby immediate constants loaded into `r8d` and `r9d` from the machine-code bytes, without relying on `objdump` output formatting.
-3. Construct candidate maintenance keys and test them by running a temporary copy of the original binary.
-4. Recover `MAINT-2189-8A44`, unlock the tool, and read its token.
+The supplied `gotox-maint` is a **Linux x86-64 ELF**. The program asks for a maintenance key, while the accompanying card proposes `MAINT-0000-0000` as a misleading default.
+
+Inspect the executable's key format string, `MAINT-%04X-%04X`, and the immediate constants placed into registers used for its format arguments. On x86-64, the relevant instruction encodings are:
+
+| Machine code | Instruction | Purpose |
+|---|---|---|
+| `41 B8 xx xx xx xx` | `mov r8d, imm32` | Load one hexadecimal field |
+| `41 B9 xx xx xx xx` | `mov r9d, imm32` | Load the other field |
+
+Each immediate uses **little-endian** encoding. The script scans for these machine-code sequences, requires plausible 16-bit-sized values loaded within 64 file bytes of each other, and forms candidate strings using the ELF's discovered format. This heuristic is tailored to the supplied binary; it is not a general disassembler.
+
+Finally, the solver runs a temporary **copy** of the supplied executable with each candidate key. This final execution verifies that the generated key actually unlocks the tool, instead of assuming that a matching sequence of machine-code bytes is necessarily the correct key.
+
+The successful candidate is `MAINT-2189-8A44`.
 
 ### Reproduction
 
-The original `904.py` was recovered from the previous working files; this is the machine-code-based version that avoids the earlier `objdump` formatting failure.
-
-Run the supplied solver with the original challenge files in the locations expected by its source code.
+No third-party Python packages are required. Run `904.py` alongside `gotox-maint` on **Linux x86-64**; the original ELF must be executable in the target environment:
 
 ```bash
 python3 904.py
 ```
 
-Expected relevant output:
+Expected output:
 
 ```text
 Candidate keys: 1
@@ -53,6 +61,7 @@ FLAG: GAIANSPACE{m41nt_m0de_unl0cked}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 """GaianSpace 904: recover the generated key directly from x86-64 machine code."""
 
 import re

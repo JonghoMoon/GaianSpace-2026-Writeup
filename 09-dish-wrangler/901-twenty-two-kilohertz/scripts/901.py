@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Dependencies: pip install numpy soundfile
+
 """Decode the DiSEqC-style 22 kHz tone bursts in the scope WAV."""
 from pathlib import Path
 import numpy as np
@@ -47,4 +49,3 @@ for start in range(0, len(bits), 9):
 print(f'Decoded bits: {len(bits)}')
 print(f'Parity-checked bytes: {len(output)}')
 print(f'FLAG: {output.decode("ascii")}')
-

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 """GaianSpace 904: recover the generated key directly from x86-64 machine code."""
 
 import re

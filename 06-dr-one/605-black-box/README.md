@@ -118,7 +118,7 @@ FLAG: GAIANSPACE{S1-T78758}
 
 ## Python Source Code
 
-The standalone recovery and analysis script is also available as [`605.py`](./605.py).
+The standalone recovery and analysis script is also available as [`605.py`](./scripts/605.py).
 
 ```python
 #!/usr/bin/env python3

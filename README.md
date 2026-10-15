@@ -6,7 +6,7 @@ This repository documents my solving process as a solo participant, with an emph
 
 Each write-up will include the methodology, evidence, analysis scripts, and relevant artifacts used to reach and validate the solution.
 
-![social-preview](./social-preivew.png)
+![social-preview](./social-preview.png)
 
 ## Categories
 
@@ -38,6 +38,10 @@ Each challenge directory is intended to contain:
 - Original challenge files and/or description (where redistribution is permitted)
 - Analysis scripts and solvers
 - Relevant outputs, screenshots, and validation artifacts
+
+## Running the Solvers
+
+Each challenge stores its original inputs in challenges/ and its analysis code in scripts/. Unless the individual writeup specifies otherwise, copy the solver and any required helper modules into the challenges/ directory, then run the solver from that directory. Install the dependencies described at the top of the source code before execution.
 
 ## Summary
 
@@ -78,7 +82,7 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 
 | # | Challenge | Points | Flags |
 |---:|---|---:|---|
-| 1 | [201-uplink-origins](.02-echoes-of-espionage/201-uplink-origins/) | 50 | `GAIANSPACE{26.46,-98.64,3296.64}` |
+| 1 | [201-uplink-origins](./02-echoes-of-espionage/201-uplink-origins/) | 50 | `GAIANSPACE{26.46,-98.64,3296.64}` |
 | 2 | [202-downlink-deception](./02-echoes-of-espionage/202-downlink-deception/) | 75 | `GAIANSPACE{VELA,2025-06-12T19:15:00Z}` |
 | 3 | [203-signal-secrets](./02-echoes-of-espionage/203-signal-secrets/) | 100 | `GAIANSPACE{tw0_l4yer_d0wnlink}` |
 | 4 | [204-payload-unleashed](./02-echoes-of-espionage/204-payload-unleashed/) | 100 | `GAIANSPACE{b4ckd00r_in_the_dec0der}` |

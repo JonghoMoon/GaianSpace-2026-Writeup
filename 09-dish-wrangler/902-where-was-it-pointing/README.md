@@ -23,23 +23,23 @@ Walk the destinations in the order the dish was sent. The scraps, in that order,
 
 ## Solution
 
-### Steps
+### Analysis
 
-1. Read the controller log and select the five-byte USALS positioning commands beginning `E0 31 6E`.
-2. Interpret the high nibble of the final 16-bit value as the direction (E positive, D negative).
-3. Convert the remaining 12 bits to degrees using a divisor of 16, not 10.
-4. Match the decoded motor angles to the catalog slots.
-5. Concatenate each destination's fragment in the order the commands were sent.
+Read `slew_log.txt` in its original chronological order. Most entries are not pointing commands. The relevant five-byte motor commands begin with `E0 31 6E`.
+
+The remaining two bytes form a **big-endian** value. Its most significant hexadecimal digit is a direction code (`E` for positive/east and `D` for negative/west); the remaining 12 bits contain a magnitude in **sixteenths of one degree**, not tenths of a degree.
+
+For example, `E0 31 6E E0 60` gives `E` and `0x060 = 96`, hence `+96/16 = +6.00°`. That angle matches `KESTREL-21B` in the supplied catalog. Process every pointing command in capture order, look up its motor angle in `catalog.json`, and append the catalog's associated `fragment`.
 
 ### Reproduction
 
-Run the supplied solver with the original challenge files in the locations expected by its source code.
+This solver uses only Python 3's standard library. Place `slew_log.txt`, `catalog.json`, and `902.py` together:
 
 ```bash
 python3 902.py
 ```
 
-Expected relevant output:
+Expected output:
 
 ```text
 E0316EE060 -> +6.00 deg -> KESTREL-21B -> GAIANSPACE{
@@ -52,11 +52,13 @@ E0316ED100 -> -16.00 deg -> TALLIS-16W -> d}
 FLAG: GAIANSPACE{usals_arc_backtr4ced}
 ```
 
+All six fragments are taken directly from the provided catalog. No previously decoded fragment or final Flag is hardcoded into the solver.
+
 ### Exploit Code
 
 ```python
-
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 import json
 import re
 from pathlib import Path

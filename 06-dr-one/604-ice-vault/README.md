@@ -52,13 +52,39 @@ OMP_NUM_THREADS=12 ./604_crack mission_vault.7z 0 6000000
 
 **Windows host — indices 6,000,000 to 11,881,375:**
 
-Run the Windows build of `604_crack.c` from PowerShell with OpenSSL, OpenMP, and `7z` available:
+Run the Windows build of `604_crack_win.c` from PowerShell with OpenSSL, OpenMP, and `7z` available:
 
 ```powershell
-.\604_crack.exe mission_vault.7z 6000000 5881376
+.\604_crack_win.exe mission_vault.7z 6000000 5881376
 ```
 
 The example partitions are disjoint and together cover all 11,881,376 candidates. Each instance stops when it finds and successfully verifies a password; the other instance can then be stopped manually. Compile the Windows executable with a toolchain supporting OpenMP and OpenSSL, or use the executable already built for the original search.
+
+**Measured throughput on a dual-socket workstation (additional validation):**
+
+A later Linux run on an HP Z8 workstation with **two Intel Xeon Silver 4510 CPUs** (24 physical cores and 48 logical processors in total) measured the search rate at two OpenMP thread counts. These measurements are separate from the original split Linux-VM/Windows-host search, in which the **Windows executable recovered the password**.
+
+```bash
+OMP_NUM_THREADS=36 ./604_crack mission_vault.7z
+OMP_NUM_THREADS=48 ./604_crack mission_vault.7z
+```
+
+Selected progress messages from the two runs:
+
+```text
+# 36-thread run
+Progress 757760/11881376 (6.38%), 3102.0 candidates/s
+
+# 48-thread run
+Progress 40960/11881376 (0.34%), 3748.1 candidates/s
+```
+
+| Threads | Observed rate | Estimated time for all 11,881,376 candidates |
+|---:|---:|---:|
+| 36 | 3,102.0 candidates/s | Approximately 1 h 3 min 50 s |
+| 48 | 3,748.1 candidates/s | Approximately 52 min 50 s |
+
+The estimates use `total_candidates / observed_candidates_per_second`, assuming a constant rate and no early match. At the sampled progress points, **48 threads were approximately 20.8% faster** than 36 threads, implying roughly **11 minutes less** for an uninterrupted full-keyspace pass. These are observed *cumulative rates at different points in separate runs*, not final steady-state benchmarks; sustained throughput, CPU frequency, and the exact password discovery time can vary. An exhaustive search can terminate early when a match is verified.
 
 **Quick verification after password recovery (not the original exhaustive search):**
 

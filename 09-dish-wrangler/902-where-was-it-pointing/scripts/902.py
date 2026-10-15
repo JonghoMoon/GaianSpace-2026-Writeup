@@ -1,5 +1,5 @@
-
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 import json
 import re
 from pathlib import Path
@@ -70,4 +70,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

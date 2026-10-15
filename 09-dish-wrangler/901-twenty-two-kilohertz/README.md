@@ -24,23 +24,36 @@ Read what the motor was told.
 
 ## Solution
 
-### Steps
+### Analysis
 
-1. Read the 48 kHz mono scope capture and measure RMS energy over 0.25 ms intervals.
-2. Threshold the 22 kHz tone to recover alternating on/off runs.
-3. Decode each DiSEqC-style symbol from its duty cycle (1 ms tone = 0; 0.5 ms tone = 1).
-4. Group bits into nine-bit words, validate odd parity, and interpret the first eight bits as bytes.
-5. Decode the resulting ASCII message.
+The coax recording is a 48-kHz mono waveform containing a gated 22-kHz pilot tone. The carrier pitch itself is not an encoded character stream, and the Morse tape mentioned in the description is a distractor. The useful information is the **tone-on duty cycle**.
+
+In the challenge's DiSEqC-style signaling, each bit occupies 1.5 ms:
+
+| Bit | Tone ON | Tone OFF | Total |
+|---|---:|---:|---:|
+| `0` | 1.0 ms | 0.5 ms | 1.5 ms |
+| `1` | 0.5 ms | 1.0 ms | 1.5 ms |
+
+The solver reads 0.25-ms blocks, calculates RMS amplitude, and thresholds the result to obtain alternating tone and silence runs. Accordingly, on durations of **4 blocks** and **2 blocks** represent bits 0 and 1, respectively. It verifies the complete 1.5-ms symbol periods before converting them into bits.
+
+Each nine-bit group carries **eight data bits (MSB first) plus one odd-parity bit**. A group must contain an odd number of set bits. The recovered bytes form a plain ASCII message; no additional XOR or ciphertext layer is used.
 
 ### Reproduction
 
-Run the supplied solver with the original challenge files in the locations expected by its source code.
+Install the Python dependencies:
+
+```bash
+python3 -m pip install numpy soundfile
+```
+
+Place `coax_tap_22k.wav` and `901.py` together, then execute:
 
 ```bash
 python3 901.py
 ```
 
-Expected relevant output:
+Expected output:
 
 ```text
 Decoded bits: 252
@@ -48,10 +61,14 @@ Parity-checked bytes: 28
 FLAG: GAIANSPACE{dis3qc_t0ne_b1ts}
 ```
 
+The 252 decoded bits correspond to 28 parity-checked, nine-bit characters. This directly validates the timing/parity interpretation rather than simply searching the WAV file for a preselected answer.
+
 ### Exploit Code
 
 ```python
 #!/usr/bin/env python3
+# Dependencies: pip install numpy soundfile
+
 """Decode the DiSEqC-style 22 kHz tone bursts in the scope WAV."""
 from pathlib import Path
 import numpy as np
