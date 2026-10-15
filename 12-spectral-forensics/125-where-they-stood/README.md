@@ -3,8 +3,7 @@
 | | |
 |---|---|
 | **Category** | 12 — Spectral Forensics |
-| **Challenge** | 125-where-they-stood |
-| **Flag** | `GAIANSPACE{MZH-3240}` |
+| **Points** | ? |
 
 ## Description
 

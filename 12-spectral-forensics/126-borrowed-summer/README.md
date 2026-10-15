@@ -1,10 +1,9 @@
 # 126 — Borrowed Summer
 
-| Field | Value |
+| | |
 |---|---|
-| Category | 12 — Spectral Forensics |
-| Challenge | `126-borrowed-summer` |
-| Flag | `GAIANSPACE{ZDJ7-UCZA-JADX-7JEY}` |
+| **Category** | 12 — Spectral Forensics |
+| **Points** | ? |
 
 ## Description
 

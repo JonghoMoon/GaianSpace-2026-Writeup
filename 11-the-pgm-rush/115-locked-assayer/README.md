@@ -1,11 +1,9 @@
 # 115 — Locked Assayer
 
-| Field | Value |
+| | |
 |---|---|
-| **Category** | 11 — The PGM Rush (Bonus) |
-| **Challenge** | `115-locked-assayer` |
-| **Status** | Solved |
-| **Flag** | `GAIANSPACE{XR9-6YYDU6}` |
+| **Category** | 11 — The PGM Rush |
+| **Points** | ? |
 
 ## Description
 

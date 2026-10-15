@@ -1,11 +1,9 @@
 # 605 — Black Box
 
-| Field | Value |
+| | |
 |---|---|
-| Category | 06 — DR-ONE |
-| Challenge | `605-black-box` |
-| Status | **Solved** |
-| Flag | `GAIANSPACE{S1-T78758}` |
+| **Category** | 06 — DR-ONE |
+| **Points** | ? |
 
 ## Description
 

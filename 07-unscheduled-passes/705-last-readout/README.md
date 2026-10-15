@@ -3,8 +3,7 @@
 | | |
 |---|---|
 | **Category** | 07 — Unscheduled Passes |
-| **Challenge** | 705-last-readout |
-| **Flag** | `GAIANSPACE{405-43E-445-448-4BD}` |
+| **Points** | ? |
 
 ## Description
 

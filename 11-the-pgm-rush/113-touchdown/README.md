@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Category** | 11 — The PGM Rush (Bonus) |
+| **Category** | 11 — The PGM Rush |
 | **Points** | 250 |
 
 ## Description

@@ -3,8 +3,7 @@
 | | |
 |---|---|
 | **Category** | 12 — Spectral Forensics |
-| **Challenge** | 127-heads-down-97 |
-| **Flag** | `GAIANSPACE{SZMMPR-SZPTJU-SZXYMY_SZ4TE4}` (reported candidate; not submission-verified) |
+| **Points** | ? |
 
 ## Description
 

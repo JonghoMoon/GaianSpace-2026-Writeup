@@ -1,10 +1,9 @@
 # 112 — Two Clocks
 
-| Field | Value |
+| | |
 |---|---|
-| Category | 11 — The PGM Rush (Bonus) |
-| Challenge | `112-two-clocks` |
-| Flag | `GAIANSPACE{0412377}` |
+| **Category** | 11 — The PGM Rush |
+| **Points** | ? |
 
 ## Description
 

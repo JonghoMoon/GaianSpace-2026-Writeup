@@ -2,9 +2,8 @@
 
 | | |
 |---|---|
-| **Category** | 11 — The PGM Rush (Bonus) |
-| **Challenge** | 116-sealed-canister |
-| **Flag** | `GAIANSPACE{6304}` |
+| **Category** | 11 — The PGM Rush |
+| **Points** | ? |
 
 ## Description
 
