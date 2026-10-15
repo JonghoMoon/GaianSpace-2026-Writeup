@@ -38,11 +38,11 @@ The apparent pressure changes during the 45 °C hot soak are explained by temper
 
 ### Finding the First Breach Record
 
-During cooldown, the pressure trend changes abruptly at **record 6304**. A first-difference analysis against the preceding cooling baseline finds the first sustained negative deviation at that record. The CO2 measurements provide independent corroboration: readings are near zero while the cell contains dry nitrogen, then rise toward clean-room ambient levels after the breach.
+The `tvac_report.md` setpoint table identifies the cooling phase (logger records **4200–6900**) without relying on the eventual breach timestamp. The code parses the setpoint rows, selects the longest decreasing-temperature segment, and estimates the normal derivative of temperature-normalized pressure (`P/T_K`) from the **first half** of that cooling interval (4200–5550). A robust median/MAD noise scale and the same sustained-change test are applied across the entire cooling phase.
 
-The SCD-41 is not specified for accurate measurements below 400 ppm, so its near-zero readings are interpreted as qualitative evidence of the initially nitrogen-filled cell, not precise trace-gas concentrations. The final CO2 trace reaches the low 400s ppm.
+The first qualifying deviation is **record 6304**, with an approximately −9.59 robust-sigma first-difference score using this broader baseline. Previously reported −12.51 comes from the narrower 6100–6290 baseline; both find the same first event, but only the revised version derives its baseline and search interval from the test schedule. CO2 increases from the near-zero nitrogen-cell readings toward ~418 ppm afterward, independently supporting a breach. Sub-400 ppm SCD-41 readings are treated as qualitative evidence, not reliable quantitative CO2 values.
 
-The test report's broad acceptance criterion (pressure between 950 and 1100 hPa) does not establish that the cell remained sealed. The temperature-normalized trend and CO2 ingress expose the failure.
+The full-run acceptance range (950–1100 hPa) is not sufficient to establish hermetic sealing, because temperature changes can mask gas loss.
 
 ### Reproduction
 
@@ -58,8 +58,10 @@ Expected relevant output:
 Logger calibration: T1=26020 P1=37172
 Record 0: T=22.041 C, Bosch pressure=1018.668 hPa
 Reference barometer: 1018.6 hPa
-Cooling baseline sigma: 7.8001387e-05
-First sustained pressure anomaly: rec=6304 z=-12.51
+Cooling phase from test report: rec=4200..6900
+Baseline interval: rec=4200..5550
+Cooling baseline sigma: 0.00010066295
+First sustained pressure anomaly: rec=6304 z=-9.59
 Pre-event CO2 median: 0.0 ppm
 Final CO2: 418 ppm
 FLAG: GAIANSPACE{6304}
@@ -69,6 +71,7 @@ FLAG: GAIANSPACE{6304}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 """CL3-0419 seal-breach analysis from the original ADC and CO2 logs."""
 
 import argparse
@@ -156,6 +159,7 @@ def main() -> None:
     parser.add_argument("--boot", type=Path, default=Path("cl3_0419_boot.txt"))
     parser.add_argument("--env", type=Path, default=Path("cl3_0419_env.csv"))
     parser.add_argument("--co2", type=Path, default=Path("cl3_0419_co2.csv"))
+    parser.add_argument("--report", type=Path, default=Path("tvac_report.md"))
     args = parser.parse_args()
 
     c = calibration(load_registers(args.boot))
@@ -184,16 +188,37 @@ def main() -> None:
         for p, t in zip(pressure, temp)
     ]
 
-    # Estimate the baseline cooling slope from records immediately before onset.
-    # A persistent downward jump distinguishes a breach from normal cooling.
+    # Select the cooling phase from the supplied thermal-vacuum report.
+    report = args.report.read_text(encoding="utf-8")
+    setpoints: list[tuple[int, float]] = []
+    for line in report.splitlines():
+        match = re.search(
+            r"\|\s*\d{2}:\d{2}:\d{2}\s*\|\s*\+(\d+)\s*s\s*\|\s*([0-9.]+)\s*\|",
+            line,
+        )
+        if match:
+            setpoints.append((int(match.group(1)), float(match.group(2))))
+    cooling_phases = [
+        (start[0], end[0])
+        for start, end in zip(setpoints, setpoints[1:])
+        if end[1] < start[1]
+    ]
+    if not cooling_phases:
+        raise ValueError("No decreasing-temperature interval in test report")
+    cooling_start, cooling_end = max(cooling_phases, key=lambda pair: pair[1] - pair[0])
+
+    # The first half of the cooling phase estimates the normal derivative.
     derivatives = [proxy[i] - proxy[i - 1] for i in range(1, len(proxy))]
-    baseline = derivatives[6100:6290]
+    baseline_end = cooling_start + (cooling_end - cooling_start) // 2
+    baseline = derivatives[cooling_start:baseline_end]
     center = median(baseline)
     mad = median(abs(value - center) for value in baseline)
     sigma = max(1.4826 * mad, 1.0e-12)
+    print(f"Cooling phase from test report: rec={cooling_start}..{cooling_end}")
+    print(f"Baseline interval: rec={cooling_start}..{baseline_end}")
 
-    candidates = []
-    for index in range(6250, min(6800, len(rows) - 5)):
+    candidates: list[tuple[int, float]] = []
+    for index in range(cooling_start + 1, min(cooling_end, len(rows) - 5)):
         score = (derivatives[index - 1] - center) / sigma
         if score < -8.0:
             following = derivatives[index - 1:index + 4]
@@ -206,7 +231,7 @@ def main() -> None:
 
     first, score = candidates[0]
     print(f"First sustained pressure anomaly: rec={rows[first]['rec']} z={score:.2f}")
-    print(f"Pre-event CO2 median: {median(x['co2_ppm'] for x in co2 if x['rec'] < 6200):.1f} ppm")
+    print(f"Pre-event CO2 median: {median(x['co2_ppm'] for x in co2 if x['rec'] < rows[first]['rec']):.1f} ppm")
     print(f"Final CO2: {co2[-1]['co2_ppm']} ppm")
     print(f"FLAG: GAIANSPACE{{{rows[first]['rec']}}}")
 

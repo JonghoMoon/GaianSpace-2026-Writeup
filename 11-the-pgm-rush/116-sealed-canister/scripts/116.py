@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 """CL3-0419 seal-breach analysis from the original ADC and CO2 logs."""
 
 import argparse
@@ -86,6 +87,7 @@ def main() -> None:
     parser.add_argument("--boot", type=Path, default=Path("cl3_0419_boot.txt"))
     parser.add_argument("--env", type=Path, default=Path("cl3_0419_env.csv"))
     parser.add_argument("--co2", type=Path, default=Path("cl3_0419_co2.csv"))
+    parser.add_argument("--report", type=Path, default=Path("tvac_report.md"))
     args = parser.parse_args()
 
     c = calibration(load_registers(args.boot))
@@ -114,16 +116,37 @@ def main() -> None:
         for p, t in zip(pressure, temp)
     ]
 
-    # Estimate the baseline cooling slope from records immediately before onset.
-    # A persistent downward jump distinguishes a breach from normal cooling.
+    # Select the cooling phase from the supplied thermal-vacuum report.
+    report = args.report.read_text(encoding="utf-8")
+    setpoints: list[tuple[int, float]] = []
+    for line in report.splitlines():
+        match = re.search(
+            r"\|\s*\d{2}:\d{2}:\d{2}\s*\|\s*\+(\d+)\s*s\s*\|\s*([0-9.]+)\s*\|",
+            line,
+        )
+        if match:
+            setpoints.append((int(match.group(1)), float(match.group(2))))
+    cooling_phases = [
+        (start[0], end[0])
+        for start, end in zip(setpoints, setpoints[1:])
+        if end[1] < start[1]
+    ]
+    if not cooling_phases:
+        raise ValueError("No decreasing-temperature interval in test report")
+    cooling_start, cooling_end = max(cooling_phases, key=lambda pair: pair[1] - pair[0])
+
+    # The first half of the cooling phase estimates the normal derivative.
     derivatives = [proxy[i] - proxy[i - 1] for i in range(1, len(proxy))]
-    baseline = derivatives[6100:6290]
+    baseline_end = cooling_start + (cooling_end - cooling_start) // 2
+    baseline = derivatives[cooling_start:baseline_end]
     center = median(baseline)
     mad = median(abs(value - center) for value in baseline)
     sigma = max(1.4826 * mad, 1.0e-12)
+    print(f"Cooling phase from test report: rec={cooling_start}..{cooling_end}")
+    print(f"Baseline interval: rec={cooling_start}..{baseline_end}")
 
-    candidates = []
-    for index in range(6250, min(6800, len(rows) - 5)):
+    candidates: list[tuple[int, float]] = []
+    for index in range(cooling_start + 1, min(cooling_end, len(rows) - 5)):
         score = (derivatives[index - 1] - center) / sigma
         if score < -8.0:
             following = derivatives[index - 1:index + 4]
@@ -136,7 +159,7 @@ def main() -> None:
 
     first, score = candidates[0]
     print(f"First sustained pressure anomaly: rec={rows[first]['rec']} z={score:.2f}")
-    print(f"Pre-event CO2 median: {median(x['co2_ppm'] for x in co2 if x['rec'] < 6200):.1f} ppm")
+    print(f"Pre-event CO2 median: {median(x['co2_ppm'] for x in co2 if x['rec'] < rows[first]['rec']):.1f} ppm")
     print(f"Final CO2: {co2[-1]['co2_ppm']} ppm")
     print(f"FLAG: GAIANSPACE{{{rows[first]['rec']}}}")
 

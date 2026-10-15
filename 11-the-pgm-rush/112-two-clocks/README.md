@@ -79,6 +79,10 @@ The frame index is not renumbered when frames are missing; compare actual exposu
 - Using the outdated SF10 downlink value from the ICD instead of the operational SF11 update.
 - Picking the nearest frame rather than the first frame whose exposure starts **after** the bite.
 
+### Consistency check
+
+The two independent time-transfer estimates differ by **0.489 ms**. The camera exposures start every 50 ms, and frame **0412377** is the first exposure after the inferred UTC anchor BITE. The earlier frame 0412376 begins before the bite.
+
 ## Reproduction
 
 Put `112.py` and the four original attachments in the same directory and run:
@@ -105,6 +109,7 @@ FLAG: GAIANSPACE{0412377}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 """Recover the first hover-camera frame after the lander's anchor bite."""
 
 import argparse

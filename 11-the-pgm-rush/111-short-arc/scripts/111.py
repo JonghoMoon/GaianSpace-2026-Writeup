@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Dependencies: pip install numpy scipy skyfield
+# Runtime data: MPC ObsCodes.html and JPL de440s.bsp (download if absent).
 """GaianSpace 111: orbit-fit MPC astrometry and rank recovery tracklets.
 
 Dependencies: numpy, scipy, skyfield. Internet is needed once for the

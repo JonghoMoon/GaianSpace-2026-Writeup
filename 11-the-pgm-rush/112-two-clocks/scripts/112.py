@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 """Recover the first hover-camera frame after the lander's anchor bite."""
 
 import argparse

@@ -91,6 +91,7 @@ FLAG: GAIANSPACE{B-27}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 """Recover deleted DKR-2 session 12 and measure anchor-induced yaw."""
 
 import argparse

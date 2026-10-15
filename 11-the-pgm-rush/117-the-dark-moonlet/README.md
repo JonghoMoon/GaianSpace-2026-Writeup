@@ -31,13 +31,29 @@ Name the molecule and how strongly it leans.
 
 ### Steps
 
-Match the chiral chromatogram peaks to `standards.csv` using a ±0.03-minute retention-time tolerance, and use the compound-specific quantitative ion area (not the total-ion peak area). For each D/L pair calculate enantiomeric excess:
+Match each chiral chromatogram peak to the known standard using a **±0.03-minute** retention-time tolerance. Use the corresponding compound's quantitative ion (`quant_ion_mz`), **not** the total-ion area, to calculate enantiomeric excess:
 
 \[
-ee=100rac{L-D}{L+D}.
+ee(\%)=100\frac{L-D}{L+D}.
 \]
 
-The supplied solver computes `aspartic_acid` with D=820 and L=1670, giving +34.14% (rounded to L34). The high serine excess and alanine excess should not automatically be treated as extraterrestrial: the procedural blank and carbon/nitrogen isotope measurements are relevant to distinguishing terrestrial contamination from moonlet material. **Reproduction limitation:** the supplied `117.py` reads the blank and isotope files but does not use them in its selection logic; the solver explicitly chooses `aspartic_acid`. The final flag matches the supplied run, but a full scientific justification should independently compare those controls.
+The sample alone is insufficient to determine which positive ee is authentic. The revised code examines **both D and L peaks** in the procedural blank and carbon/nitrogen isotope run. The relevant comparison is:
+
+| Compound | Sample ee | Blank at D/L quant-ion peaks | Isotope evidence |
+|---|---:|---|---|
+| Alanine | +26.32% | L blank=1,480 versus sample L=3,600 | L carbon ratio less elevated than other extraterrestrial candidates |
+| Serine | +93.91% | L blank=1,850 versus sample L=1,910 | L peak δ¹³C = −22.7‰, δ¹⁵N = +3.1‰, terrestrial-like |
+| **Aspartic acid** | **+34.14%** | **No overlapping procedural-blank peaks** | **D: +27.2/+88.4‰; L: +27.8/+86.9‰ (δ¹³C/δ¹⁵N)** |
+
+Isovaline and glutamic acid have heavy isotopes and low blank contamination, but almost no handed excess (+0.53% and +0.83%); valine is similarly nearly racemic and has an unavailable isotope measurement. The solver screens for (a) ≤5% blank contribution to each enantiomer's sample area, (b) both D and L isotope values >+15‰ carbon and >+25‰ nitrogen, and (c) ≥5% L excess. **These cutoffs are explicit heuristics for this dataset, not validated laboratory thresholds or proof of biological activity.** Only aspartic acid passes all three screens, so the target is derived rather than hardcoded.
+
+For aspartic acid, quantitative-ion areas are D=820 and L=1670:
+
+\[
+ee=100\frac{1670-820}{1670+820}=34.14\%.
+\]
+
+The requested whole-percent flag is **`GAIANSPACE{aspartic_acid_L34}`**.
 
 ### Reproduction
 
@@ -47,82 +63,116 @@ Run the original solver from the challenge's working directory, with the input f
 python3 117.py
 ```
 
-Expected relevant output:
+Expected relevant output (showing the key contamination tests):
 
 ```text
-[Enantiomeric Excess]
-alanine              D= 2100 L= 3600 ee=+26.32%
-isovaline            D=  655 L=  662 ee=+0.53%
-valine               D= 1180 L= 1195 ee=+0.63%
-serine               D=   60 L= 1910 ee=+93.91%
-aspartic_acid        D=  820 L= 1670 ee=+34.14%
-glutamic_acid        D=  418 L=  425 ee=+0.83%
+[Enantiomeric Excess and provenance controls]
+alanine              D= 2100 L= 3600 ee=+26.32% blank(D/L)=0/1480 heavy_isotopes=False clean_blank=False L_excess=True
+serine               D=   60 L= 1910 ee=+93.91% blank(D/L)=0/1850 heavy_isotopes=False clean_blank=False L_excess=True
+aspartic_acid        D=  820 L= 1670 ee=+34.14% blank(D/L)=0/0 heavy_isotopes=True clean_blank=True L_excess=True
 
+Selected compound: aspartic_acid
 FLAG: GAIANSPACE{aspartic_acid_L34}
 ```
 
 ### Exploit Code
 
 ```python
+#!/usr/bin/env python3
+"""Resolve chiral peak excess with blank and isotopic controls.
 
+Dependencies: Python 3 standard library only.
+"""
 import csv
+from dataclasses import dataclass
 from pathlib import Path
 
-BASE = Path(".")
-TOLERANCE_MIN = 0.03
+RT_TOLERANCE_MIN = 0.03
+
 
 def read_csv(filename: str) -> list[dict[str, str]]:
-    with (BASE / filename).open(
-        "r", encoding="utf-8", newline=""
-    ) as file:
-        return list(csv.DictReader(file))
+    with Path(filename).open(encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def peak_near(rows: list[dict[str, str]], retention: float) -> dict[str, str] | None:
+    matches = [row for row in rows if abs(float(row["rt_min"]) - retention) <= RT_TOLERANCE_MIN]
+    if len(matches) > 1:
+        raise ValueError(f"Ambiguous retention peak at {retention}")
+    return matches[0] if matches else None
+
+
+def optional_float(value: str) -> float | None:
+    try:
+        return float(value)
+    except ValueError:
+        return None
+
+
+@dataclass(frozen=True)
+class Evidence:
+    sample_area: int
+    blank_area: int
+    carbon: float | None
+    nitrogen: float | None
+
 
 standards = read_csv("standards.csv")
 sample = read_csv("moonlet_sample.csv")
 blank = read_csv("procedural_blank.csv")
 isotopes = read_csv("isotopes.csv")
 
-areas: dict[str, dict[str, int]] = {}
-
+observations: dict[str, dict[str, Evidence]] = {}
 for standard in standards:
+    handedness = standard["enantiomer"]
+    if handedness not in ("D", "L"):
+        continue
     compound = standard["compound"]
-    enantiomer = standard["enantiomer"]
-
-    if enantiomer not in ("D", "L"):
-        continue
-
     retention = float(standard["retention_min"])
-    ion = f"m{int(standard['quant_ion_mz'])}"
+    quant_ion = f"m{int(standard['quant_ion_mz'])}"
+    sample_peak = peak_near(sample, retention)
+    isotope_peak = peak_near(isotopes, retention)
+    blank_peak = peak_near(blank, retention)
+    if sample_peak is None or isotope_peak is None:
+        raise ValueError(f"Missing evidence: {compound} {handedness}")
+    observations.setdefault(compound, {})[handedness] = Evidence(
+        sample_area=int(sample_peak[quant_ion]),
+        blank_area=int(blank_peak[quant_ion]) if blank_peak else 0,
+        carbon=optional_float(isotope_peak["d13C_permil_VPDB"]),
+        nitrogen=optional_float(isotope_peak["d15N_permil_AIR"]),
+    )
 
-    matches = [
-        row for row in sample
-        if abs(float(row["rt_min"]) - retention) <= TOLERANCE_MIN
-    ]
-
-    if len(matches) != 1:
-        raise ValueError(f"Ambiguous peak: {compound} {enantiomer}")
-
-    area = int(matches[0][ion])
-    areas.setdefault(compound, {})[enantiomer] = area
-
-print("[Enantiomeric Excess]")
-
-for compound, pair in areas.items():
-    if "D" not in pair or "L" not in pair:
+print("[Enantiomeric Excess and provenance controls]")
+qualified: list[tuple[str, float]] = []
+for compound, pair in observations.items():
+    if set(pair) != {"D", "L"}:
         continue
+    d, l = pair["D"], pair["L"]
+    ee = 100.0 * float(l.sample_area - d.sample_area) / float(l.sample_area + d.sample_area)
+    blank_d = float(d.blank_area) / float(d.sample_area)
+    blank_l = float(l.blank_area) / float(l.sample_area)
+    # Transparent dataset-specific screening thresholds, not universal
+    # laboratory limits for contamination or extraterrestrial provenance.
+    clean_blank = max(blank_d, blank_l) <= 0.05
+    heavy_isotopes = all(
+        p.carbon is not None and p.nitrogen is not None
+        and p.carbon > 15.0 and p.nitrogen > 25.0
+        for p in (d, l)
+    )
+    significant_left_excess = ee >= 5.0
+    print(f"{compound:20s} D={d.sample_area:5d} L={l.sample_area:5d} "
+          f"ee={ee:+.2f}% blank(D/L)={d.blank_area}/{l.blank_area} "
+          f"heavy_isotopes={heavy_isotopes} clean_blank={clean_blank} "
+          f"L_excess={significant_left_excess}")
+    if clean_blank and heavy_isotopes and significant_left_excess:
+        qualified.append((compound, ee))
 
-    d = pair["D"]
-    l = pair["L"]
-    ee = (float(l - d) / float(l + d)) * 100.0
+if len(qualified) != 1:
+    raise ValueError(f"Expected one fully supported candidate, got {qualified}")
 
-    print(f"{compound:20s} D={d:5d} L={l:5d} ee={ee:+.2f}%")
-
-target = "aspartic_acid"
-d = areas[target]["D"]
-l = areas[target]["L"]
-ee = (float(l - d) / float(l + d)) * 100.0
-
-print(f"\nFLAG: GAIANSPACE{{{target}_L{round(ee)}}}")
+target, ee = qualified[0]
+print(f"\nSelected compound: {target}")
+print(f"FLAG: GAIANSPACE{{{target}_L{round(ee)}}}")
 ```
 
 ## Flag

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Dependencies: pip install cryptography
 """Recover XRF-9 sealed assay certificates from its flash and lander beacons.
 
 Usage: python3 115.py xrf9_flash.bin lander_link.log

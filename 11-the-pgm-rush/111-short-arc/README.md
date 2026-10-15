@@ -29,13 +29,15 @@ Name the tracklet that is `2041 QM23`.
 
 ### Steps
 
-Read the fifteen MPC observations and station metadata. The `703` observatory reported a timing-server outage; the short arc therefore requires careful handling of station time and geometry. Fit a heliocentric two-body orbit using topocentric station positions and finite-light-time corrections, rather than treating all observations as geocentric. The supplied solver performs multi-start nonlinear least squares, checks the astrometric residuals, propagates the fitted orbit to the two Cerro Tololo recovery exposures, and ranks candidate tracklets by their angular residuals. The best candidate is `RT39SBA` (5.446 arcsec RMS/component); the next candidate is `RTERXDS` (99.856 arcsec), a strong separation. The initial fitted observation RMS is 0.160 arcsec/component.
+Read the fifteen MPC observations and the station metadata. The `703` observatory reported a timing-server outage; discard its compromised timing measurements rather than treating every astrometric observation as equally trustworthy. The solver fits a two-body heliocentric orbit with station-specific topocentric geometry and finite light time, trying several initial range guesses to reduce short-arc ambiguity. It then predicts the coordinates at the two Cerro Tololo recovery exposure times and ranks observed tracklets by the RMS of their RA/Dec residual components.
 
-The original working archive additionally contains `ObsCodes.html` and `de440s.bsp`, which are cached reference resources used by the solver, not files listed in the challenge's original attachments.
+The provided execution log yielded a **0.160 arcsec/component** initial observation residual RMS. The best recovery tracklet, `RT39SBA`, has **5.446 arcsec/component**, while the runner-up `RTERXDS` has **99.856 arcsec/component**. These RMS values describe different datasets (initial astrometry versus recovery measurements), so they need not match. The runner-up separation supports the intended choice; the result is not a full N-body orbit solution.
+
+The `ObsCodes.html` catalog and `de440s.bsp` ephemeris are cached reference resources, not original challenge attachments. When absent, the solver downloads station codes; Skyfield must also be able to access the relevant JPL ephemeris. See the source header for dependencies.
 
 ### Reproduction
 
-Run the original solver from the challenge's working directory, with the input files alongside the script as in the supplied ZIP.
+Run the solver from the challenge's working directory, with the input files alongside the script as in the supplied ZIP.
 
 ```bash
 python3 111.py
@@ -60,6 +62,8 @@ BEST CANDIDATE: GAIANSPACE{RT39SBA}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies: pip install numpy scipy skyfield
+# Runtime data: MPC ObsCodes.html and JPL de440s.bsp (download if absent).
 """GaianSpace 111: orbit-fit MPC astrometry and rank recovery tracklets.
 
 Dependencies: numpy, scipy, skyfield. Internet is needed once for the

@@ -28,7 +28,22 @@ Write the order.
 
 ### Steps
 
-Fit a four-harmonic Fourier model to the brightness series to recover the rotational period, accounting for the double-peaked light curve of an elongated body. The fitted period is 5848.911 s. From the descent card, use the asteroid's gravitational parameter `GM = 0.2123 m³/s²`, release radius 500 m, contact radius 50 m, and spring A speed 0.020 m/s. Conservation of energy gives a contact speed of 0.089682 m/s, below the 0.110 m/s limit. Integrate radial fall time (13690.834 s). For each release slot, calculate the **contact** time and use the Fourier model to predict which face is directed toward the lander then. The brightest contact configuration selects slot `0242`. Spring B would exceed the contact-speed limit.
+The lander release time must be chosen for the **rotation phase at contact**, not at release. `descent_card.md` supplies GM, radii, spring speeds, contact speed limit, and the 540 release slots. The photometry constrains the asteroid's light-curve phase.
+
+The revised solver first scans rotation periods from **2,000 to 12,000 seconds** at 5-second intervals, then refines the lowest four-harmonic least-squares error. It finds a coarse period of 5,850 s and a refined period of **5,848.911 s**. This avoids embedding a narrow range chosen around the already-known result. Harmonic aliases are possible with sparse photometry, but the best candidate's error is the lowest in the scanned range.
+
+Energy conservation gives the radial contact speed for each spring:
+
+\[
+v_{contact}=\sqrt{v_{initial}^{2}+2GM\left(\frac{1}{r_{contact}}-\frac{1}{r_{start}}\right)}.
+\]
+
+| Spring | Initial speed | Contact speed | Limit 0.110 m/s |
+|---|---:|---:|---|
+| A | 0.020 m/s | 0.089682 m/s | PASS |
+| B | 0.080 m/s | 0.118502 m/s | FAIL |
+
+Spring A is the only viable choice. Integrating the radial descent equation gives a flight time of **13,690.834 s**. For each release slot, the solver adds this flight time, evaluates the fitted light curve at contact, and selects the brightest contact phase (smaller astronomical magnitude means brighter). The best release is **slot 0242**, giving `GAIANSPACE{A-0242}`.
 
 ### Reproduction
 
@@ -41,6 +56,9 @@ python3 113.py
 Expected relevant output:
 
 ```text
+Spring A: contact speed=0.089682 m/s (PASS)
+Spring B: contact speed=0.118502 m/s (FAIL)
+Coarse period:   5850.000 s
 Rotation period: 5848.911 s
 Fall time:       13690.834 s
 Contact speed:   0.089682 m/s
@@ -51,6 +69,9 @@ FLAG: GAIANSPACE{A-0242}
 ### Exploit Code
 
 ```python
+#!/usr/bin/env python3
+# Dependencies: pip install numpy pandas scipy
+
 import numpy as np
 import pandas as pd
 from scipy.integrate import quad
@@ -59,7 +80,7 @@ from scipy.optimize import minimize_scalar
 MU = 0.2123
 R_START = 500.0
 R_CONTACT = 50.0
-V_INITIAL = 0.020
+SPRINGS = {"A": 0.020, "B": 0.080}
 MAX_SPEED = 0.110
 SLOT_INTERVAL = 10.0
 SLOT_COUNT = 540
@@ -91,28 +112,37 @@ def fit_period(period: float) -> tuple[float, np.ndarray]:
     return float(np.mean(residual ** 2)), coeffs
 
 
+# Coarse-search a broad period range, then refine its best minimum.
+period_grid = np.arange(2000.0, 12000.1, 5.0, dtype=float)
+coarse_errors = [fit_period(float(candidate))[0] for candidate in period_grid]
+coarse_period = float(period_grid[int(np.argmin(coarse_errors))])
 fit = minimize_scalar(
-    lambda period: fit_period(period)[0],
-    bounds=(5800.0, 5900.0),
+    lambda candidate: fit_period(float(candidate))[0],
+    bounds=(coarse_period - 5.0, coarse_period + 5.0),
     method="bounded",
 )
-
 period = float(fit.x)
 _, coeffs = fit_period(period)
 
-# Calculate contact speed using energy conservation.
-speed = np.sqrt(
-    V_INITIAL ** 2
-    + 2.0 * MU * (1.0 / R_CONTACT - 1.0 / R_START)
-)
-
-if speed > MAX_SPEED:
-    raise RuntimeError("Spring exceeds landing speed limit")
+# Assess each spring instead of assuming Spring A.
+valid_springs: list[tuple[str, float, float]] = []
+for name, initial in SPRINGS.items():
+    impact = float(np.sqrt(
+        initial ** 2 + 2.0 * MU * (1.0 / R_CONTACT - 1.0 / R_START)
+    ))
+    accepted = impact <= MAX_SPEED
+    print(f"Spring {name}: contact speed={impact:.6f} m/s "
+          f"({'PASS' if accepted else 'FAIL'})")
+    if accepted:
+        valid_springs.append((name, initial, impact))
+if len(valid_springs) != 1:
+    raise RuntimeError(f"Ambiguous viable spring choices: {valid_springs}")
+spring, initial_speed, speed = valid_springs[0]
 
 # Integrate time of flight under point-mass gravity.
 fall_time, _ = quad(
     lambda r: 1.0 / np.sqrt(
-        V_INITIAL ** 2
+        initial_speed ** 2
         + 2.0 * MU * (1.0 / r - 1.0 / R_START)
     ),
     R_CONTACT,
@@ -134,11 +164,12 @@ for harmonic in range(1, 5):
 # Lower astronomical magnitude means greater brightness.
 best_slot = int(np.argmin(predicted))
 
+print(f"Coarse period:   {coarse_period:.3f} s")
 print(f"Rotation period: {period:.3f} s")
 print(f"Fall time:       {fall_time:.3f} s")
 print(f"Contact speed:   {speed:.6f} m/s")
 print(f"Best slot:       {best_slot:04d}")
-print(f"FLAG: GAIANSPACE{{A-{best_slot:04d}}}")
+print(f"FLAG: GAIANSPACE{{{spring}-{best_slot:04d}}}")
 ```
 
 ## Flag
