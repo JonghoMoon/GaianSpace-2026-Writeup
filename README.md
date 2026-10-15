@@ -106,6 +106,7 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 | 2 | [402-the-cyberiad](./04-ai-is-not-sci-fi/402-the-cyberiad/) | 200 | `GAIANSPACE{n0thing_fr0m_st0ck}` |
 | 3 | [403-altruizine](./04-ai-is-not-sci-fi/403-altruizine/) | 250 | `GAIANSPACE{sh4red_p41n_n0t_j0y}` |
 | 4 | [404-the-last-kilogram](./04-ai-is-not-sci-fi/404-the-last-kilogram/) | 300 | `GAIANSPACE{3very_gr41n_c0unts}` |
+| 5 | [405-happy-bday-d](./04-ai-is-not-sci-fi/405-happy-bday-d/) | ? | GAIANSPACE{h4ppy_bd4y_d4v1d_1t_g03s_h0m3}
 
 ### <a id="05-rad-hard-rampage"></a>[05-rad-hard-rampage](./05-rad-hard-rampage/)
 
@@ -125,6 +126,7 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 | 2 | [602-help-me-fly](./06-dr-one/602-help-me-fly/) | 75 | `GAIANSPACE{fl1ght_telemetry_str3am}` |
 | 3 | [603-g-fold](./06-dr-one/603-g-fold/) | 100 | `GAIANSPACE{LZ_1370_-360}` |
 | 4 | [604-ice-vault](./06-dr-one/604-ice-vault/) | 125 | `GAIANSPACE{UTOPIA_PLANITIA_46.7N_97.3E}` |
+| 5 | [605-black-box](./06-dr-one/605-black-box/) | ? | `GAIANSPACE{S1-T78758}` |
 
 ### <a id="07-unscheduled-passes"></a>[07-unscheduled-passes](./07-unscheduled-passes/)
 
@@ -134,6 +136,7 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 | 2 | [702-concatenated](./07-unscheduled-passes/702-concatenated/) | 75 | `GAIANSPACE{s0ft_v1terbi_th3n_r33d_s0l0m0n}` |
 | 3 | [703-lagrange-fix](./07-unscheduled-passes/703-lagrange-fix/) | 100 | `GAIANSPACE{CLK_+2213481}` |
 | 4 | [704-dead-chip](./07-unscheduled-passes/704-dead-chip/) | 125 | `GAIANSPACE{r3l0c4ted_ar0und_a_d34d_ch1p}` |
+| 5 | [705-last-readout](./07-unscheduled-passes/705-last-readout/) | 125 | `GAIANSPACE{405-43E-445-448-4BD}` |
 
 ### <a id="08-silent-carrier"></a>[08-silent-carrier](./08-silent-carrier/)
 
@@ -166,7 +169,10 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 | 1 | [110-m-type](./11-the-pgm-rush/110-m-type/) | 100 | `GAIANSPACE{2041QM23_120}` |
 | 2 | [111-short-arc](./11-the-pgm-rush/111-short-arc/) | 150 | `GAIANSPACE{RT39SBA}` |
 | 3 | [113-touchdown](./11-the-pgm-rush/113-touchdown/) | 250 | `GAIANSPACE{A-0242}` |
-| 4 | [117-the-dark-moonlet](./11-the-pgm-rush/117-the-dark-moonlet/) | 250 | `GAIANSPACE{aspartic_acid_L34}` |
+| 4 | [114-anchor-bite](./11-the-pgm-rush/114-anchor-bite/) | ? | `GAIANSPACE{B-27}` |
+| 5 | [115-locked-assayer](./11-the-pgm-rush/115-locked-assayer/) | ? | `GAIANSPACE{XR9-6YYDU6}` |
+| 6 | [116-sealed-canister](./11-the-pgm-rush/116-sealed-canister/) | ? | `GAIANSPACE{6304}` |
+| 7 | [117-the-dark-moonlet](./11-the-pgm-rush/117-the-dark-moonlet/) | 250 | `GAIANSPACE{aspartic_acid_L34}` |
 
 ### <a id="12-spectral-forensics"></a>[12-spectral-forensics](./12-spectral-forensics/)
 
@@ -176,6 +182,9 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 | 2 | [122-true-color-is-a-lie](./12-spectral-forensics/122-true-color-is-a-lie/) | 125 | `GAIANSPACE{TRUE-NDVI-HR6TNM}` |
 | 3 | [123-isodata-seven](./12-spectral-forensics/123-isodata-seven/) | 150 | `GAIANSPACE{7TH-CLASS-XHTXWX}` |
 | 4 | [124-subsidy-claim](./12-spectral-forensics/124-subsidy-claim/) | 193 | `GAIANSPACE{CUVE-UKEJ-TRP6}` |
+| 5 | [125-where-they-stood](./12-spectral-forensics/125-where-they-stood/) | ?| `GAIANSPACE{MZH-3240}` |
+| 6 | [126-borrowed-summer](./12-spectral-forensics/126-borrowed-summer/) | ? | `GAIANSPACE{ZDJ7-UCZA-JADX-7JEY}` |
+| 7 | [127-heads-down-97](./12-spectral-forensics/127-heads-down-97/) | ? | `GAIANSPACE{SZMMPR-SZPTJU-SZXYMY_SZ4TE4}` |
 
 ### <a id="13-night-shift"></a>[13-night-shift](./13-night-shift/)
 
