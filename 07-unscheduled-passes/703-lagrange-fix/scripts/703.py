@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
+# Dependencies:
+#   python3 -m pip install numpy scipy
+# External data: de440s.bsp (JPL DE440 SPK; see README).
 """Solve 703-lagrange-fix using DE440 and the supplied SSPS snapshots.
 
 Example:
-    python3 solve_703_lagrange_fix_v1.py --input-dir /path/to/703 --ephemeris de440s.bsp
+    python3 703.py --ephemeris de440s.bsp
 
 Dependencies: NumPy and SciPy. The 701 spacecraft trajectory is NOT required.
 Solve independent receiver positions for all snapshots and one shared clock

@@ -40,6 +40,12 @@ The memory image predates the 2026-10-11 uplink. Apply every `ADDR WORD` write i
 
 The known failed bank `600–6FF` is excluded from the requested answer.
 
+### The 704 relocation and the actual 705 uplink are not byte-identical
+
+Challenge 704 generated a **75-word functional relocation patch** from the 1977 golden image. This challenge separately provides `uplink_2026-10-11.txt`, which is the **actual uplink record** and also contains 75 words. They use **different destination layouts** (for example, the 704 solution places the housekeeping tail at `4F0`, while the 705 uplink uses the `770–788` region for part of its relocation). Therefore, **do not replace the provided 705 uplink with the generated 704 patch** when determining the expected RAM contents. The solver correctly applies the precise supplied 705 uplink.
+
+The two layouts are functionally equivalent in the supplied bench model: when independently applied to the golden memory, both yield the same 114 telemetry words. That behavioural equivalence **does not mean their memory images or patched addresses are identical**. A byte-for-byte comparison against the 704 patch would incorrectly report intended relocation differences as memory faults.
+
 ### 3. Distinguish live RAM from persistent faults
 
 The readout captures memory **while the FDS is running**. Some values change legitimately, even in checksum-valid frames. Run the patched memory in the provided `fds_sim.py` and record every address written by the executing program.
@@ -93,6 +99,8 @@ FLAG: GAIANSPACE{405-43E-445-448-4BD}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library and challenge-supplied fds_sim.py.
+# No pip installation is required.
 """Recover persistent FDS-16 memory damage from five noisy readouts."""
 
 import argparse

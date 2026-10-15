@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
+# Dependencies:
+#   python3 -m pip install numpy
 """Solve 702-concatenated from signed 8-bit receiver symbols.
 
 Example:
-    python3 solve_702_concatenated_v1.py pilgrim_symbols.s8 --out-dir 702_solution
+    python3 702.py pilgrim_symbols.s8 --out-dir 702_solution
 
 Dependency: NumPy. Viterbi and RS(255,223) decoding are implemented here.
 No GNU Radio, reedsolo, known plaintext, or precomputed decoded data is used.

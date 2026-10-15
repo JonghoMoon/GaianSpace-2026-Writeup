@@ -1,5 +1,6 @@
 
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 import csv
 from pathlib import Path
 

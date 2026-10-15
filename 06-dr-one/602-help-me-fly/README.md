@@ -26,6 +26,17 @@ Read what the aircraft was saying as it flew.
 1. Parse the PCAP and select UDP replies sent by the aircraft (`10.42.0.1:7099`).
 2. Identify the five-byte acknowledgement packets beginning with `53 01`.
 3. Read the changing third byte as an ASCII character and the final two bytes as a little-endian sequence number.
+
+   The five-byte reply layout is:
+
+   | Offset | Size | Field |
+   |---:|---:|---|
+   | 0 | 1 byte | Reply marker `0x53` |
+   | 1 | 1 byte | ACK type `0x01` |
+   | 2 | 1 byte | ASCII data character |
+   | 3 | 2 bytes | Little-endian sequence number |
+
+   For instance, `53 01 47 F0 00` represents character `G` at sequence `0x00F0`.
 4. Sort by sequence, check for missing/conflicting entries, and concatenate the characters.
 
 ### Reproduction
@@ -53,6 +64,7 @@ FLAG: GAIANSPACE{fl1ght_telemetry_str3am}
 ```python
 
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 import re
 import socket
 import struct

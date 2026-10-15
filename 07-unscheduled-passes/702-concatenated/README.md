@@ -30,6 +30,16 @@ Somewhere in the readout the computer signs its name.
 4. Correct symbol errors, recover frame counters and valid data lengths, and concatenate valid payload bytes in frame order.
 5. Decompress the recovered zlib/DEFLATE stream, verify its checksum, and locate the flag.
 
+### Why this decoding order works
+
+The recording contains **signed 8-bit soft symbols**, not recovered bits. A positive sample favours transmitted bit `0` and a negative sample favours `1`; a larger absolute value is stronger evidence. A hard decision based only on the sign would discard that reliability information. The solver therefore maximizes a **soft-decision Viterbi path metric** across all 64 trellis states (constraint length 7), trying both possible alignments of the incoming two-symbol pairs.
+
+The inner convolutional code uses generators **`171` and `133` (octal)**. For each data bit the `171` output was transmitted first, while the `133` output was **inverted** before transmission. Accounting for that inversion is essential. The sync marker `0x1ACFFC1D` passed through the same inner code, so the decoder searches for it **after** Viterbi decoding.
+
+After each recovered sync marker come `4 × 255 = 1020` bytes forming four interleaved RS(255,223) codewords over GF(256), using field polynomial `0x11D` and 32 parity bytes per codeword. Transmitted byte position `4*i + j` belongs to byte `i` of codeword `j`. The solver takes `encoded[j::4]`, corrects each RS codeword, then **interleaves the 223-byte decoded data sections back into their transmitted order**, rather than concatenating the four messages.
+
+The resulting 892 bytes consist of a 2-byte big-endian frame counter, a 2-byte valid-length field, and 888 available data bytes. Valid-length, `0x55` filler and consecutive frame counters are checked before joining payloads. In this capture, the three frames require **11 RS byte corrections** in total. Finally, the recovered 2050-byte stream is inflated to 3778 bytes; the detected **zlib wrapper's checksum** is validated by the decompressor. The code also has a raw-DEFLATE fallback, for which no zlib wrapper checksum is available; the observed solution takes the checksum-verified zlib path.
+
 ### Reproduction
 
 Required dependencies: NumPy. The solver implements Viterbi and Reed–Solomon decoding internally.
@@ -59,10 +69,12 @@ FLAG: GAIANSPACE{s0ft_v1terbi_th3n_r33d_s0l0m0n}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies:
+#   python3 -m pip install numpy
 """Solve 702-concatenated from signed 8-bit receiver symbols.
 
 Example:
-    python3 solve_702_concatenated_v1.py pilgrim_symbols.s8 --out-dir 702_solution
+    python3 702.py pilgrim_symbols.s8 --out-dir 702_solution
 
 Dependency: NumPy. Viterbi and RS(255,223) decoding are implemented here.
 No GNU Radio, reedsolo, known plaintext, or precomputed decoded data is used.

@@ -33,16 +33,44 @@ Open the vault and read the find.
 
 ### Reproduction
 
+The Linux solver requires a C compiler, OpenMP, OpenSSL development headers/libraries, and the `7z` command. The original search used both a Linux VM and a Windows host.
+
 Run the solver with the original challenge files in the paths expected by the source code.
 
+The password was recovered by an **exhaustive-search attempt split across two computers**. The author started the search at index `0` on a Linux virtual machine, while a Windows-host executable searched from an intermediate index toward the end of the same five-letter lowercase keyspace. **The Windows process found the password.** This was not a search limited to the already-known winning index, and no smaller predetermined candidate set was used to discover the password.
+
+The precise split index and Windows build command were not preserved in this archive, so they should not be presented as exact historical commands. The search space contains `26^5 = 11,881,376` candidates, with indices `0` through `11,881,375`. The solver supports a starting index and a maximum number of candidates, enabling the same split to be reproduced without overlapping search ranges. For example, to split the keyspace at index `6,000,000` (an **illustrative split, not a claim about the original run**):
+
+**Linux VM — indices 0 to 5,999,999:**
+
 ```bash
+sudo apt update
+sudo apt install -y build-essential libssl-dev libomp-dev p7zip-full
 gcc -O3 -fopenmp -Wno-deprecated-declarations 604_crack.c -o 604_crack -lcrypto
+OMP_NUM_THREADS=12 ./604_crack mission_vault.7z 0 6000000
+```
+
+**Windows host — indices 6,000,000 to 11,881,375:**
+
+Run the Windows build of `604_crack.c` from PowerShell with OpenSSL, OpenMP, and `7z` available:
+
+```powershell
+.\604_crack.exe mission_vault.7z 6000000 5881376
+```
+
+The example partitions are disjoint and together cover all 11,881,376 candidates. Each instance stops when it finds and successfully verifies a password; the other instance can then be stopped manually. Compile the Windows executable with a toolchain supporting OpenMP and OpenSSL, or use the executable already built for the original search.
+
+**Quick verification after password recovery (not the original exhaustive search):**
+
+```bash
 OMP_NUM_THREADS=12 ./604_crack mission_vault.7z 7684700 100
 7z x mission_vault.7z -pqvfzk
 cat ice_site.txt
 ```
 
-Expected relevant output:
+The short range includes the discovered password `qvfzk` at index `7,684,752`. It is provided only to make verification fast; it must not be mistaken for the search that discovered the password.
+
+Expected relevant output from the **short verification run**:
 
 ```text
 7z: 506 bytes; encrypted header: 128 bytes; KDF rounds: 524288; testing indices [7684700,7684800)
@@ -69,11 +97,21 @@ Survey marker (planetocentric): 46.7 N, 97.3 E.
 FLAG: GAIANSPACE{UTOPIA_PLANITIA_46.7N_97.3E}
 ```
 
-The supplied source `604_crack.c` to use the command shown. The archive was successfully extracted with the recovered password. The survey text identifies the Utopia Planitia ice deposit at planetocentric coordinates 46.7 N, 97.3 E.
+The supplied source `604_crack.c` implements the search ranges shown above. The archive was extracted with the recovered password during the original solve; the displayed extraction log is retained as evidence from that run. The survey text identifies the Utopia Planitia ice deposit at planetocentric coordinates 46.7 N, 97.3 E.
 
-### Exploit Code
+### Solver Code
 
 ```c
+/*
+ * Dependencies (Ubuntu/Debian):
+ *   sudo apt update
+ *   sudo apt install -y build-essential libssl-dev libomp-dev p7zip-full
+ * Build on Linux:
+ *   gcc -O3 -fopenmp -Wno-deprecated-declarations 604_crack.c -o 604_crack -lcrypto
+ * Windows: compile with a Windows OpenMP/OpenSSL-enabled C toolchain and
+ *   provide the 7z executable in PATH. Compilation details depend on the toolchain.
+ */
+
 /*
  * 604_crack.c
  *

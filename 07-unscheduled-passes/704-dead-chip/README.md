@@ -32,6 +32,24 @@ The desk has the 1977 ground copy of the memory, the handbook, and a bench model
 5. Apply the patch to the bench simulator and compare the telemetry output against the healthy reference.
 6. Verify zero dead-chip reads and writes, and ensure the thermal-memory region remains intact.
 
+### Why the relocation addresses were chosen
+
+The historical load map lists multiple spare regions, but a 1977 allocation chart is **not sufficient evidence that RAM remains free in 2026**: the later thermal-correction load occupies `3A0–3DF`. The solver therefore validates the original memory image at every proposed destination and explicitly protects the thermal region, rather than copying all code into the apparently free `3A0` block.
+
+The relocation plan is an intentionally designed patch, **not precomputed Flag data**:
+
+| Original words | New words | Length | Role and placement constraint |
+|---|---|---:|---|
+| `600–61D` | `5D0–5ED` | 30 | Return slot and first part of the signature routine, in free healthy memory. |
+| `61E–623` | `770–775` | 6 | Remaining signature instructions, reached by a new bridge at `5EE`. |
+| `624–628` | `4F0–4F4` | 5 | Housekeeping tail reached through an indirect dispatch pointer. |
+| `629–632` | `4F5–4FE` | 10 | Dispatch pointers, constants and scratch words; indexed entries remain in their 32-word page. |
+| `640–654` | `2E0–2F4` | 21 | Signature lookup table, entirely within the same 32-word page. |
+
+The **five-bit indexed-address adder** discards a carry across 32-word pages. A naive table relocation crossing a page boundary would silently read the wrong entries, so all 21 words of the signature table are placed at `2E0–2F4`. The patch rewrites instruction operands and the stored indirect-dispatch addresses to point to the new copies. A one-word jump at `5EE` connects the split signature code; the signature seed/tag at former address `632` is restored to `02E0` rather than mistaken for a normal relocatable pointer.
+
+The resulting patch contains **72 relocated words, two updated external references and one bridge = 75 words**, below the **96-word uplink limit**. Verification uses the supplied FDS simulator with bank `600–6FF` failed, demands **zero reads or writes in the dead bank**, checks that the thermal region is preserved, and compares all **114 telemetry words** against a corrected healthy reference. This checks behavior, not merely whether a Flag-shaped string can be found.
+
 ### Reproduction
 
 Required dependencies: Python standard library and the supplied `fds_sim.py`.
@@ -61,10 +79,12 @@ The solver generates `704_solution/fds_patch_704_v1.txt`; it is an output artifa
 
 ```python
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library and challenge-supplied fds_sim.py.
+# No pip installation is required.
 """Build and verify the relocation patch for 704-dead-chip.
 
 Example:
-    python3 solve_704_dead_chip_v1.py --input-dir /path/to/704
+    python3 704.py
     python3 fds_sim.py fds_golden.img 704_solution/fds_patch_704_v1.txt
 
 Dependencies: Python standard library and the supplied fds_sim.py.

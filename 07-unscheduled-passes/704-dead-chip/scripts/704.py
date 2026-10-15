@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library and challenge-supplied fds_sim.py.
+# No pip installation is required.
 """Build and verify the relocation patch for 704-dead-chip.
 
 Example:
-    python3 solve_704_dead_chip_v1.py --input-dir /path/to/704
+    python3 704.py
     python3 fds_sim.py fds_golden.img 704_solution/fds_patch_704_v1.txt
 
 Dependencies: Python standard library and the supplied fds_sim.py.

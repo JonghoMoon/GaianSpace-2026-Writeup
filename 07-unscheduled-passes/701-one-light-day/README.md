@@ -32,6 +32,23 @@ The frame log is stamped in the spacecraft's own clock. Ade on nights thinks tha
 4. Convert the event instant into spacecraft clock time using the supplied clock correlation, including the post-2019 reset.
 5. Locate the 48-second telemetry frame active at that spacecraft-clock instant and read its status word.
 
+### Why light-time and spacecraft-clock corrections matter
+
+The carrier transition was observed at the **Earth-received time** (ERT), not at the instant Pilgrim-1 entered safe mode. Convert the ERT from UTC to the ephemeris time scale first. With the Earth centre as the observer (the supplied kernel bundle provides no ground-station trajectory), the one-way light-time equation is
+
+\[
+ t_{\mathrm{ERT}} - t_{\mathrm{event}} =
+ \frac{\left\|\mathbf r_{\mathrm{sc}}(t_{\mathrm{event}})
+       - \mathbf r_{\oplus}(t_{\mathrm{ERT}})\right\|}{c},
+ \qquad c=299\,792.458\ \mathrm{km/s}.
+\]
+
+The spacecraft's position belongs to the **transmit/event epoch**, whereas Earth's position belongs to the **receive epoch**. The solver starts with zero light time, repeatedly evaluates the spacecraft state at `received - light_time`, and stops once the change is below `1e-9` s. For these supplied kernels the converged delay is **86,505.042874499 s**. Subtracting it in ephemeris time and converting back to UTC gives **2026-10-07T18:53:05.057127Z**.
+
+Next, the supplied leap-second kernel and spacecraft-clock kernel are used to translate that instant to Pilgrim-1's SCLK. Importantly, the clock kernel contains **multiple partitions** because the spacecraft clock was reset after the 2019 fault. It is not correct to count uninterrupted wall-clock seconds from launch or assume that `2/0238864906.254` is a UTC timestamp: `2` selects the post-reset partition, and the final field counts **1/256-second ticks**.
+
+The frame log records **frame starts in SCLK**, not their Earth reception timestamps. Select the frame whose start is at or before the converted event tick and whose successor starts afterward. This selects frame **43430**, with status word `3C0AB555`, yielding `GAIANSPACE{FDS_3C0AB555}`. The code independently checks that the event lies between those two frame starts in ephemeris time as well.
+
 ### Reproduction
 
 Required dependencies: NumPy. The solver evaluates the provided SPICE kernels without requiring a separate CSPICE installation.
@@ -61,12 +78,14 @@ The `kernels.zip` supplied with the challenge is required; `de440s.bsp` in the w
 
 ```python
 #!/usr/bin/env python3
+# Dependencies:
+#   python3 -m pip install numpy
 """Solve 701-one-light-day from the supplied frame log and SPICE kernels.
 
 Example:
-    python3 solve_701_one_light_day_v1.py --input-dir /path/to/701
+    python3 701.py
 
-Dependencies: NumPy. No downloaded ephemeris or CSPICE installation is needed.
+Dependency: NumPy. No downloaded ephemeris or CSPICE installation is needed.
 The supplied SPK is evaluated exactly in its degree-3 Hermite representation.
 Earth center is the observer because the supplied kernels have no station state.
 """

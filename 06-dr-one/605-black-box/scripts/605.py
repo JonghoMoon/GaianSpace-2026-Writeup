@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 """Recover clipped gyro time and calibrate servo direction from a known maneuver."""
 
 import argparse
@@ -155,8 +156,6 @@ def main() -> None:
     first_clip = None
     preceding_blocks = []
     for relative_offset, tick, samples in blocks:
-        if tick < 76000:
-            continue
         preceding_blocks.append((tick, samples))
         if len(preceding_blocks) > 20:
             preceding_blocks.pop(0)

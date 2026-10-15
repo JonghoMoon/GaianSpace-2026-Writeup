@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+# Dependencies:
+#   python3 -m pip install numpy
 """Solve 701-one-light-day from the supplied frame log and SPICE kernels.
 
 Example:
-    python3 solve_701_one_light_day_v1.py --input-dir /path/to/701
+    python3 701.py
 
-Dependencies: NumPy. No downloaded ephemeris or CSPICE installation is needed.
+Dependency: NumPy. No downloaded ephemeris or CSPICE installation is needed.
 The supplied SPK is evaluated exactly in its degree-3 Hermite representation.
 Earth center is the observer because the supplied kernels have no station state.
 """

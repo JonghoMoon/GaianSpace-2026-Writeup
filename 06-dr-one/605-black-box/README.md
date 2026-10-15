@@ -33,7 +33,7 @@ The script reads the image, locates `BBX0007.BIN` in the FAT16 root directory, f
 
 ### 2. Find the first clipped gyro sample
 
-A gyro sample is clipped when any of its three signed 16-bit components equals `-32768` or `32767`. The first such sample is found in the block stamped **78758 ms**, at sample index 2:
+A gyro sample is clipped when any of its three signed 16-bit components equals `-32768` or `32767`. The revised solver searches **all recovered FIFO blocks from the beginning**, rather than skipping everything before a preselected time. The first such sample is found in the block stamped **78758 ms**, at sample index 2:
 
 ```text
 First clipped gyro block: 78758 ms
@@ -72,6 +72,9 @@ Onset median gyro: (-923, -2961, -2328)
 Estimated tilt bearing: 107.31 deg clockwise from nose
 Servo projection scores: {1: 2961.0, 2: -681.1585523069634, 3: -2279.841447693038}
 ```
+
+
+The servo bearings are **S1 = 90°**, **S2 = 210°**, and **S3 = 330°**, clockwise from the nose. The known forward-lean maneuver calibrates the sign of the sensor-to-body mapping, and the solver uses the calibrated gyro components to estimate a downward-tilt bearing. The resulting **107.31°** estimate lies closest to **S1 (90°)**; its positive projection score (2961.0) also exceeds the scores of S2 and S3. These are model-based inferences based on the stated mounting/calibration assumptions, not an independent complete reconstruction of the board's attitude.
 
 The estimated downward-tilt direction is nearest **S1 at 90°**, and S1 has the largest projection score. The combined result, **`GAIANSPACE{S1-T78758}`**, was subsequently confirmed as the accepted flag.
 
@@ -119,6 +122,7 @@ The standalone recovery and analysis script is also available as [`605.py`](./60
 
 ```python
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
 """Recover clipped gyro time and calibrate servo direction from a known maneuver."""
 
 import argparse
@@ -275,8 +279,6 @@ def main() -> None:
     first_clip = None
     preceding_blocks = []
     for relative_offset, tick, samples in blocks:
-        if tick < 76000:
-            continue
         preceding_blocks.append((tick, samples))
         if len(preceding_blocks) > 20:
             preceding_blocks.pop(0)

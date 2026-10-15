@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library and challenge-supplied fds_sim.py.
+# No pip installation is required.
 """Recover persistent FDS-16 memory damage from five noisy readouts."""
 
 import argparse

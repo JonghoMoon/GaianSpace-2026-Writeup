@@ -31,6 +31,41 @@ Engineering needs one number: how far the receiver's clock is from true time.
 5. Repeat the fit while excluding each beacon in turn. Reject the outlier `SAT-L5` because excluding it reduces the residual RMS to approximately 0.024 µs.
 6. Convert the best-fit clock bias to signed integer milliseconds.
 
+### Light-time measurement and outlier selection
+
+The timestamps form a pseudorange measurement. For each beacon observation, define the shared clock bias as **receiver clock minus TDB** (`b = t_rx_clock - t_rx_TDB`). In time units, the model is
+
+\[
+ t_{\mathrm{rx,clock}} - t_{\mathrm{tx,TDB}}
+ = \frac{\|\mathbf r_{\mathrm{receiver}}(t_{\mathrm{rx}})
+       - \mathbf r_{\mathrm{beacon}}(t_{\mathrm{tx}})\|}{c} + b.
+\]
+
+The beacon's position must be evaluated at the **timestamp it transmitted**, rather than at reception or at the present day. For each outer-planet system barycentre, the almanac specifies the orbital normal `r × v` and a rotation of its heliocentric position by `+60°` (L4) or `-60°` (L5); adding the Sun's barycentric position completes the beacon coordinates.
+
+The three receiver snapshots do not assume one fixed spacecraft position. The least-squares state consists of **three independent 3D receiver positions and one shared clock bias** (10 unknowns). Positions are represented in light-seconds to keep range and bias magnitudes comparable. For each candidate exclusion, the code initializes from squared pseudorange differences and fits the observations using `scipy.optimize.least_squares` with an analytical Jacobian. It evaluates the complete residual vector, rejects fits above the 1 µs RMS tolerance, and independently repeats each snapshot's clock-bias fit as a rounding check.
+
+The no-exclusion fit has RMS **0.183916639 s**. Excluding **`SAT-L5`** gives **2.42029006 × 10^-8 s**, uniquely below the tolerance and consistent with the almanac's missed time-transfer bulletins. The common clock bias is **+2213.481252853 s**, or **+2,213,481 ms** after rounding. Its sign is positive because the receiver's clock is **ahead of TDB**.
+
+### External ephemeris used for reproduction
+
+`ssps_receiver_log.csv` and `ssps_almanac.md` are the original challenge attachments. **`de440s.bsp` is an additional JPL DE440 SPK ephemeris file**, present in this writeup's working archive but not among those two attachments. It supplies solar-system states; it is **not** the fictional Pilgrim-1 trajectory kernel used in Challenge 701.
+
+A copy is available from NASA/JPL NAIF: [de440s.bsp](https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp). For a new environment:
+
+```bash
+curl -L --fail -o de440s.bsp https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp
+sha256sum de440s.bsp
+```
+
+The file in the archived working environment has SHA-256:
+
+```text
+c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2
+```
+
+Use `python3 703.py --ephemeris de440s.bsp` if the file is not located at the default input path. No network download is performed by the solver.
+
 ### Reproduction
 
 Required dependencies: NumPy, SciPy, and a local `de440s.bsp` ephemeris file. No ephemeris download is performed automatically.
@@ -67,10 +102,13 @@ The `de440s.bsp` file is present in the uploaded working archive, but is not one
 
 ```python
 #!/usr/bin/env python3
+# Dependencies:
+#   python3 -m pip install numpy scipy
+# External data: de440s.bsp (JPL DE440 SPK; see README).
 """Solve 703-lagrange-fix using DE440 and the supplied SSPS snapshots.
 
 Example:
-    python3 solve_703_lagrange_fix_v1.py --input-dir /path/to/703 --ephemeris de440s.bsp
+    python3 703.py --ephemeris de440s.bsp
 
 Dependencies: NumPy and SciPy. The 701 spacecraft trajectory is NOT required.
 Solve independent receiver positions for all snapshots and one shared clock
