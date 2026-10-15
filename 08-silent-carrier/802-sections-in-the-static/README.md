@@ -35,7 +35,7 @@ Pull the crew’s words out of the static. Leave the rotten copies where they fe
 Run the supplied Python solver with the original challenge files in the locations expected by its source code.
 
 ```bash
-python3 802(2).py
+python3 802.py
 ```
 
 Expected relevant output:

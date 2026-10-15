@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Dependencies: python3 -m pip install skyfield
+
 """Recover the 202-downlink-deception flag from capture and TLE."""
 
 import argparse

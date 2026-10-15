@@ -36,7 +36,7 @@ Lock it by hand. Read HALCYON-7’s last transmission.
 Run the supplied Python solver with the original challenge files in the locations expected by its source code.
 
 ```bash
-python3 805(2).py
+python3 805.py
 ```
 
 Expected relevant output:

@@ -21,38 +21,25 @@ Put the signature back together.
 
 ### Steps
 
-1. Read `gaian-13-relay.tle`: the satellite title includes `;tag:w4tcher`.
-2. Read `relay.mod`: the operator comment contains `relay-token=0f`.
-3. Inspect `pass_capture.png`: the **Footprint** display includes `note: the_sky`.
-4. Cross-check `vela.qth` for the VELA station configuration. It verifies the context rather than contributing a phrase fragment.
-5. Combine the three fragments in the order **`w4tcher`**, **`0f`**, **`the_sky`**. Preserve literal digits and underscores.
+1. Inspect `gaian-13-relay.tle`. The satellite title carries a nonstandard signature comment `;tag:w4tcher`.
+2. Inspect `relay.mod`. The saved tracking module contains `relay-token=0f`.
+3. Inspect `pass_capture.png`. Its **Footprint** field displays `note: the_sky`. The solver reads the screenshot with Tesseract OCR and extracts the text following `note:`.
+4. Cross-check `vela.qth`: the saved station is **GaianSpace VELA**, latitude **19.48**, longitude **−155.60**. This confirms the context but contributes no fragment.
+5. Combine the recovered fragments, preserving digits and underscores, in the order that forms the phrase: `w4tcher` + `0f` + `the_sky`.
 
 ### Reproduction
 
-The following source is the solver used for this challenge. Run it with its original working-directory layout and input paths.
+Put `206.py`, `gaian-13-relay.tle`, `relay.mod`, `pass_capture.png` and `vela.qth` in the same directory and run:
 
 ```bash
 python3 206.py
 ```
 
+The installation commands for **Pillow**, **pytesseract** and the system **Tesseract OCR executable** are at the top of `206.py`. The script reads all fragments from the supplied files and verifies the station configuration.
+
 Expected relevant output:
-```
-[OCR Result]
-Gpredict - Single Satellite
-Satellite GAIAN-13 R2
 
-Catalog # 00005
-
-Az / EL 181.6° / 68.2°
-Range 2654 km
-
-Next AOS 2025-06-12 19:03:11
-Footprint note: the_sky
-Doppler -1.4 kHz
-
-Mode RELAY
-
-
+```text
 [Extracted Fragments]
 TLE        : w4tcher
 Module     : 0f
@@ -66,8 +53,10 @@ GAIANSPACE{w4tcher_0f_the_sky}
 ### Exploit Code
 
 ```python
-
 #!/usr/bin/env python3
+# Dependencies: python3 -m pip install Pillow pytesseract
+# System dependency (Ubuntu/Debian): sudo apt install tesseract-ocr
+
 """
 GaianSpace CTF 206 - gpredict-secret
 
@@ -86,7 +75,7 @@ import pytesseract
 from PIL import Image
 
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(".")
 
 
 def extract_tle_fragment(path: Path) -> str:

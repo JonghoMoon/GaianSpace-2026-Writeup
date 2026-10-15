@@ -35,7 +35,7 @@ Find the copy that survived whole.
 Run the supplied Python solver with the original challenge files in the locations expected by its source code.
 
 ```bash
-python3 803(1).py
+python3 803.py
 ```
 
 Expected relevant output:

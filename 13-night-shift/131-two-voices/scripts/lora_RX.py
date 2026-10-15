@@ -40,7 +40,7 @@ class lora_RX(gr.top_block):
                 fractional_bw=0)
         self.lora_rx_0 = lora_sdr.lora_sdr_lora_rx( bw=125000, cr=2, has_crc=False, impl_head=True, pay_len=64, samp_rate=500000, sf=7, sync_word=[0x00], soft_decoding=False, ldro_mode=2, print_rx=[True,True])
         self.blocks_message_debug_0 = blocks.message_debug(True)
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/jhmoon/gaianspace/Day 2/132_DL_candidates/132_DL_1_19s.cf32', False, 0, 0)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_gr_complex*1, '/home/jhmoon/gaianspace/Day 2/132_DL_candidates/131_A_reply_1.cf32', False, 0, 0)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
         self.blocks_file_sink_0 = blocks.file_sink(gr.sizeof_char*1, '/home/jhmoon/lora_decode.bin', False)
         self.blocks_file_sink_0.set_unbuffered(True)

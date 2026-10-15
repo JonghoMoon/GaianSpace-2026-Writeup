@@ -35,7 +35,7 @@ A sticker on the recorder says the key is the stardate. Oduya tried that before 
 Run the supplied Python solver with the original challenge files in the locations expected by its source code.
 
 ```bash
-python3 804(2).py
+python3 804.py
 ```
 
 Expected relevant output:

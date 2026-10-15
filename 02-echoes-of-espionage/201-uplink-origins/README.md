@@ -23,25 +23,24 @@ Report the sub-satellite point at the uplink instant and the satellite's altitud
 
 ### Steps
 
-1. Read the two TLE lines from `gaian-13.tle` and verify that the satellite catalog number is `5`.
-2. Propagate the orbit to the specified UTC instant using SGP4. The returned position is in **TEME**, not Earth-fixed coordinates.
-3. Rotate TEME into an approximate Earth-fixed frame using Vallado's GMST expression.
-4. Convert the resulting Cartesian coordinates to geodetic WGS-84 latitude, longitude and altitude. Use the ellipsoid's flattening, not a fixed spherical Earth radius.
-5. Round the three values to two decimal places.
+1. Open `gaian-13.tle` and identify the object with NORAD ID **00005** (`EL06QL`). The supplied solver normalizes non-breaking spaces in the TLE before parsing it.
+2. Set the uplink event time to **2025-06-12 17:15:00 UTC**, as given in the challenge. Propagate the orbit to this instant using SGP4. Its position vector is in **TEME**, not in an Earth-fixed coordinate system.
+3. Obtain the Greenwich mean sidereal angle from the Julian date using Vallado's expression, then rotate the TEME vector into the approximate Earth-fixed (PEF/ECEF) frame. This solution approximates UT1 by UTC and ignores polar motion; these approximations are sufficient for the stated two-decimal-place challenge answer.
+4. Convert the Cartesian vector to **WGS-84 geodetic coordinates** by iterating latitude on the ellipsoid. The altitude is height above the WGS-84 ellipsoid, not distance above a spherical Earth.
+5. Format latitude, longitude and altitude to two decimals, preserving negative longitude west of Greenwich.
 
 ### Reproduction
 
-The supplied solver is [`scripts/201.py`](./scripts/201.py). Required dependencies: `sgp4`.
-
-From the challenge input directory (`challenges/`):
-
-The code linked above is the solver **provided in the attached category archive**. It is the primary implementation referenced by this write-up.
+Put `201.py` and `gaian-13.tle` in the same directory and run:
 
 ```bash
 python3 201.py
 ```
 
+Dependency installation is documented at the top of `201.py` (`sgp4`).
+
 Expected relevant output:
+
 ```text
 Latitude:   26.46
 Longitude: -98.64
@@ -52,6 +51,9 @@ FLAG: GAIANSPACE{26.46,-98.64,3296.64}
 ### Exploit Code
 
 ```python
+#!/usr/bin/env python3
+# Dependencies: python3 -m pip install sgp4
+
 from datetime import datetime, timezone
 from math import atan2, cos, degrees, pi, sin, sqrt
 from pathlib import Path
@@ -142,7 +144,6 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
 ```
 
 ## Flag

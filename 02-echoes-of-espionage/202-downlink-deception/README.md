@@ -15,36 +15,35 @@ Work out which site had GAIAN-13 in the clear when the frame arrived, and read t
 
 Receiving-site roster (lat, lon; west is negative):
 
-Callsign	Operator	Latitude	Longitude
-GDSN	Deep-space net, high desert	35.42667	-116.89000
-MDSN	Deep-space net, Iberia	40.43194	-4.24917
-CDSN	Deep-space net, southern hemisphere	-35.40139	148.98167
-CAPE	Coastal array, retired	28.53830	-81.37920
-VELA	GaianSpace mid-ocean array	19.48000	-155.60000
+| Callsign | Operator | Latitude | Longitude |
+|---|---|---:|---:|
+| GDSN | Deep-space net, high desert | 35.42667 | -116.89000 |
+| MDSN | Deep-space net, Iberia | 40.43194 | -4.24917 |
+| CDSN | Deep-space net, southern hemisphere | -35.40139 | 148.98167 |
+| CAPE | Coastal array, retired | 28.53830 | -81.37920 |
+| VELA | GaianSpace mid-ocean array | 19.48000 | -155.60000 |
 
 **Flag format:** `GAIANSPACE{[callsign],[timestamp]}` — callsign exactly as the roster prints it, timestamp in the form it appears in the capture (`YYYY-MM-DDThh:mm:ssZ`). For example `GAIANSPACE{ABCD,2025-01-02T03:04:05Z}`.
 
-**Attachments:** `gaian-13.tle` — the frame the desk saved off the downlink, `telemetry_capture.bin`  — the element set for GAIAN-13, same bird as before
+**Attachments:** `gaian-13.tle` — the element set for GAIAN-13; `telemetry_capture.bin` — the captured downlink telemetry frame
 
 ## Solution
 
 ### Steps
 
-**1. Extract the downlink timestamp**
+**1. Extract the reception time from the capture.**
 
-Inspect `telemetry_capture.bin` and locate the ASCII UTC timestamp associated with the `GSTM` and `GAIAN-13` fields:
+Inspect `telemetry_capture.bin`. The `GSTM`/`GAIAN-13` telemetry frame contains an ASCII UTC timestamp:
 
 ```text
 2025-06-12T19:15:00Z
 ```
 
-The `scripts/202.py` computes station elevation angles, extract the timestamp and print the complete flag. 
+The solver searches the capture for the timestamp rather than embedding it as a constant, then parses it as UTC.
 
-**2. Propagate the satellite orbit**
+**2. Propagate GAIAN-13 and calculate topocentric elevation.**
 
-Load `gaian-13.tle` with Skyfield, propagate GAIAN-13 to the captured timestamp, and calculate the topocentric elevation angle from each candidate ground station using WGS-84 coordinates.
-
-**3. Compare candidate stations**
+Read `gaian-13.tle` with Skyfield, propagate its orbit to the recovered instant and form each site-relative topocentric vector using the WGS-84 ground coordinates in the challenge roster. The elevation angles are:
 
 | Callsign | Elevation | Above geometric horizon |
 |---|---:|---|
@@ -54,19 +53,23 @@ Load `gaian-13.tle` with Skyfield, propagate GAIAN-13 to the captured timestamp,
 | CAPE | −21.9414° | No |
 | **VELA** | **+68.1723°** | **Yes** |
 
-VELA has by far the highest elevation. GDSN is technically above the geometric horizon, so a simple elevation `> 0°` test cannot uniquely establish VELA. The selection is consistent with the challenge's *high enough* reception clue; an explicit elevation mask was not provided.
+**3. Select the strongest intended station candidate.**
 
-**4. Construct the flag**
+VELA is by far the highest, at **68.17°**. Importantly, **GDSN is also 2.76° above the geometric horizon**. Consequently, the data alone do not establish that VELA is the *only* site with line-of-sight under a zero-degree elevation criterion. The challenge's phrase *high enough* implies an operational minimum elevation or usable-link criterion, but no numerical threshold is specified. VELA is the clear intended candidate; this is not proof of exclusive geometric visibility.
 
-Combine the selected station callsign with the UTC timestamp extracted from the capture.
+**4. Construct the flag.**
+
+Use the station callsign and the timestamp from the captured frame.
 
 ### Reproduction
 
-The following source is the solver used for this challenge. Run it with its original working-directory layout and input paths.
+Put `202.py`, `gaian-13.tle` and `telemetry_capture.bin` in the same directory and run:
 
 ```bash
 python3 202.py
 ```
+
+Dependency installation is documented at the top of `202.py` (`skyfield`).
 
 Expected relevant output:
 
@@ -86,6 +89,8 @@ FLAG: GAIANSPACE{VELA,2025-06-12T19:15:00Z}
 
 ```python
 #!/usr/bin/env python3
+# Dependencies: python3 -m pip install skyfield
+
 """Recover the 202-downlink-deception flag from capture and TLE."""
 
 import argparse

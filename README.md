@@ -55,7 +55,7 @@ The table below reflects the **solved challenges visible in the supplied scorebo
 | [11-the-pgm-rush](#11-the-pgm-rush) | 8 | ? |
 | [12-spectral-forensics](#12-spectral-forensics) | 7 | ? |
 | [13-night-shift](#13-night-shift) | 5 | 718 |
-| **Total** | **68** | **?** |
+| **Total** | **68** | **9131** |
 
 ---
 
@@ -166,11 +166,12 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 |---:|---|---:|---|
 | 1 | [110-m-type](./11-the-pgm-rush/110-m-type/) | 100 | `GAIANSPACE{2041QM23_120}` |
 | 2 | [111-short-arc](./11-the-pgm-rush/111-short-arc/) | 150 | `GAIANSPACE{RT39SBA}` |
-| 3 | [113-touchdown](./11-the-pgm-rush/113-touchdown/) | 250 | `GAIANSPACE{A-0242}` |
-| 4 | [114-anchor-bite](./11-the-pgm-rush/114-anchor-bite/) | ? | `GAIANSPACE{B-27}` |
-| 5 | [115-locked-assayer](./11-the-pgm-rush/115-locked-assayer/) | ? | `GAIANSPACE{XR9-6YYDU6}` |
-| 6 | [116-sealed-canister](./11-the-pgm-rush/116-sealed-canister/) | ? | `GAIANSPACE{6304}` |
-| 7 | [117-the-dark-moonlet](./11-the-pgm-rush/117-the-dark-moonlet/) | 250 | `GAIANSPACE{aspartic_acid_L34}` |
+| 3 | [112-two-clocks](./11-the-pgm-rush/112-two-clocks) | ? | `GAIANSPACE{0412377}` |
+| 4 | [113-touchdown](./11-the-pgm-rush/113-touchdown/) | 250 | `GAIANSPACE{A-0242}` |
+| 5 | [114-anchor-bite](./11-the-pgm-rush/114-anchor-bite/) | ? | `GAIANSPACE{B-27}` |
+| 6 | [115-locked-assayer](./11-the-pgm-rush/115-locked-assayer/) | ? | `GAIANSPACE{XR9-6YYDU6}` |
+| 7 | [116-sealed-canister](./11-the-pgm-rush/116-sealed-canister/) | ? | `GAIANSPACE{6304}` |
+| 8 | [117-the-dark-moonlet](./11-the-pgm-rush/117-the-dark-moonlet/) | 250 | `GAIANSPACE{aspartic_acid_L34}` |
 
 ### <a id="12-spectral-forensics"></a>[12-spectral-forensics](./12-spectral-forensics/)
 
@@ -192,7 +193,7 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 | 2 | [132-no-name-on-the-door](./13-night-shift/132-no-name-on-the-door/) | 125 | `GAIANSPACE{432_132}` |
 | 3 | [133-hopscotch](./13-night-shift/133-hopscotch/) | 150| `GAIANSPACE{h0p_sc0tch_AF44A6}` |
 | 4 | [134-repacked](./13-night-shift/134-repacked/) | 150 | `GAIANSPACE{r3p4ck3d_660413}` |
-| 5 | [135-what-they-took](./113-night-shift/135-what-they-took/) | 193 | `GAIANSPACE{wh4t_th3y_t00k_064CCB}` |
+| 5 | [135-what-they-took](./13-night-shift/135-what-they-took/) | 193 | `GAIANSPACE{wh4t_th3y_t00k_064CCB}` |
 
 ---
 

@@ -23,19 +23,30 @@ A whiteboard contains `LEO = 12,000+ ???` and `GEO is dead anyway`, but neither 
 
 Follow the problem's instruction to consult GaianSpace's public article on the growth of LEO satellite populations:
 
-- [GaianSpace — LEO Satellites Boom](https://gaian.space/updates/leo-satellites-boom/)
+- [GaianSpace — The Boom in Low Earth Orbit Satellites](https://gaian.space/updates/leo-satellites-boom/) (July 23, 2025)
 
 **2. Use the year that was actually requested**
 
-The article's historical series places approximately **8,100** active satellites in LEO in **2024**. The misleading `12,000+` refers to a later population estimate and must not replace the 2024 figure.
+The article's section **"The Dramatic Rise of LEO Satellites Over the Past Decade"** includes a year-by-year breakdown of approximate active LEO satellite populations. The relevant entries are:
+
+| Year | Approximate Active LEO Satellites |
+|---|---:|
+| 2024 | ~8,100 |
+| 2025 (mid) | ~12,000+ (est.) |
+
+The challenge explicitly asks for the **2024** LEO count, making **8,100** the first value. The whiteboard's `12,000+` corresponds to the later mid-2025 estimate and is a distractor. The article also reports **11,539** operational satellites at the end of 2024, but that is the **total across orbits**, not the LEO-only figure requested here.
 
 **3. Read the forecast, not another historical data point**
 
-The forecast used in the challenge is approximately **60,000** satellites by the end of the 2030s / around 2040. The question asks for rounded whole numbers, not the leading `~` or the comma thousands separators.
+In **"What the Data Reveals: Implications for the Future"**, the article states:
+
+> By 2040, some forecasts suggest up to 60,000 satellites in LEO [10].
+
+This gives **60,000** as the projected LEO satellite population. The challenge describes the forecast as being for the end of the 2030s; the article itself uses **"By 2040"**, so that is the source wording used to identify the figure. It is a projection, not an observed historical count.
 
 **4. Preserve ordering**
 
-Place the 2024 count first, followed by the forecast: `8100,60000`.
+The challenge requests whole numbers, so omit approximation signs and thousands separators. Place the 2024 count first, followed by the forecast: `8100,60000`.
 
 ### Exploit Code
 
@@ -44,13 +55,13 @@ No exploit is involved. A minimal formatting check is sufficient:
 ```python
 # Format the two figures as integers in the challenge's requested order.
 count_2024 = 8100
-forecast_end_2030s = 60000
-print(f"GAIANSPACE{{{count_2024},{forecast_end_2030s}}}")
+forecast_2040 = 60000
+print(f"GAIANSPACE{{{count_2024},{forecast_2040}}}")
 ```
 
 ### References
 
-- [GaianSpace — LEO Satellites Boom](https://gaian.space/updates/leo-satellites-boom/) — challenge source (the original solve relied on its 2024 figures and forecast).
+- [GaianSpace — The Boom in Low Earth Orbit Satellites](https://gaian.space/updates/leo-satellites-boom/) — **"The Dramatic Rise of LEO Satellites Over the Past Decade"** (2024 table entry) and **"What the Data Reveals: Implications for the Future"** (2040 forecast).
 
 ## Flag
 

@@ -1,5 +1,7 @@
-
 #!/usr/bin/env python3
+# Dependencies: python3 -m pip install Pillow pytesseract
+# System dependency (Ubuntu/Debian): sudo apt install tesseract-ocr
+
 """
 GaianSpace CTF 206 - gpredict-secret
 
@@ -18,7 +20,7 @@ import pytesseract
 from PIL import Image
 
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(".")
 
 
 def extract_tle_fragment(path: Path) -> str:

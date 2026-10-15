@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# Dependencies: python3 -m pip install sgp4
 
 from datetime import datetime, timezone
 from math import atan2, cos, degrees, pi, sin, sqrt
