@@ -3,12 +3,13 @@
 #   sudo apt update && sudo apt install -y gnuradio python3-numpy python3-scipy
 #   Install the GNU Radio OOT module gr-lora_sdr against the SAME GNU Radio
 #   version as /usr/bin/python3: https://github.com/tapparelj/gr-lora_sdr
-#   Confirm with: /usr/bin/python3 -c "from gnuradio import lora_sdr"
+#   Confirm with: PYTHONNOUSERSITE=1 /usr/bin/python3 -c "from gnuradio import lora_sdr"
 # Python 3.10+ is required. The GNU Radio runtime is called as a subprocess.
 """Recover Challenge 132 GET HK ACK from original SigMF without preset answers.
 
-  python3 132.py vela_band_0136.sigmf-data --gr-python /usr/bin/python3
-  python3 132.py 132_DL_3_32.5s.cf32 --gr-python /usr/bin/python3
+  PYTHONNOUSERSITE=1 /usr/bin/python3 132.py vela_band_0136.sigmf-data \
+      --gr-python /usr/bin/python3 --window 34.65:36.0 --sfs 10 --crs 2 --lengths 96
+  PYTHONNOUSERSITE=1 /usr/bin/python3 132.py 132_DL_candidates/132_DL_3_32.5s.cf32
 
 When given raw ci8 SigMF, find narrow-band bursts at the downlink,
 extract each at 500 kS/s with an anti-alias FIR, then sweep implicit-header
@@ -208,8 +209,11 @@ def main() -> int:
     args = parser.parse_args()
     if not args.gr_python.exists():
         parser.error('GNU Radio Python executable is missing. Use --gr-python PATH.')
+    # Isolate GNU Radio from user-site NumPy/SciPy during the import probe too.
+    gr_env = dict(os.environ)
+    gr_env['PYTHONNOUSERSITE'] = '1'
     check = subprocess.run([str(args.gr_python), '-c', 'from gnuradio import lora_sdr'],
-                           capture_output=True, text=True, check=False)
+                           capture_output=True, text=True, check=False, env=gr_env)
     if check.returncode != 0:
         parser.error('GNU Radio/gr-lora_sdr is not importable in the selected Python:\n' + check.stderr[-1200:])
     if not args.input.exists():

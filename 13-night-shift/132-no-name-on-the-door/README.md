@@ -29,64 +29,92 @@ Find the carbon dioxide reading GAIAN-723 reported when it acknowledged the stra
 
 The station log shows the ground modem lost lock after a **configuration change by an unauthorized telecommand** at 01:31:17 UTC. The follow-up downlink no longer transmits an explicit payload length. Therefore a receiver configured for the old SF9 explicit header cannot decode this packet.
 
-The recorder metadata describes **ci8 IQ, 1,999,999 samples/s, center 433,549,995 Hz, starting 2026-10-11 01:36:45Z**. The downlink is near **433.175 MHz**. The original experiment used a cropped, translated, resampled **500 kS/s complex-float** file named `132_DL_3_32.5s.cf32`, but **that intermediate was not archived**. This revised script instead accepts the downloadable original SigMF data, detects band-limited bursts and creates candidate IQ windows itself. Use `--window` to choose an interval manually if the energy detector does not isolate the desired burst.
+The recorder metadata describes **ci8 IQ, 1,999,999 samples/s, center 433,549,995 Hz, starting 2026-10-11 01:36:45Z**. The downlink is near **433.175 MHz**. The original experiment used a cropped, translated, resampled **500 kS/s complex-float** file named `132_DL_3_32.5s.cf32`, which was **available on the workstation for a confirmed decode**, but is not part of the archived ZIP. This revised script instead accepts the downloadable original SigMF data, detects band-limited bursts and creates candidate IQ windows itself. Use `--window` to choose an interval manually if the energy detector does not isolate the desired burst.
 
 For each extracted candidate, `132.py` invokes GNU Radio/`gr-lora_sdr` in **implicit-header** mode and sweeps SF, coding-rate settings and candidate payload lengths. The default length candidates now include **68**, which was omitted by the earlier batch scanner. The original scan record also showed an intelligible, CRC-valid **application message prefix** when decoding length 96, so an exact PHY length need not be assumed to detect a valid message. This script tests candidate results against the actual ASCII packet's trailing `*XXXX` CRC field and **does not hardcode CO2, uptime, or the final flag**.
 
-The documented successful receive setting is **SF10, coding-rate setting 2, BW125 kHz, implicit header, no PHY CRC, sync-word parameter 0x00, nominal decoded length 68**. For this packet the receiver's sync-word check is not decisive; the separate application CRC-16 provides the decisive integrity check.
+The **workstation-verified** receiver settings are **SF10, CR2, BW125 kHz, implicit header, no PHY CRC**, with **payload-length hint 96**. `LEN96` is the *GNU Radio receiver configuration*, not proof that the actual text contains 96 useful bytes. The scan may also test other lengths. The effective sync-word parameter used by the decoder is `0x00`; the independently checked **application CRC** is the decisive validation here.
 
-The recovered ACK is:
+The extracted IQ was decoded successfully on the user's Ubuntu workstation with the GNU Radio system Python:
 
 ```text
-TM,ACK,1,GET HK,HK,V=4.51,I=0.1,T=21.82,P=996.24,CO2=432,UP=132*18FC
+CANDIDATE 1/1: 132_DL_candidates/132_DL_3_32.5s.cf32
+  FOUND SF10 CR2 LEN96, valid application CRC=18FC
+RECEIVER SETTINGS: SF=10 CR=2 implicit=True length_hint=96
+PAYLOAD: TM,ACK,1,GET HK,HK,V=4.51,I=0.1,T=21.82,P=996.24,CO2=432,UP=132*18FC
+CRC-16/CCITT-FALSE: calculated=18FC, received=18FC
+FLAG: GAIANSPACE{432_132}
 ```
 
-The `*18FC` field is the CRC-16/CCITT-FALSE of the preceding bytes, calculated with polynomial `0x1021` and initial value `0xFFFF` (using `binascii.crc_hqx`). It confirms the message, from which the requested fields are extracted: CO2 **432 ppm**, uptime **132 seconds**.
+The suffix `*18FC` is the CRC-16/CCITT-FALSE of the preceding message (polynomial `0x1021`, initial value `0xFFFF`). It confirms **CO2=432 ppm** and **uptime=132 seconds**. These values are parsed from the received payload and are not embedded in the solver.
 
-**Validation limit:** The large original `vela_band_0136.sigmf-data` was not included in the archived ZIP and the review environment lacks `gr-lora_sdr`. The parser and CRC checker were tested against the preserved decoded ACK; a fresh end-to-end execution from this original recording remains to be verified on a GNU Radio host. Do not confuse the previous manual decode log with a newly performed end-to-end test.
+**Original-SigMF extraction status:** A trial using `--window 31.5:34.5` returned **no CRC-valid ACK**. Re-examination of the uploaded raw SigMF identified a separate **SF10 burst at approximately 34.79–35.87 seconds** after the recording start (about **01:37:19.79–01:37:20.87 UTC**). The recommended extraction window is now `34.65:36.0`, providing margin at both ends. An independent preamble/synchronization check detects SF10 in this latter window, whereas the earlier window does not. **The newer window has not yet been confirmed by a successful full GNU Radio payload/CRC decode from raw SigMF**; do not report it as verified end to end until that test succeeds.
+
+The historical filename `132_DL_3_32.5s.cf32` should not be treated as proof of a precise SigMF sample offset. It identifies an intermediate IQ capture from the original work, whose CRC-valid decoding is confirmed above.
 
 ### Reproduction
 
-On Ubuntu, install GNU Radio and the numerical libraries for the script's signal extraction:
+On Ubuntu, use the GNU Radio system Python and install its matching scientific packages:
 
 ```bash
 sudo apt update
 sudo apt install -y gnuradio git cmake build-essential python3-numpy python3-scipy
 ```
 
-Install [`gr-lora_sdr`](https://github.com/tapparelj/gr-lora_sdr) using the build instructions **matching your installed GNU Radio version**, then confirm the extension is importable by the same interpreter:
+Install [`gr-lora_sdr`](https://github.com/tapparelj/gr-lora_sdr) against the **same GNU Radio version** as `/usr/bin/python3`. When a virtual environment or user-installed NumPy causes an import conflict, set `PYTHONNOUSERSITE=1` to exclude user-site packages:
 
 ```bash
-PYTHONNOUSERSITE=1 /usr/bin/python3 -c "from gnuradio import lora_sdr; print('gr-lora_sdr OK')"
+PYTHONNOUSERSITE=1 /usr/bin/python3 -c \
+  "from gnuradio import lora_sdr; print('gr-lora_sdr OK')"
 ```
 
-Use your GNU Radio-compatible Python. Download the original `vela_band_0136.sigmf-data` from the supplied Hugging Face link and keep the `.sigmf-meta` file next to it:
+#### Method A — Confirmed decode of the previously extracted IQ
+
+Place the archived `132_DL_candidates/132_DL_3_32.5s.cf32` alongside the solver and run:
 
 ```bash
-PYTHONNOUSERSITE=1 /usr/bin/python3     132.py     132_DL_candidates/132_DL_3_32.5s.cf32
+PYTHONNOUSERSITE=1 /usr/bin/python3 132.py \
+  132_DL_candidates/132_DL_3_32.5s.cf32
 ```
 
-A frequency-selective burst scan is attempted first. If more targeted extraction is required, the archived manual extraction name `132_DL_3_32.5s.cf32` suggests a relevant IQ window **around 32.5 seconds after recording start** (approximately 01:37:17.5 UTC). This is a clue from the historical extraction name, not an independently verified burst timestamp. Select the actual reply interval after examining the spectrogram, for example:
-
-```bash
-PYTHONNOUSERSITE=1 python3 132.py vela_band_0136.sigmf-data --gr-python /usr/bin/python3 --window 31.5:34.5
-```
-
-This interval is an **illustrative inspection window**, not a substitute for checking the captured burst. The window above is only a candidate to inspect; use measured signal timing to make the final selection. If you already have the 500 kS/s extraction, pass it directly:
-
-```bash
-PYTHONNOUSERSITE=1 python3 132.py 132_DL_candidates/132_DL_3_32.5s.cf32 --gr-python /usr/bin/python3
-```
-
-The program searches SF7–SF10, CR1–CR4 and multiple lengths, verifies each recognized acknowledgement's CRC, and reports the first authenticated candidate:
+The workstation run successfully found `SF10 CR2 LEN96`, validated the application CRC (`0x18FC`) and printed:
 
 ```text
-PAYLOAD: TM,ACK,1,GET HK,HK,V=4.51,I=0.1,T=21.82,P=996.24,CO2=432,UP=132*18FC
-CRC-16/CCITT-FALSE: calculated=18FC, received=18FC
 FLAG: GAIANSPACE{432_132}
 ```
 
-Both the exact decoder configuration and the candidate-scan results are documented for reproducibility; the CO2 and uptime values are never pre-entered into the code.
+#### Method B — Extract from the original SigMF (full decode pending confirmation)
+
+Download `vela_band_0136.sigmf-data` and keep `vela_band_0136.sigmf-meta` beside it. The source is **ci8 at 1,999,999 samples/s**, captured at **433,549,995 Hz**. The downlink is near **433,175,000 Hz**; the solver frequency-shifts it and resamples to approximately **500 kS/s** before GNU Radio reception.
+
+The previous trial below was **unsuccessful**, because this interval does not include the subsequently identified SF10 burst:
+
+```bash
+PYTHONNOUSERSITE=1 /usr/bin/python3 132.py \
+  vela_band_0136.sigmf-data \
+  --gr-python /usr/bin/python3 --window 31.5:34.5
+```
+
+Use the later candidate window instead. To test the settings already confirmed on the extracted IQ first:
+
+```bash
+PYTHONNOUSERSITE=1 /usr/bin/python3 132.py \
+  vela_band_0136.sigmf-data \
+  --gr-python /usr/bin/python3 \
+  --window 34.65:36.0 \
+  --sfs 10 --crs 2 --lengths 96
+```
+
+If successful, test the wider SF/CR/length search to demonstrate recovery without specifying the final settings:
+
+```bash
+PYTHONNOUSERSITE=1 /usr/bin/python3 132.py \
+  vela_band_0136.sigmf-data \
+  --gr-python /usr/bin/python3 \
+  --window 34.65:36.0
+```
+
+The default sweep tests SF7–SF10, CR1–CR4 and candidate implicit-header length hints (`96, 68, 64, 80, 128, 48`). A candidate is accepted **only when its application CRC validates**; preamble detection alone does not prove successful decoding. If this second extraction attempt also fails, inspect the translated/resampled IQ and timing/frequency offset before asserting successful raw-to-Flag reproduction.
 
 ### Solver Code
 
@@ -98,12 +126,13 @@ Both the exact decoder configuration and the candidate-scan results are document
 #   sudo apt update && sudo apt install -y gnuradio python3-numpy python3-scipy
 #   Install the GNU Radio OOT module gr-lora_sdr against the SAME GNU Radio
 #   version as /usr/bin/python3: https://github.com/tapparelj/gr-lora_sdr
-#   Confirm with: /usr/bin/python3 -c "from gnuradio import lora_sdr"
+#   Confirm with: PYTHONNOUSERSITE=1 /usr/bin/python3 -c "from gnuradio import lora_sdr"
 # Python 3.10+ is required. The GNU Radio runtime is called as a subprocess.
 """Recover Challenge 132 GET HK ACK from original SigMF without preset answers.
 
-  python3 132.py vela_band_0136.sigmf-data --gr-python /usr/bin/python3
-  python3 132.py 132_DL_3_32.5s.cf32 --gr-python /usr/bin/python3
+  PYTHONNOUSERSITE=1 /usr/bin/python3 132.py vela_band_0136.sigmf-data \
+      --gr-python /usr/bin/python3 --window 34.65:36.0 --sfs 10 --crs 2 --lengths 96
+  PYTHONNOUSERSITE=1 /usr/bin/python3 132.py 132_DL_candidates/132_DL_3_32.5s.cf32
 
 When given raw ci8 SigMF, find narrow-band bursts at the downlink,
 extract each at 500 kS/s with an anti-alias FIR, then sweep implicit-header
@@ -303,8 +332,11 @@ def main() -> int:
     args = parser.parse_args()
     if not args.gr_python.exists():
         parser.error('GNU Radio Python executable is missing. Use --gr-python PATH.')
+    # Isolate GNU Radio from user-site NumPy/SciPy during the import probe too.
+    gr_env = dict(os.environ)
+    gr_env['PYTHONNOUSERSITE'] = '1'
     check = subprocess.run([str(args.gr_python), '-c', 'from gnuradio import lora_sdr'],
-                           capture_output=True, text=True, check=False)
+                           capture_output=True, text=True, check=False, env=gr_env)
     if check.returncode != 0:
         parser.error('GNU Radio/gr-lora_sdr is not importable in the selected Python:\n' + check.stderr[-1200:])
     if not args.input.exists():
