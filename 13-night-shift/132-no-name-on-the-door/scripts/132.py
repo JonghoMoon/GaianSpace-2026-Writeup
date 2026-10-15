@@ -1,21 +1,28 @@
 #!/usr/bin/env python3
 # Dependencies:
-#   sudo apt update && sudo apt install -y gnuradio python3-numpy python3-scipy
+#   Offline decoder: python3 -m pip install numpy scipy
+#   GNU Radio backend: sudo apt install -y gnuradio python3-numpy python3-scipy
 #   Install the GNU Radio OOT module gr-lora_sdr against the SAME GNU Radio
 #   version as /usr/bin/python3: https://github.com/tapparelj/gr-lora_sdr
 #   Confirm with: PYTHONNOUSERSITE=1 /usr/bin/python3 -c "from gnuradio import lora_sdr"
 # Python 3.10+ is required. The GNU Radio runtime is called as a subprocess.
-"""Recover Challenge 132 GET HK ACK from original SigMF without preset answers.
+"""Recover the 01:37 GET HK ACK using either an offline or GNU Radio decoder.
 
-  PYTHONNOUSERSITE=1 /usr/bin/python3 132.py vela_band_0136.sigmf-data \
-      --gr-python /usr/bin/python3 --window 34.65:36.0 --sfs 10 --crs 2 --lengths 96
-  PYTHONNOUSERSITE=1 /usr/bin/python3 132.py 132_DL_candidates/132_DL_3_32.5s.cf32
+Verified offline direct-from-SigMF mode:
+    python3 132.py vela_band_0136.sigmf-data --backend offline \
+        --window 34.65:36.25
 
-When given raw ci8 SigMF, find narrow-band bursts at the downlink,
-extract each at 500 kS/s with an anti-alias FIR, then sweep implicit-header
-LoRa SF/CR/length. Accept only matching GET HK acknowledgement and its
-application CRC-16/CCITT-FALSE. The capture may require --window or
---frequency tuning; no intermediate IQ file is a prerequisite.
+Workstation-verified GNU Radio mode on previously extracted IQ:
+    PYTHONNOUSERSITE=1 /usr/bin/python3 132.py \
+        132_DL_candidates/132_DL_3_32.5s.cf32
+
+GNU Radio raw-SigMF mode (the longer window has not been runtime-verified):
+    PYTHONNOUSERSITE=1 /usr/bin/python3 132.py vela_band_0136.sigmf-data \
+        --backend gnuradio --window 34.65:36.25 \
+        --sfs 10 --crs 2 --lengths 96
+
+The decoder validates the embedded CRC-16/CCITT-FALSE and chooses ACK index 1,
+which corresponds to the command acknowledgement at 01:37 UTC.
 """
 from __future__ import annotations
 
@@ -29,7 +36,7 @@ import sys
 import tempfile
 
 import numpy as np
-from scipy import signal
+from scipy import fft, signal
 
 
 
@@ -103,6 +110,135 @@ def detect_channel_bursts(raw: np.ndarray, fs: float, center: float,
     return windows
 
 
+HAMMING = np.asarray([0, 23, 45, 58, 78, 89, 99, 116,
+                      139, 156, 166, 177, 197, 210, 232, 255], dtype=np.int64)
+HAMMING_45 = np.asarray([0, 24, 40, 48, 72, 80, 96, 120,
+                         136, 144, 160, 184, 192, 216, 232, 240], dtype=np.int64)
+ACK = re.compile(rb'(TM,ACK,(\d+),GET HK,HK,[^\r\n\x00]{0,150}?CO2=(\d+),UP=(\d+)\*([0-9A-Fa-f]{4}))')
+
+
+def whitening(length: int) -> list[int]:
+    state = 255
+    output: list[int] = []
+    for _ in range(int(length)):
+        output.append(int(state))
+        feedback = ((state >> 7) ^ (state >> 5) ^ (state >> 4) ^ (state >> 3)) & 1
+        state = int(((state << 1) & 255) | feedback)
+    return output
+
+
+WHITENING = whitening(512)
+
+
+def ref_chirp(sf: int) -> np.ndarray:
+    samples = np.arange(1 << int(sf), dtype=np.float64)
+    return np.exp(1j * np.pi * (samples * samples / float(1 << int(sf)) - samples))
+
+
+def measure(samples: np.ndarray, start: float, sf: int,
+            cfo_bins: float = 0.0, fft_multiplier: int = 1,
+            downchirp: bool = False) -> tuple[float, float]:
+    width = int(1 << int(sf))
+    index = int(round(float(start))) + np.arange(width, dtype=np.int64) * 4
+    if int(index[0]) < 0 or int(index[-1]) >= int(samples.size):
+        return -1.0, 0.0
+    ref = ref_chirp(int(sf))
+    correction = np.exp(-2j * np.pi * float(cfo_bins) * np.arange(width, dtype=np.float64) / float(width))
+    values = samples[index] * (ref if bool(downchirp) else np.conj(ref)) * correction
+    spectrum = np.abs(fft.fft(values, n=width * int(fft_multiplier))) ** 2
+    peak = int(np.argmax(spectrum))
+    energy = float(np.sum(np.abs(values) ** 2)) * float(width)
+    return float(peak) / float(fft_multiplier), float(spectrum[peak]) / (energy + 1e-30)
+
+
+def synchronize(samples: np.ndarray, sf: int = 10) -> dict[str, float | int]:
+    stride = (1 << int(sf)) * 4
+    grid = np.arange(0, int(samples.size) - stride, stride, dtype=np.int64)
+    measurements = np.asarray([measure(samples, float(p), sf) for p in grid], dtype=np.float64)
+    candidate = None
+    for index in range(int(grid.size) - 3):
+        near = (measurements[index:index + 4, 0] - measurements[index, 0] + 512.0) % 1024.0 - 512.0
+        if float(np.min(measurements[index:index + 4, 1])) > 0.20 and float(np.max(np.abs(near))) <= 1.0:
+            candidate = int(index)
+            break
+    if candidate is None:
+        raise ValueError('SF10 preamble was not found in this time window.')
+    down_index = None
+    for j in range(candidate + 4, min(candidate + 40, int(grid.size) - 1)):
+        if measure(samples, float(grid[j]), sf, downchirp=True)[1] > 0.18 and \
+           measure(samples, float(grid[j + 1]), sf, downchirp=True)[1] > 0.35:
+            down_index = int(j)
+            break
+    if down_index is None:
+        raise ValueError('Could not find the downchirp pair.')
+    p, d = int(grid[candidate]), int(grid[down_index])
+    up = measure(samples, float(p + stride), sf, fft_multiplier=64)[0]
+    down = measure(samples, float(d + stride), sf, fft_multiplier=64, downchirp=True)[0]
+    up_signed = (up + 512.0) % 1024.0 - 512.0
+    down_signed = (down + 512.0) % 1024.0 - 512.0
+    coarse_cfo = (up_signed + down_signed) / 2.0
+    correlation = np.vdot(samples[p:p + 3 * stride], samples[p + stride:p + 4 * stride])
+    fractional_cfo = float(np.angle(correlation)) / (2.0 * np.pi)
+    cfo = float(round(coarse_cfo - fractional_cfo)) + fractional_cfo
+    down_start = float(d) - (up_signed - down_signed) * 2.0
+    data_start = int(round(down_start + 2.25 * float(stride)))
+    return {'data_start': data_start, 'cfo_bins': cfo}
+
+
+def decode_block(symbols: np.ndarray, sf_effective: int, cr: int) -> tuple[list[int], int]:
+    labels = np.asarray(symbols, dtype=np.int64)
+    gray = labels ^ (labels >> 1)
+    width = int(cr + 4)
+    bits = np.zeros((int(sf_effective), width), dtype=np.int64)
+    for col in range(width):
+        for row in range(int(sf_effective)):
+            bits[(col - row - 1) % int(sf_effective), col] = (int(gray[col]) >> (int(sf_effective) - 1 - row)) & 1
+    words = bits.dot(1 << np.arange(width - 1, -1, -1, dtype=np.int64))
+    lut = (HAMMING_45 if int(cr) == 1 else HAMMING) >> (8 - width)
+    result: list[int] = []
+    errors = 0
+    for word in words:
+        distances = [int(int(word) ^ int(entry)).bit_count() for entry in lut]
+        index = int(np.argmin(np.asarray(distances, dtype=np.int64)))
+        result.append(int(f'{index:04b}'[::-1], 2))
+        errors += int(distances[index])
+    return result, errors
+
+
+def decode_ack(samples: np.ndarray) -> tuple[bytes, int, int, int, int, int] | None:
+    sf = 10
+    sync = synchronize(samples, sf)
+    stride = 4096
+    for adjustment in (0, -2, 2, -4, 4):
+        symbols: list[int] = []
+        for i in range(160):
+            start = int(sync['data_start']) + int(adjustment) + int(i) * stride
+            if start < 0 or start + stride > int(samples.size):
+                break
+            symbol, _ = measure(samples, float(start), sf, float(sync['cfo_bins']))
+            symbols.append(int(round(symbol)))
+        if len(symbols) < 14:
+            continue
+        for symbol_shift in (0, 1, -1, 2, -2):
+            modulus = 1 << sf
+            nibs, _ = decode_block(((np.asarray(symbols[:8], dtype=np.int64) - 1 + int(symbol_shift)) % modulus) // 4, 8, 4)
+            for first in range(8, len(symbols) - 5, 6):
+                decoded, _ = decode_block((np.asarray(symbols[first:first + 6], dtype=np.int64) - 1 + int(symbol_shift)) % modulus, sf, 2)
+                nibs.extend(decoded)
+            raw = bytes(int(nibs[i] | (nibs[i + 1] << 4)) for i in range(0, len(nibs) - 1, 2))
+            data = bytes(int(value) ^ int(WHITENING[i]) for i, value in enumerate(raw))
+            for match in ACK.finditer(data):
+                message = bytes(match.group(1))
+                body, hex_crc = message.rsplit(b'*', 1)
+                calculated = int(binascii.crc_hqx(body, 0xFFFF))
+                received = int(hex_crc, 16)
+                if calculated == received:
+                    return message, int(match.group(2)), int(match.group(3)), int(match.group(4)), calculated, int(sync['data_start'])
+    return None
+
+
+
+
 def parse_window(value: str) -> tuple[float, float]:
     a, b = value.split(':', 1)
     start, stop = float(a), float(b)
@@ -139,18 +275,18 @@ class Receiver(gr.top_block):
 Receiver().run()
 """
 
-ACK_PATTERN = re.compile(rb'(TM,ACK,\d+,GET HK,HK,[^\r\n]{0,200}?CO2=(\d+),UP=(\d+)\*[0-9A-Fa-f]{4})')
+ACK_PATTERN = re.compile(rb'(TM,ACK,(\d+),GET HK,HK,[^\r\n]{0,200}?CO2=(\d+),UP=(\d+)\*[0-9A-Fa-f]{4})')
 
 
-def extract_valid_ack(data: bytes) -> tuple[int, int, bytes, int] | None:
+def extract_valid_ack(data: bytes, ack_index: int) -> tuple[int, int, bytes, int] | None:
     for match in ACK_PATTERN.finditer(data):
         message = match.group(1)
         body, tag = message.rsplit(b'*', 1)
         calculated = int(binascii.crc_hqx(body, 0xFFFF))
         received = int(tag, 16)
-        if calculated != received:
+        if calculated != received or int(match.group(2)) != int(ack_index):
             continue
-        return int(match.group(2)), int(match.group(3)), message, calculated
+        return int(match.group(3)), int(match.group(4)), message, calculated
     return None
 
 
@@ -172,7 +308,7 @@ def run_worker(python: Path, worker: Path, iq: Path, dest: Path,
 
 def sweep_iq(iq: Path, worker: Path, output: Path, gr_python: Path,
              sfs: list[int], crs: list[int], lengths: list[int],
-             timeout: float) -> tuple[int, int, bytes, int, int, int, int] | None:
+             timeout: float, ack_index: int) -> tuple[int, int, bytes, int, int, int, int] | None:
     # First try extended lengths: a valid ACK can be a prefix of a longer decoded buffer.
     for sf in sfs:
         for cr in crs:
@@ -182,7 +318,7 @@ def sweep_iq(iq: Path, worker: Path, output: Path, gr_python: Path,
                 except subprocess.TimeoutExpired:
                     print(f'  SF{sf} CR{cr} LEN{length}: timeout', flush=True)
                     continue
-                candidate = extract_valid_ack(data)
+                candidate = extract_valid_ack(data, ack_index)
                 if candidate is None:
                     continue
                 co2, uptime, payload, crc = candidate
@@ -195,6 +331,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('input', type=Path, nargs='?', default=Path('vela_band_0136.sigmf-data'))
     parser.add_argument('--meta', type=Path, default=None)
+    parser.add_argument('--backend', choices=['offline', 'gnuradio'], default='gnuradio',
+                        help='Select offline NumPy/SciPy demodulator or GNU Radio receiver.')
+    parser.add_argument('--ack-index', type=int, default=1,
+                        help='Requested GET HK ACK sequence (default 1 for 01:37 UTC).')
     parser.add_argument('--gr-python', type=Path, default=Path('/usr/bin/python3'))
     parser.add_argument('--window', type=parse_window, default=None,
                         help='Optional START:STOP seconds interval in the raw capture.')
@@ -207,6 +347,35 @@ def main() -> int:
     parser.add_argument('--max-bursts', type=int, default=25)
     parser.add_argument('--save-extracted', type=Path, default=None)
     args = parser.parse_args()
+    if not args.input.exists():
+        parser.error(f'Input does not exist: {args.input}')
+
+    if args.backend == 'offline':
+        if args.input.suffix.lower() == '.cf32':
+            samples = np.fromfile(args.input, dtype='<c8')
+        else:
+            raw, fs, center = load_sigmf_info(args.input, args.meta)
+            # The selected burst is the 01:37 SF10 ACK seen in the RF survey.
+            selected_window = args.window if args.window is not None else (34.65, 36.25)
+            a, b = selected_window
+            samples = extract_iq(raw, fs, center, float(a), float(b), float(args.frequency))
+            print(f'SigMF window: {a:.2f}..{b:.2f} s, IQ samples: {samples.size}', flush=True)
+            if args.save_extracted is not None:
+                samples.tofile(args.save_extracted)
+                print('EXTRACTED IQ:', args.save_extracted)
+        result = decode_ack(samples)
+        if result is None:
+            raise RuntimeError('No application-CRC-valid SF10 CR2 GET HK ACK in selected IQ.')
+        payload, seq, co2, uptime, crc, sync_offset = result
+        print(f'RECEIVER SETTINGS: SF=10 CR=2 implicit=True, data_offset={sync_offset} samples')
+        print('PAYLOAD:', payload.decode('ascii'))
+        print(f'CRC-16/CCITT-FALSE: calculated={crc:04X}, received={crc:04X} valid=True')
+        print('ACK INDEX:', seq)
+        if int(seq) != int(args.ack_index):
+            raise ValueError(f'CRC-valid ACK {seq} != target {args.ack_index}')
+        print(f'FLAG: GAIANSPACE{{{co2}_{uptime}}}')
+        return 0
+
     if not args.gr_python.exists():
         parser.error('GNU Radio Python executable is missing. Use --gr-python PATH.')
     # Isolate GNU Radio from user-site NumPy/SciPy during the import probe too.
@@ -243,7 +412,7 @@ def main() -> int:
             print(f'CANDIDATE {index+1}/{len(inputs)}: '
                   + (f'{start:.3f}..{stop:.3f} s' if bool(need_extract) else str(path)), flush=True)
             valid = sweep_iq(path, worker, output, args.gr_python, args.sfs, args.crs,
-                             args.lengths, float(args.timeout))
+                             args.lengths, float(args.timeout), int(args.ack_index))
             if valid is None:
                 continue
             co2, uptime, payload, crc, sf, cr, length = valid
