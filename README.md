@@ -104,7 +104,7 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 | 2 | [402-the-cyberiad](./04-ai-is-not-sci-fi/402-the-cyberiad/) | 200 | `GAIANSPACE{n0thing_fr0m_st0ck}` |
 | 3 | [403-altruizine](./04-ai-is-not-sci-fi/403-altruizine/) | 250 | `GAIANSPACE{sh4red_p41n_n0t_j0y}` |
 | 4 | [404-the-last-kilogram](./04-ai-is-not-sci-fi/404-the-last-kilogram/) | 300 | `GAIANSPACE{3very_gr41n_c0unts}` |
-| 5 | [405-happy-bday-d](./04-ai-is-not-sci-fi/405-happy-bday-d/) | ? | GAIANSPACE{h4ppy_bd4y_d4v1d_1t_g03s_h0m3}
+| 5 | [405-happy-bday-d](./04-ai-is-not-sci-fi/405-happy-bday-d/) | ? | `GAIANSPACE{h4ppy_bd4y_d4v1d_1t_g03s_h0m3}` |
 
 ### <a id="05-rad-hard-rampage"></a>[05-rad-hard-rampage](./05-rad-hard-rampage/)
 
