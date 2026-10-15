@@ -22,17 +22,52 @@ Reset the latch and open the payload.
 
 ## Solution
 
+### Analysis
+
+The layout in `recovery_spec.md` identifies the three sections of
+`reg_dump.bin`:
+
+| Offset | Length | Meaning |
+|---|---:|---|
+| `0x00` | 32 bytes | Registers `R0`–`R7` (eight little-endian 32-bit values) |
+| `0x20` | 4 bytes | Stored CRC32 of the **healthy** 32 register bytes, little-endian |
+| `0x24` | Remainder | AES-ECB ciphertext with PKCS#7 padding |
+
+The damaged register bytes no longer match their stored CRC32. Unlike the
+single-event upset in challenge 501, this latch-up caused **one bit to stick
+at 1**. Recovering the healthy image therefore means clearing a currently-set
+bit, not blindly toggling every possible bit. The solver enumerates all such
+candidates and retains those satisfying:
+
+$$
+\operatorname{CRC32}(\text{candidate register bytes})
+=\text{stored CRC32}.
+$$
+
+The dump yields a **single** matching correction: register `R1`, bit 5
+(bit numbering starts at the least significant bit of each 32-bit register).
+The resulting 32-byte healthy register image is hashed to derive the AES key:
+
+```text
+AES-128 key = SHA256(healthy R0..R7 bytes)[:16]
+           = 178199ffd98d0f72841b0e909fac41d1
+```
+
+AES-ECB decryption and PKCS#7 unpadding then recover the flag. The CRC32 is an
+integrity check for this constrained one-bit search, not a cryptographic
+message authentication code.
+
 ### Steps
 
-1. Parse the 32 register bytes, stored CRC32, and encrypted payload.
-2. Enumerate every set bit and test clearing it.
-3. Compare each corrected register image against the stored CRC32.
-4. Derive the AES-128 key from the SHA-256 digest of the unique healthy register image.
-5. Decrypt the payload with AES-ECB, remove PKCS#7 padding, and extract the flag.
+1. Split the dump into registers, stored little-endian CRC32, and ciphertext.
+2. Clear each set register bit in turn; compute CRC32 for each candidate.
+3. Require a unique match against the healthy-state integrity word.
+4. Hash the recovered 32 register bytes and take the first 16 SHA-256 bytes.
+5. AES-ECB decrypt, remove PKCS#7 padding, and check the flag format.
 
 ### Reproduction
 
-Run the provided solver with the challenge input files in the locations expected by the script.
+Place the solver and this challenge's input files in the same directory and run:
 
 ```bash
 python3 504.py
@@ -52,8 +87,10 @@ FLAG: GAIANSPACE{s1ngle_event_l4tchup}
 ### Exploit Code
 
 ```python
-
 #!/usr/bin/env python3
+# Dependencies: cryptography (AES cipher and PKCS#7 padding)
+# Install: python3 -m pip install cryptography
+
 import hashlib
 import re
 import struct
@@ -81,7 +118,8 @@ def main() -> None:
 
     matches: list[tuple[int, int, bytes]] = []
 
-    # Clear each currently set bit and verify the healthy CRC.
+    # A latch-up only sets a bit from 0 to 1, so recovery clears
+    # currently set bits rather than toggling arbitrary bits.
     for byte_index in range(32):
         for bit_index in range(8):
             mask = 1 << bit_index

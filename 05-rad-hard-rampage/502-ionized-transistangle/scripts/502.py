@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 import re
 from pathlib import Path
@@ -36,13 +35,14 @@ def main() -> None:
     result = bytearray()
 
     for probe in probes:
-        # Map input byte bits to i0 through i7.
+        # i0 is the least-significant bit; i7 is the most-significant bit.
         signals = {
             f"i{i}": (probe >> i) & 1
             for i in range(8)
         }
 
-        # Evaluate the designed logic, ignoring SHORTED tags.
+        # The SHORTED tags describe physical faults, not the intended
+        # gate behavior requested by the challenge.
         for output, op, source_a, source_b in gates:
             a = signals[source_a]
 

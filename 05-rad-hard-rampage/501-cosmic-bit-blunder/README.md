@@ -22,16 +22,44 @@ Undo the particle's one mistake and read the log.
 
 ## Solution
 
+### Analysis
+
+The provided `corrupted.key` contains 16 bytes (128 bits) and the encrypted log
+`cipher.bin` contains two 16-byte AES blocks. The challenge states that **exactly
+one key bit was flipped**, while the ciphertext itself is intact. Consequently,
+the original AES-128 key must be among precisely 128 candidates, each obtained
+by toggling one bit of the corrupted key.
+
+The solver numbers candidate bits from zero and uses the **least significant bit
+first within each byte**:
+
+```text
+byte_index = bit_index // 8
+bit_position = bit_index % 8
+candidate_key[byte_index] ^= (1 << bit_position)
+```
+
+Each candidate is decrypted with AES-ECB, which processes individual 16-byte
+blocks and does **not** use an IV. After decrypting, the solver removes PKCS#7
+padding and checks for the expected `GAIANSPACE{...}` flag structure. Padding
+alone is not sufficient to identify the correct candidate, since an incorrect
+key could accidentally produce plausible padding.
+
+The matching candidate toggles bit index **50**, i.e. bit **2** of key byte **6**
+(both indices zero-based). The recovered key is
+`a3f1c09e42b7d6150c8e2f9b71aa4e33`.
+
 ### Steps
 
-1. Load the 16-byte corrupted AES-128 key and encrypted mission log.
-2. Try each of the 128 possible single-bit corrections.
-3. Decrypt each candidate with AES-ECB and check PKCS#7 padding.
-4. Select the candidate whose plaintext matches the required flag format.
+1. Load the key and ciphertext, checking their lengths.
+2. Toggle each of the 128 individual key bits in turn.
+3. AES-ECB decrypt the ciphertext using each candidate key.
+4. Verify PKCS#7 padding, ASCII decoding, and the flag prefix and suffix.
+5. Report the matching correction and plaintext.
 
 ### Reproduction
 
-Run the provided solver with the challenge input files in the locations expected by the script.
+Place the solver and this challenge's input files in the same directory and run:
 
 ```bash
 python3 501.py
@@ -49,8 +77,10 @@ FLAG: GAIANSPACE{s1ngle_event_upset}
 ### Exploit Code
 
 ```python
-
 #!/usr/bin/env python3
+# Dependencies: cryptography (AES cipher and PKCS#7 padding)
+# Install: python3 -m pip install cryptography
+
 from pathlib import Path
 from cryptography.hazmat.primitives.ciphers import (
     Cipher, algorithms, modes,
@@ -74,10 +104,10 @@ def main() -> None:
     if len(corrupted_key) != 16:
         raise ValueError("Expected a 128-bit AES key")
 
-    if len(ciphertext) % 16 != 0:
+    if not ciphertext or len(ciphertext) % 16 != 0:
         raise ValueError("Invalid AES ciphertext length")
 
-    # Test every possible single-bit correction.
+    # Test all 128 bit positions, LSB-first within each byte.
     for bit_index in range(128):
         key = bytearray(corrupted_key)
 
@@ -104,10 +134,15 @@ def main() -> None:
         ):
             continue
 
+        try:
+            flag = decoded.decode("ascii")
+        except UnicodeDecodeError:
+            continue
+
         print(f"Corrected bit index: {bit_index}")
         print(f"Corrected byte index: {byte_index}")
         print(f"Corrected key: {key.hex()}")
-        print(f"FLAG: {decoded.decode('ascii')}")
+        print(f"FLAG: {flag}")
         return
 
     raise RuntimeError("No valid single-bit correction found")

@@ -1,5 +1,7 @@
-
 #!/usr/bin/env python3
+# Dependencies: cryptography (AES cipher and PKCS#7 padding)
+# Install: python3 -m pip install cryptography
+
 import hashlib
 import re
 import struct
@@ -27,7 +29,8 @@ def main() -> None:
 
     matches: list[tuple[int, int, bytes]] = []
 
-    # Clear each currently set bit and verify the healthy CRC.
+    # A latch-up only sets a bit from 0 to 1, so recovery clears
+    # currently set bits rather than toggling arbitrary bits.
     for byte_index in range(32):
         for bit_index in range(8):
             mask = 1 << bit_index

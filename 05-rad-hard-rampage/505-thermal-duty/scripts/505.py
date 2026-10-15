@@ -1,6 +1,9 @@
-
 #!/usr/bin/env python3
+# Dependencies: numpy (least-squares model fitting)
+# Install: python3 -m pip install numpy
+
 import csv
+import re
 from pathlib import Path
 
 import numpy as np
@@ -15,6 +18,9 @@ def main() -> None:
 
     times = np.array([float(row["t_s"]) for row in rows], dtype=float)
     temps = np.array([float(row["temp_c"]) for row in rows], dtype=float)
+
+    if len(rows) < len(KNOWN_PREFIX) + 1:
+        raise ValueError("Insufficient samples for fitting the known prefix")
 
     dt = np.diff(times)
     if not np.allclose(dt, 1.0):
@@ -41,6 +47,9 @@ def main() -> None:
     a = float(coefficients[1])
     b = float(coefficients[2])
 
+    if not np.all(np.isfinite(coefficients)) or k <= 0.0 or a <= 0.0:
+        raise ValueError("Non-physical or non-finite thermal model parameters")
+
     tau = 1.0 / a
     ambient = b / a
 
@@ -57,6 +66,8 @@ def main() -> None:
         raise ValueError("Recovered drive contains invalid ASCII values")
 
     message = bytes(int(value) for value in drive).decode("ascii")
+    if re.fullmatch(r"GAIANSPACE\{[^}]+\}", message) is None:
+        raise ValueError("Recovered drive does not form a valid flag")
 
     print(f"K: {k:.8f}")
     print(f"tau: {tau:.8f} s")
@@ -64,6 +75,7 @@ def main() -> None:
     print(f"Maximum integer residual: {residual:.8f}")
     print(f"Drive sequence: {drive.tolist()}")
     print(f"Decoded message: {message}")
+    print(f"FLAG: {message}")
 
 
 if __name__ == "__main__":

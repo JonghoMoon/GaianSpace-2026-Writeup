@@ -1,5 +1,7 @@
-
 #!/usr/bin/env python3
+# Dependencies: cryptography (AES cipher and PKCS#7 padding)
+# Install: python3 -m pip install cryptography
+
 from pathlib import Path
 from cryptography.hazmat.primitives.ciphers import (
     Cipher, algorithms, modes,
@@ -23,10 +25,10 @@ def main() -> None:
     if len(corrupted_key) != 16:
         raise ValueError("Expected a 128-bit AES key")
 
-    if len(ciphertext) % 16 != 0:
+    if not ciphertext or len(ciphertext) % 16 != 0:
         raise ValueError("Invalid AES ciphertext length")
 
-    # Test every possible single-bit correction.
+    # Test all 128 bit positions, LSB-first within each byte.
     for bit_index in range(128):
         key = bytearray(corrupted_key)
 
@@ -53,10 +55,15 @@ def main() -> None:
         ):
             continue
 
+        try:
+            flag = decoded.decode("ascii")
+        except UnicodeDecodeError:
+            continue
+
         print(f"Corrected bit index: {bit_index}")
         print(f"Corrected byte index: {byte_index}")
         print(f"Corrected key: {key.hex()}")
-        print(f"FLAG: {decoded.decode('ascii')}")
+        print(f"FLAG: {flag}")
         return
 
     raise RuntimeError("No valid single-bit correction found")

@@ -21,16 +21,41 @@ Read the status line the encoder should have produced.
 
 ## Solution
 
+### Analysis
+
+The attached `status_encoder.netlist` contains XOR/NOT gate assignments and a
+`PROBES` line with **31** hexadecimal input bytes. Each probe is interpreted as
+`i7 ... i0` (most- to least-significant bit). Each output byte is assembled
+from `o7 ... o0` in the same bit order.
+
+Two gate declarations include physical-damage annotations:
+
+```text
+n6  = XOR i0 i1  [SHORTED=0]
+n15 = XOR i1 i3  [SHORTED=1]
+```
+
+These annotations say how the **damaged** encoder currently behaves. The question
+asks for the status line the **healthy design was meant to produce**, so the
+solver ignores `SHORTED` and evaluates the stated XOR/NOT operations instead.
+In particular, `n6` and `n15` are calculated from their inputs rather than
+forced to zero or one.
+
+The assignments appear in dependency order, allowing a forward evaluation for
+each input vector. Joining the output bits into bytes and interpreting the
+31 resulting bytes as ASCII yields the flag.
+
 ### Steps
 
-1. Parse the gate assignments and hexadecimal probe words from the netlist.
-2. Simulate the original intended XOR and NOT gates in order, ignoring the shorted-state annotations.
-3. Assemble output bits `o0` through `o7` into bytes for each probe.
-4. Decode the resulting byte stream as ASCII and verify the flag format.
+1. Parse the gate equations and the hexadecimal probe values.
+2. Map the input byte's bit 0 to `i0`, and bit 7 to `i7`.
+3. Evaluate the designed XOR/NOT gates in netlist order, ignoring shorted-state annotations.
+4. Assemble `o0` (LSB) through `o7` (MSB) into a byte for each probe.
+5. Decode the bytes as ASCII and validate the flag format.
 
 ### Reproduction
 
-Run the provided solver with the challenge input files in the locations expected by the script.
+Place the solver and this challenge's input files in the same directory and run:
 
 ```bash
 python3 502.py
@@ -48,7 +73,6 @@ FLAG: GAIANSPACE{t0tal_1onizing_d0se}
 ### Exploit Code
 
 ```python
-
 #!/usr/bin/env python3
 import re
 from pathlib import Path
@@ -86,13 +110,14 @@ def main() -> None:
     result = bytearray()
 
     for probe in probes:
-        # Map input byte bits to i0 through i7.
+        # i0 is the least-significant bit; i7 is the most-significant bit.
         signals = {
             f"i{i}": (probe >> i) & 1
             for i in range(8)
         }
 
-        # Evaluate the designed logic, ignoring SHORTED tags.
+        # The SHORTED tags describe physical faults, not the intended
+        # gate behavior requested by the challenge.
         for output, op, source_a, source_b in gates:
             a = signals[source_a]
 
