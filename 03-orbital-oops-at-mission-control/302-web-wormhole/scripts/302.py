@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Recover staged JavaScript from the GaianSpace 302 PCAP without executing it."""
+
+# Dependencies: Python 3 standard library only.
 import base64
 import gzip
 import re
@@ -123,9 +125,10 @@ def main() -> None:
             if b'javascript' not in header.lower():
                 continue
             print(f'HTTP JavaScript body: {len(body)} bytes, TCP {key[2]} -> {key[3]}')
-            if b'Asimov Portal loader' not in body:
+            # Flag dynamically evaluated Base64 payloads, not known comment strings.
+            if re.search(rb'new\s+Function\s*\(\s*atob\s*\(', body) is None:
                 continue
-            print('Found malicious loader:')
+            print('Found suspicious Base64-to-Function loader:')
             print(body.decode('utf-8', errors='replace')[:1000])
             match = re.search(rb'\b(?:var|let|const)\s+p\s*=\s*["\']([^"\']+)["\']', body)
             if not match:

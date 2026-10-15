@@ -1,52 +1,60 @@
-
 #!/usr/bin/env python3
-import base64
-import re
+"""Find a MIME PDF attachment inside a memory dump and recover its flag."""
+
+# Dependencies: Python 3 standard library only.
+
+from email import policy
+from email.parser import BytesParser
 from pathlib import Path
+import re
 
 DUMP_FILE = Path("mem.dmp")
 OUTPUT_FILE = Path("Invoice_FoundationOne.pdf")
 
-data = DUMP_FILE.read_bytes()
 
-# Locate the phishing email in the memory dump.
-start = data.find(b'From: "Susan Calvin, Contracts"')
-if start < 0:
-    raise ValueError("Phishing email not found")
+def recover_attachments(memory: bytes):
+    # Find multipart messages without assuming an email sender or MIME boundary.
+    header_pattern = re.compile(
+        rb'(?im)^From:\s*[^\r\n]+\r?\n(?:(?!\r?\n\r?\n)[\s\S]){0,1200}?'
+        rb'MIME-Version:\s*1\.0\s*\r?\n'
+        rb'Content-Type:\s*multipart/[^\r\n]+boundary="?([^";\r\n]+)',
+    )
+    for match in header_pattern.finditer(memory):
+        boundary = match.group(1)
+        end_marker = b'--' + boundary + b'--'
+        end = memory.find(end_marker, match.start())
+        if end < 0:
+            continue
+        email_bytes = memory[match.start():end + len(end_marker)]
+        mail = BytesParser(policy=policy.default).parsebytes(email_bytes)
+        for part in mail.walk():
+            if part.get_content_disposition() != "attachment":
+                continue
+            pdf_data = part.get_payload(decode=True)
+            if pdf_data is None or not pdf_data.startswith(b"%PDF-"):
+                continue
+            yield mail, part.get_filename(), pdf_data
 
-boundary = b"--=_gaian_7f2a_boundary--"
-end = data.find(boundary, start)
-if end < 0:
-    raise ValueError("MIME boundary not found")
 
-email_data = data[start:end]
+def main() -> None:
+    memory = DUMP_FILE.read_bytes()
+    candidates = list(recover_attachments(memory))
+    if not candidates:
+        raise ValueError("No intact MIME PDF attachment found in memory")
+    for mail, filename, pdf_data in candidates:
+        print(f"Mail From: {mail.get('From')}")
+        print(f"Mail Subject: {mail.get('Subject')}")
+        print(f"MIME attachment: {filename}")
+        flag_match = re.search(rb"GAIANSPACE\{[^}]+\}", pdf_data)
+        if flag_match is None:
+            continue
+        OUTPUT_FILE.write_bytes(pdf_data)
+        print(f"Recovered attachment: {OUTPUT_FILE}")
+        print(f"Size: {len(pdf_data)} bytes")
+        print("FLAG:", flag_match.group(0).decode("ascii"))
+        return
+    raise ValueError("PDF recovered, but no flag was present")
 
-# Recover the base64-encoded MIME attachment.
-pattern = (
-    rb'Content-Disposition:\s*attachment;\s*'
-    rb'filename="([^"]+)"\r?\n\r?\n'
-    rb'([A-Za-z0-9+/\r\n=]+)'
-)
 
-match = re.search(pattern, email_data)
-if match is None:
-    raise ValueError("MIME attachment not found")
-
-pdf_data = base64.b64decode(match.group(2), validate=False)
-
-if not pdf_data.startswith(b"%PDF-"):
-    raise ValueError("Invalid PDF header")
-
-OUTPUT_FILE.write_bytes(pdf_data)
-
-# Search the recovered PDF for the embedded flag.
-flag_match = re.search(rb"GAIANSPACE\{[^}]+\}", pdf_data)
-if flag_match is None:
-    raise ValueError("Flag not found")
-
-flag = flag_match.group(0).decode("ascii")
-
-print(f"Recovered attachment: {OUTPUT_FILE}")
-print(f"Size: {len(pdf_data)} bytes")
-print(f"FLAG: {flag}")
-
+if __name__ == "__main__":
+    main()

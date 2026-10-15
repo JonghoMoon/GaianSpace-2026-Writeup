@@ -1,15 +1,28 @@
 
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
+
 import re
 from pathlib import Path
 
 LOG_FILE = Path("lora_capture.log")
-CANSAT_ADDR = 0x1F
-XOR_KEY = 0x12
+NOTES_FILE = Path("radio_notes.md")
+
+
+def read_radio_settings() -> tuple[int, int]:
+    # Extract the node address and challenge-specific XOR byte from notes.
+    notes = NOTES_FILE.read_text(encoding="utf-8")
+    node_match = re.search(r"our bird answers to node `0x([0-9a-fA-F]+)`", notes, re.I)
+    sync_match = re.search(r"sync byte `0x([0-9a-fA-F]+)`", notes)
+    if node_match is None or sync_match is None:
+        raise ValueError("Node address or sync byte missing from radio notes")
+    return int(node_match.group(1), 16), int(sync_match.group(1), 16)
 
 
 def main() -> None:
     text = LOG_FILE.read_text(encoding="utf-8")
+    cansat_addr, xor_key = read_radio_settings()
+    print(f"CanSat address: 0x{cansat_addr:02X}, XOR byte: 0x{xor_key:02X}")
 
     pattern = re.compile(
         r"addr=0x([0-9a-fA-F]+)"
@@ -26,7 +39,7 @@ def main() -> None:
         length = int(match.group(3), 10)
         payload = bytes.fromhex(match.group(4))
 
-        if addr != CANSAT_ADDR:
+        if addr != cansat_addr:
             continue
 
         if len(payload) != length:
@@ -36,7 +49,7 @@ def main() -> None:
             raise ValueError(f"Duplicate frame: seq={seq}")
 
         # Descramble each byte using the LoRa sync byte.
-        decoded = bytes(value ^ XOR_KEY for value in payload)
+        decoded = bytes(value ^ xor_key for value in payload)
         frames[seq] = decoded
 
     if not frames:

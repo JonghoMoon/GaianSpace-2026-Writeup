@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Reconstruct GaianSpace 303 exfiltration and recover the Gerber FAB-NOTE."""
 
+# Dependencies:
+#   python3 -m pip install cryptography
+
 import base64
 import hashlib
 import io

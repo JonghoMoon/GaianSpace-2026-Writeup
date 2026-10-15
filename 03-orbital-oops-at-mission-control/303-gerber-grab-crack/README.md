@@ -21,19 +21,33 @@ Recover the stolen board and read the fabricator's note.
 
 ## Solution
 
-### Steps
+### Analysis
 
-Extract ENCRYPTO.PY from the FAT12 staging disk, derive the AES key, reassemble HTTP upload chunks, verify the hash, decrypt AES-CBC, and inspect the recovered Gerber silkscreen FAB-NOTE.
+Two artifacts are needed: the captured exfiltration (`exfil_upload.pcap`) and the attacker's FAT12 working disk (`attacker_disk.img`). Neither artifact alone contains a readable board archive.
+
+1. **Recover the encoder:** parse the FAT12 boot sector, root directory, and 12-bit FAT entries to extract `ENCRYPTO.PY` (the FAT 8.3 name is `ENCRYPTOPY `). The recovered code contains `PASSPHRASE = ...` and derives its AES key by computing `SHA256(PASSPHRASE)[:16]`, yielding a 16-byte AES-128 key.
+2. **Reassemble the upload:** use TCP sequence numbers to recover HTTP requests. The two `POST /upload/foundation_one_gerbers.zip.enc` chunks advertise `X-Upload-Offset` and `X-Upload-Length`; place each body at its declared offset. Verify there are no gaps and compare the SHA-256 digest against the captured status response.
+3. **Undo encoding and encryption:** Base64-decode the reassembled bytes. The first 16 bytes are the CBC IV; decrypt the remainder with the derived AES-128 key and remove PKCS#7 padding.
+4. **Inspect the Gerber archive:** validate the resulting ZIP, save `foundation_one_gerbers_recovered.zip`, then search its silkscreen Gerber comment lines for the fabricator's `FAB-NOTE` flag.
+
+The relevant key derivation is:
+
+```python
+key = hashlib.sha256(passphrase).digest()[:16]
+```
+
+The passphrase, key, fragment offsets, ciphertext, and flag are derived from the supplied disk and PCAP. They are not preloaded as solution constants.
 
 ### Reproduction
 
-Run the supplied solver with the original challenge inputs in the paths expected by the source code.
+The source requires the third-party `cryptography` package:
 
 ```bash
+python3 -m pip install cryptography
 python3 303.py
 ```
 
-Expected relevant output:
+Place `exfil_upload.pcap` and `attacker_disk.img` next to the script first. Expected relevant output:
 
 ```text
 Passphrase: g3rb3r-h31st-2026
@@ -41,22 +55,22 @@ AES-128 key: ff6c6ae021c3d3f700d5ab05313f49d0
 Upload offset 3000: 2952 bytes
 Upload offset 0: 3000 bytes
 Reassembled upload: 5952 encoded bytes
-Upload SHA256: e220287c5f1d4e1f6477b0ccb6d53318a11c87962c6218bde84e9a41491c4331
 Status SHA256 verified
-Recovered ZIP: foundation_one_gerbers_recovered.zip (4441 bytes)
-ZIP: foundation_one-B_Cu.gbr
-ZIP: foundation_one-Edge_Cuts.gbr
-ZIP: foundation_one-F_Cu.gbr
-ZIP: foundation_one-F_Silkscreen.gbr
+Recovered ZIP: .../foundation_one_gerbers_recovered.zip (4441 bytes)
 Fabricator note: G04 FAB-NOTE foundation_one rev C : GAIANSPACE{s1lk_scr33n_le4k} do-not-pop*
 FLAG: GAIANSPACE{s1lk_scr33n_le4k}
 ```
 
-### Exploit Code
+The output ZIP is the input Gerber collection for challenge 304; no external Gerber utility is required for this recovery step.
+
+### Solver Code
 
 ```python
 #!/usr/bin/env python3
 """Reconstruct GaianSpace 303 exfiltration and recover the Gerber FAB-NOTE."""
+
+# Dependencies:
+#   python3 -m pip install cryptography
 
 import base64
 import hashlib

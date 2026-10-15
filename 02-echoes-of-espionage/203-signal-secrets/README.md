@@ -27,7 +27,7 @@ The recording is a mono, **16 kHz, 16-bit PCM** WAV file. Listening reveals nois
 
 The updated `203.py` implements this discovery: it calculates an STFT of the original PCM samples, selects the **900–3400 Hz** band, thresholds the spectral magnitude at **45 dB (relative to full-scale PCM sample units)** and saves `203_spectrogram.png`. Tesseract OCR then reads the text and extracts the key after `xor key =`. The threshold is a visualization setting for this particular recording, not a secret or a precomputed key. If OCR varies with the local installation, inspect the saved image directly.
 
-[!spectrogram](./images/203_spectrogram.png)
+![spectrogram](./images/203_spectrogram.png)
 
 **2. Recover the lower-level bitstream.**
 

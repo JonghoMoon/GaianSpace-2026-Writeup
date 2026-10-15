@@ -20,27 +20,44 @@ Read what the descent diary was hiding.
 
 ## Solution
 
-### Steps
+### Analysis
 
-Plot magnetometer X against magnetometer Y as a scatter plot rather than against time; read the resulting hidden message from the generated figure.
+The descent diary contains time-series measurements, including magnetometer X and Y in microteslas. Plotting these channels *against time* makes them look like ordinary sensor noise; a direct plot of `mag_y_uT` against `mag_x_uT` exposes the hidden lettering.
+
+The code uses a scatter plot instead of joining chronological points, since connecting adjacent sensor samples would obscure the geometric arrangement. The message is read visually, not decoded from an ASCII string in the CSV:
+
+```text
+GAIANSPACE{DRIFT_AND_FALL}
+```
 
 ### Reproduction
 
-Run the supplied solver with the original challenge inputs in the paths expected by the source code.
+Install the plotting dependencies and place `descent_log.csv` next to `307.py`:
 
 ```bash
+python3 -m pip install pandas matplotlib
 python3 307.py
 ```
 
-The solver generates `flag.png` and displays a scatter plot. The flag is read visually from the plot; it is not printed by the script.
+The solver saves **`307_flag.png`** and normally displays the plot in an interactive matplotlib environment. It prints the output filename but does **not** print the flag, because the final decoding step is reading the scatter plot itself.
 
-Expected relevant output:
+If running headlessly, use a noninteractive backend:
 
-![flag](./images/flag.png)
+```bash
+MPLBACKEND=Agg python3 307.py
+```
 
-### Exploit Code
+The image is generated from the original measurements. No precomputed character coordinates or known flag string are required.
+
+### Solver Code
 
 ```python
+#!/usr/bin/env python3
+"""Visualize a hidden message in two magnetometer channels."""
+
+# Dependencies:
+#   python3 -m pip install pandas matplotlib
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -63,6 +80,8 @@ ax.grid(alpha=0.15)
 
 plt.tight_layout()
 plt.savefig("307_flag.png", dpi=200)
+print("Saved magnetometer scatter plot to 307_flag.png")
+# Reading the text from the image is the final, visual step.
 plt.show()
 ```
 

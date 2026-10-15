@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""Visualize a hidden message in two magnetometer channels."""
+
+# Dependencies:
+#   python3 -m pip install pandas matplotlib
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -20,4 +26,6 @@ ax.grid(alpha=0.15)
 
 plt.tight_layout()
 plt.savefig("307_flag.png", dpi=200)
+print("Saved magnetometer scatter plot to 307_flag.png")
+# Reading the text from the image is the final, visual step.
 plt.show()
