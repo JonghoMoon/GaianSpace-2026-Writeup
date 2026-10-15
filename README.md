@@ -6,6 +6,8 @@ This repository documents my solving process as a solo participant, with an emph
 
 Each write-up will include the methodology, evidence, analysis scripts, and relevant artifacts used to reach and validate the solution.
 
+![social-preview](./social-preivew.png)
+
 ## Categories
 
 - [01-welcome](#01-welcome) — 4 challenges
@@ -39,7 +41,7 @@ Each challenge directory is intended to contain:
 
 ## Summary
 
-The table below reflects the **solved challenges visible in the supplied scoreboard screenshots (12 October 2026)**. Category `10-not-yet` is an intentionally empty placeholder.
+The table below reflects the **solved challenges visible in the supplied scoreboard screenshots (14 October 2026)**. 
 
 | Category | Challenges | Listed points |
 |---|---:|---:|
