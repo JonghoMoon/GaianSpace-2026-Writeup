@@ -30,8 +30,8 @@ Which anchor slipped, and how far did the lander turn?
 
 Two hints were released during the event:
 
-1. **Hint 1** — Two writers. The recorder wrote two files at once. When one of them is deleted, the card still knows where it began and how long it was, but not which pieces were its own.
-2. **Hint 2** — Ask the chip. Paper says how the sensor was meant to be set. At the top of its own log, the sensor said how it really was set.
+1. **Hint 1** — **Two writers.** The recorder wrote two files at once. When one of them is deleted, the card still knows where it began and how long it was, but not which pieces were its own.
+2. **Hint 2** — **Ask the chip.** Paper says how the sensor was meant to be set. At the top of its own log, the sensor said how it really was set.
 
 ## Solution
 

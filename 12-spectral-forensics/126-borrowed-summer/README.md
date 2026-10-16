@@ -32,8 +32,8 @@ Contains modified Copernicus Sentinel data 2023 and 2024.
 
 Two hints were released during the event:
 
-1. **Hint 1** — No way back. After midsummer a field on the plain only goes one way. It ripens, it dries, it gets cut. It doesn't turn back into a young green crop a fortnight later.
-2. **Hint 2** — Genuine is not the same as true. AgriLink checked that every product is real. Nobody checked that the pixels came from that product.
+1. **Hint 1** — **No way back.** After midsummer a field on the plain only goes one way. It ripens, it dries, it gets cut. It doesn't turn back into a young green crop a fortnight later.
+2. **Hint 2** — **Genuine is not the same as true.** AgriLink checked that every product is real. Nobody checked that the pixels came from that product.
 
 ## Solution
 
