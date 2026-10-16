@@ -35,9 +35,9 @@ The 0.90 µm reflectance is compared to a linear continuum interpolated between 
 
 The target has absolute magnitude `H=22.1` and visible albedo `pV=0.180`. Its equivalent diameter follows the standard relation:
 
-\[
+$$
 D_{\mathrm{km}}=\frac{1329}{\sqrt{p_V}}10^{-H/5}.
-\]
+$$
 
 This gives **119.094 m**; rounding to the nearest 10 metres produces **120 m** and the designation has its space removed.
 

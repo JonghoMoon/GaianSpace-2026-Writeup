@@ -34,9 +34,9 @@ The revised solver first scans rotation periods from **2,000 to 12,000 seconds**
 
 Energy conservation gives the radial contact speed for each spring:
 
-\[
+$$
 v_{contact}=\sqrt{v_{initial}^{2}+2GM\left(\frac{1}{r_{contact}}-\frac{1}{r_{start}}\right)}.
-\]
+$$
 
 | Spring | Initial speed | Contact speed | Limit 0.110 m/s |
 |---|---:|---:|---|

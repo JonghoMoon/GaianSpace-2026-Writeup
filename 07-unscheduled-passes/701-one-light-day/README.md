@@ -36,12 +36,12 @@ The frame log is stamped in the spacecraft's own clock. Ade on nights thinks tha
 
 The carrier transition was observed at the **Earth-received time** (ERT), not at the instant Pilgrim-1 entered safe mode. Convert the ERT from UTC to the ephemeris time scale first. With the Earth centre as the observer (the supplied kernel bundle provides no ground-station trajectory), the one-way light-time equation is
 
-\[
+$$
  t_{\mathrm{ERT}} - t_{\mathrm{event}} =
  \frac{\left\|\mathbf r_{\mathrm{sc}}(t_{\mathrm{event}})
        - \mathbf r_{\oplus}(t_{\mathrm{ERT}})\right\|}{c},
  \qquad c=299\,792.458\ \mathrm{km/s}.
-\]
+$$
 
 The spacecraft's position belongs to the **transmit/event epoch**, whereas Earth's position belongs to the **receive epoch**. The solver starts with zero light time, repeatedly evaluates the spacecraft state at `received - light_time`, and stops once the change is below `1e-9` s. For these supplied kernels the converged delay is **86,505.042874499 s**. Subtracting it in ephemeris time and converting back to UTC gives **2026-10-07T18:53:05.057127Z**.
 

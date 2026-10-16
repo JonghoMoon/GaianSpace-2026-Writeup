@@ -35,11 +35,11 @@ Engineering needs one number: how far the receiver's clock is from true time.
 
 The timestamps form a pseudorange measurement. For each beacon observation, define the shared clock bias as **receiver clock minus TDB** (`b = t_rx_clock - t_rx_TDB`). In time units, the model is
 
-\[
+$$
  t_{\mathrm{rx,clock}} - t_{\mathrm{tx,TDB}}
  = \frac{\|\mathbf r_{\mathrm{receiver}}(t_{\mathrm{rx}})
        - \mathbf r_{\mathrm{beacon}}(t_{\mathrm{tx}})\|}{c} + b.
-\]
+$$
 
 The beacon's position must be evaluated at the **timestamp it transmitted**, rather than at reception or at the present day. For each outer-planet system barycentre, the almanac specifies the orbital normal `r × v` and a rotation of its heliocentric position by `+60°` (L4) or `-60°` (L5); adding the Sun's barycentric position completes the beacon coordinates.
 

@@ -33,9 +33,9 @@ Name the molecule and how strongly it leans.
 
 Match each chiral chromatogram peak to the known standard using a **±0.03-minute** retention-time tolerance. Use the corresponding compound's quantitative ion (`quant_ion_mz`), **not** the total-ion area, to calculate enantiomeric excess:
 
-\[
+$$
 ee(\%)=100\frac{L-D}{L+D}.
-\]
+$$
 
 The sample alone is insufficient to determine which positive ee is authentic. The revised code examines **both D and L peaks** in the procedural blank and carbon/nitrogen isotope run. The relevant comparison is:
 
@@ -49,9 +49,9 @@ Isovaline and glutamic acid have heavy isotopes and low blank contamination, but
 
 For aspartic acid, quantitative-ion areas are D=820 and L=1670:
 
-\[
+$$
 ee=100\frac{1670-820}{1670+820}=34.14\%.
-\]
+$$
 
 The requested whole-percent flag is **`GAIANSPACE{aspartic_acid_L34}`**.
 
