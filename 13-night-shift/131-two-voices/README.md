@@ -25,6 +25,13 @@ Find out what GAIAN-723 answered when the stranger first called it.
 - `vela_band_0114.sigmf-meta` — the recorder's metadata for that capture
 - `desk_notes.md` — Aroz's notes from the same watch; they can be wrong
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Not the same accent** — The two voices do not sound alike. Whatever works for one will not work for the other.
+2. **The sheet is older than the night** — Trust what the recording shows over what is pinned to the wall.
+
 ## Solution
 
 ### Analysis

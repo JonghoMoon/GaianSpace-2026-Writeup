@@ -22,6 +22,13 @@ Find the carbon dioxide reading GAIAN-723 reported when it acknowledged the stra
 - `vela_band_0136.sigmf-meta` — SigMF capture metadata.
 - `station_log.txt` — station event and receiver-lock history.
 
+## Hints
+
+Two hints were released during the event:
+
+1. **It still signs its work** — GAIAN-723 never stopped checking its own sums. If a guess is right, the satellite will agree with you.
+2. **Count the breaths** — A packet that won't say how long it is still takes exactly as long as it needs.
+
 ## Solution
 
 ### Analysis

@@ -23,6 +23,13 @@ Recover it.
 - `vela_band_0347.sigmf-meta` — the recorder's metadata for that capture
 - `chat.txt` — the last messages on Aroz's phone before the report
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Old habits** — The flight computer has written memory dumps the same way for years. The stranger only changed what happens after it is written.
+2. **Small locks** — A lock made in a hurry does not have many keys.
+
 ## Solution
 
 ### Steps

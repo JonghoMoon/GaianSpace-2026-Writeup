@@ -23,6 +23,13 @@ Somewhere in the repacked frames, GAIAN-723 is carrying something it was never d
 - `vela_band_0302.sigmf-meta` — the recorder's metadata for that capture
 - `last_good_frame.csv` — the last telemetry line the MOC decoded before 01:12, with the old column names
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Same air, same room** — Nothing GAIAN-723 measures has changed since the last good line. Only the way it writes the numbers down has.
+2. **A borrowed habit** — The stranger did not invent a new way to hide the frames. They reused something GAIAN-723 already does to every packet, and started it from a number each frame carries in plain sight.
+
 ## Solution
 
 ### Steps

@@ -23,6 +23,13 @@ Put the answer back together.
 - `vela_wide_0212.sigmf-meta` — the recorder's metadata for that capture
 - `chat.txt` — what came in on Aroz's phone while the recorder ran
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Same voice, many rooms** — Wherever it lands, GAIAN-723 still sounds exactly like it did at 01:14.
+2. **Steps, not slides** — It only ever jumps between words, never in the middle of one, and it never wanders far from where it was told to stand.
+
 ## Solution
 
 ### Steps
