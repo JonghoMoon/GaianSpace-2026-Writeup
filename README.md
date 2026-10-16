@@ -41,7 +41,7 @@ Each challenge directory is intended to contain:
 
 ## Running the Solvers
 
-Each challenge stores its original inputs in challenges/ and its analysis code in scripts/. Unless the individual writeup specifies otherwise, copy the solver and any required helper modules into the challenges/ directory, then run the solver from that directory. Install the dependencies described at the top of the source code before execution.
+Each challenge stores its original inputs in challenges/ and its analysis code in scripts/. Unless the individual writeup specifies otherwise, copy the solver and any required helper modules and reference files into the challenges/ directory, then run the solver from that directory. Install the dependencies described at the top of the source code before execution.
 
 ## Summary
 
