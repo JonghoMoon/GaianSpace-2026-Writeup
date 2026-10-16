@@ -24,6 +24,13 @@ Write the order.
 
 *The PGM Rush is inspired by AstroForge, whose unusually open mission updates show how cheap, autonomous deep-space spacecraft could open the solar system not only to asteroid mining but to faster, cheaper science for everyone.*
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Two faces** — An elongated rock shows you its broad side twice every turn. The two views are not quite the same.
+2. **Slow fall** — The lander is not moving at the speed the spring gave it for most of the way down. And the rock keeps turning while it falls.
+
 ## Solution
 
 ### Steps

@@ -24,6 +24,13 @@ Name the frame.
 - `hover_frames.csv` — the hover camera's frame index for the anchor sequence
 - `tt_icd.md` — the time-transfer service, from the AO-111 interface control document
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Hint 1** — Halfway is a guess. Half the round trip each way is right only when both directions take the same time. On this link they don't, and the radio settings tell you exactly how long each one takes.
+2. **Hint 2** — Paper and practice. Documents age faster than links. Check what the radio was really set to that afternoon, all of it.
+
 ## Solution
 
 ### Time-transfer packet structure

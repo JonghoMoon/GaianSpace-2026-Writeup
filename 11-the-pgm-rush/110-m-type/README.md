@@ -23,6 +23,13 @@ Sunniva will sign the order only with the rock's designation and its size.
 
 *The PGM Rush is inspired by AstroForge, whose unusually open mission updates show how cheap, autonomous deep-space spacecraft could open the solar system not only to asteroid mining but to faster, cheaper science for everyone.*
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Same face, different shine** — Several rocks have the same flat, featureless spectrum. They are not the same kind of rock. The spectrum alone cannot tell them apart.
+2. **Size from brightness** — A rock's size is not in the survey sheet, but the two numbers that give it are.
+
 ## Solution
 
 ### Steps

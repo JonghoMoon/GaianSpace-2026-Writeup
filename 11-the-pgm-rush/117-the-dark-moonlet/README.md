@@ -27,6 +27,13 @@ Name the molecule and how strongly it leans.
 
 *The PGM Rush is inspired by AstroForge, whose unusually open mission updates show how cheap, autonomous deep-space spacecraft could open the solar system not only to asteroid mining but to faster, cheaper science for everyone.*
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Our own hands** — Anything the lab finds on an empty run was brought from home. Take it away before you count.
+2. **Too much signal** — Not every big peak is one molecule. Count each compound on the ion it is meant to be counted on.
+
 ## Solution
 
 ### Steps

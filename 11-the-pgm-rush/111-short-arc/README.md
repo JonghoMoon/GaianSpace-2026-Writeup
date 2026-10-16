@@ -25,6 +25,13 @@ Name the tracklet that is `2041 QM23`.
 
 *The PGM Rush is inspired by AstroForge, whose unusually open mission updates show how cheap, autonomous deep-space spacecraft could open the solar system not only to asteroid mining but to faster, cheaper science for everyone.*
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Close company** — At this distance it matters where on Earth each telescope stands.
+2. **A good clock** — Not every night in the log deserves the same trust. A position is only as good as the time stamped on it.
+
 ## Solution
 
 ### Steps

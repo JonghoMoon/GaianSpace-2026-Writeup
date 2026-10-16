@@ -16,6 +16,13 @@ The AO-111 sample canister was tested in a thermal-vacuum chamber before flight.
 - `cl3_datasheet.md` — CL-3 logger format and an example factory calibration table
 - `tvac_report.md` — chamber profile, reference pressure, and operator notes
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Hint 1** — One number. A closed box of gas keeps one number fixed while it warms and cools. Find where it stops being fixed for good, not just for a moment.
+2. **Hint 2** — Shape or seal. A box can change its shape without opening. After a step, ask whether the gas still obeys the same law.
+
 ## Solution
 
 ### Initial Investigation and Calibration Trap
