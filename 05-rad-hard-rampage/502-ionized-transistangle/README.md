@@ -19,6 +19,13 @@ Read the status line the encoder should have produced.
 
 - `status_encoder.netlist` — the gate-level design; shorted gates are tagged, probe words are listed at the end
 
+## Hints
+
+Two hints were released during the event:
+
+1. **A short is a lie** — A shorted gate ignores its inputs and holds one value. The design still records what that gate was meant to compute. Trust the design, not the short.
+2. **Feed the probes** — Each output bit assembles into one character. Run every probe word through the repaired logic, in order.
+
 ## Solution
 
 ### Analysis

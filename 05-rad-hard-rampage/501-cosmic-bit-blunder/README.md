@@ -20,6 +20,13 @@ Undo the particle's one mistake and read the log.
 - `cipher.bin` — the encrypted mission log (AES, one block scheme)
 - `corrupted.key` — the 128-bit key as it reads after the hit
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Only one** — Exactly one bit of the key is wrong. The data is fine. The search space is very small.
+2. **Try them all** — There are only so many single-bit changes to a 16-byte key. Walk them until the log turns into words.
+
 ## Solution
 
 ### Analysis

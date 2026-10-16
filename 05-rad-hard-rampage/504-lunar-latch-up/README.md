@@ -20,6 +20,13 @@ Reset the latch and open the payload.
 - `reg_dump.bin` — the latched register file, its integrity word, and the sealed payload
 - `recovery_spec.md` — the power block's dump layout and key scheme
 
+## Hints
+
+Two hints were released during the event:
+
+1. **One bit too high** — The latch set a single bit. You only need to consider bits that are currently high; clearing the right one makes the stored integrity word match.
+2. **The registers are the key** — Once the integrity word agrees, the corrected register bytes derive the key that opens the payload. The spec says how.
+
 ## Solution
 
 ### Analysis

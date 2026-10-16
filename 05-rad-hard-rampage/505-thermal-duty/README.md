@@ -20,6 +20,13 @@ Recover the drive sequence the amplifier was given.
 - `thermal_log.csv` — time and PA case temperature
 - `thermal_model.md` — the first-order thermal model, without its constants
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Driven, not drifting** — The temperature does not wander on its own; something pushes it each step. You already know what the first few pushes spelled, so you know the drive for the first few steps.
+2. **Counts, then characters** — Solve the model for the drive at each step. The recovered counts are small whole numbers, and they read as text.
+
 ## Solution
 
 ### Analysis

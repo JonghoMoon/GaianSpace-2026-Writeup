@@ -20,6 +20,13 @@ Recover the as-flown readings and read what they spell.
 - `sensor_log.csv` — sample index and the degraded reading
 - `ddd_characterization.md` — the measured drift model
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Creep, not jump** — The error grows with every sample along the curve in the characterization note. Subtract the modelled drift from each reading.
+2. **Not parts per million** — The cleaned numbers are not a gas concentration. They sit in a familiar range once you shift off the baseline. The mission format tells you the first character.
+
 ## Solution
 
 ### Analysis
