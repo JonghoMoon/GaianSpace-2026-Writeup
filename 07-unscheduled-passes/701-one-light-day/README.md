@@ -22,6 +22,13 @@ The frame log is stamped in the spacecraft's own clock. Ade on nights thinks tha
 - `desk_notes.md` — the desk's notes for the night
 - `kernels.zip` — pilgrim.tm and the kernels it loads (leap seconds, spacecraft clock, trajectory)
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Heard, not done** — The station's clock and the spacecraft's clock are not counting the same thing, and the news took a while to arrive.
+2. **An old clock** — Nobody on the desk trusts a clock that has been running since 1977. The kernel that describes it is there for a reason.
+
 ## Solution
 
 ### Steps

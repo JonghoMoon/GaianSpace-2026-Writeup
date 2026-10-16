@@ -20,6 +20,13 @@ Engineering needs one number: how far the receiver's clock is from true time.
 - `ssps_receiver_log.csv` — the receiver's snapshots: its own clock, and the stamp of each beacon's pulse arriving at that moment
 - `ssps_almanac.md` — how the service defines a beacon's position, and this month's bulletins
 
+## Hints
+
+Two hints were released during the event:
+
+1. **A day on the road** — Every pulse in the log is about a day old when it arrives. The beacons did not sit still while it travelled.
+2. **One voice out of tune** — Seven of the eight agree with each other. Let the residuals tell you which one does not.
+
 ## Solution
 
 ### Steps

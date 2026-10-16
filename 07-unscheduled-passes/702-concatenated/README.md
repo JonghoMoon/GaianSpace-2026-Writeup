@@ -20,6 +20,13 @@ Somewhere in the readout the computer signs its name.
 - `pilgrim_symbols.s8` — the raw received symbols, signed 8-bit
 - `coding_sheet.md` — what is left of the handbook page on the coding
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Not just yes or no** — Every sample says how sure the receiver was, not only which way it leaned. Throwing that away costs more than this link can afford.
+2. **Four at a time** — The outer code never sees the bytes in the order they arrived.
+
 ## Solution
 
 ### Steps

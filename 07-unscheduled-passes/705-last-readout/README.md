@@ -26,6 +26,13 @@ Find the words that Pilgrim-1 itself has lost.
 - `fds_sim.py` — the ground's bench model of the machine
 - `fds_handbook.md` — the instruction set, the memory map and the load history
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Hint 1** — Same mistake twice. The link makes a different mistake every time. The spacecraft makes the same one every time.
+2. **Hint 2** — It writes too. Not every word that changed is broken. The machine changes some of its own memory every cycle.
+
 ## Solution
 
 ### 1. Restore the frame payloads

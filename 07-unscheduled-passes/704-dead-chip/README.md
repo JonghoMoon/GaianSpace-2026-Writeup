@@ -21,6 +21,13 @@ The desk has the 1977 ground copy of the memory, the handbook, and a bench model
 - `fds_sim.py` — the ground's bench model of the machine
 - `fds_handbook.md` — the instruction set, the 1977 memory map, and the load history
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Not every door is a call** — Something outside the bank reaches into it without a `JSR`. Find every way in before you move anything.
+2. **Free since when** — The map was drawn before the last time somebody squeezed something in. Look at what is in memory, not at what the map promises.
+
 ## Solution
 
 ### Steps
