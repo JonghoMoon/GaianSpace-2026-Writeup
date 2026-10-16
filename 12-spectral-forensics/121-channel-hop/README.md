@@ -28,6 +28,13 @@ Find the delivery stamp.
 
 Contains modified Copernicus Sentinel data 2025.
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The tablet shows three** — The tablet only shows what a person can see. The pass carried more than that.
+2. **Where the corn is loudest** — The stamp sits in the part of the light where healthy corn shines brightest, and the tablet never looks there.
+
 ## Solution
 
 ### Steps

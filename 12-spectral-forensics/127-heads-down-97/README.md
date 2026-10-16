@@ -29,6 +29,13 @@ Before the sprayers leave the yard at dusk, Dr. Rica wants two answers: which fi
 
 Contains modified Copernicus Sentinel data 2025.
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Hint 1** — Hint 1. Two transmitters, one channel, one setting, and the stranger has learned to tune. A whole chirp bin is far too coarse a ruler to tell them apart. Once you have two voices, ask which one you have heard before, and whose clock wanders.
+2. **Hint 2** — Hint 2. Every speckled field is built from two kinds of pixel, in every channel you look at one by one. Ask whether that is still true when you look at all five channels together.
+
 ## Solution
 
 ### 1. Two transmissions, not one

@@ -28,6 +28,13 @@ Find what the stranger planted in the tractors' tile.
 
 Contains modified Copernicus Sentinel data 2025.
 
+## Hints
+
+Two hints were released during the event:
+
+1. **No band gives it away** — Look at any one channel of the stranger's tile, or at any picture made from the usual three, and the patch is only noise. That was the point.
+2. **As many as the course** — Babb's course always asked the tile for a fixed number of kinds of ground. The stranger counted on nobody asking.
+
 ## Solution
 
 ### Steps

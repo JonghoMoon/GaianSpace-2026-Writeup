@@ -28,6 +28,13 @@ Find out what AgriLink really sent.
 
 Contains modified Copernicus Sentinel data 2025.
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Same song, two throats** — Every word in this pass that matters was said twice, and the two speakers are not quite in tune with each other.
+2. **The field knows its colours** — Water, bare soil and green leaves each answer the light their own way. Order the channels by what the farm shows you, not by what the file says.
+
 ## Solution
 
 ### Steps

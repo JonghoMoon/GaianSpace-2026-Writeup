@@ -27,6 +27,13 @@ Find the parcel the stranger transmitted from.
 
 Contains modified Copernicus Sentinel data 2025.
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Hint 1** — Four clocks. Three gateways always agree on some point. The fourth one is the check, and the sheet is not the only record of where a gateway stands.
+2. **Hint 2** — The long way round. The dryer stands behind a row of poplars. Not everything it heard came straight from the transmitter.
+
 ## Solution
 
 ### 1. Isolate the transmitted batch

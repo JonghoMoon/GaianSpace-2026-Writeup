@@ -31,6 +31,13 @@ The flag is the stranger's claim codes for the false declarations, in the order 
 
 Contains modified Copernicus Sentinel data 2025.
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Greener is better** — The office's classifier does more than name a class. It can also say how sure it is, and a parcel it is sure about tells you more than one it shrugs at.
+2. **The field nobody walked** — A classifier that never met a class can't recognise it. The office kept the field. It only threw away what it learned there.
+
 ## Solution
 
 ### Steps
