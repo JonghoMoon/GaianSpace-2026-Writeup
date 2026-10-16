@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Category** | 12 — Spectral Forensics |
-| **Points** | ? |
+| **Points** | 394 |
 
 ## Description
 

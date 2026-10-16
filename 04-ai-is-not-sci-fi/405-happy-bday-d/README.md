@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Category** | 04 — AI Is Not Sci-Fi |
-| **Points** | ? |
+| **Points** | 350 |
 
 ## Description
 

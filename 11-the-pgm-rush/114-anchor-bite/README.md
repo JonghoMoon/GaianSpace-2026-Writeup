@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Category** | 11 — The PGM Rush |
-| **Points** | ? |
+| **Points** | 250 |
 
 ## Description
 

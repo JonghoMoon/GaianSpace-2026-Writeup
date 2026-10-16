@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Category** | 07 — Unscheduled Passes |
-| **Points** | ? |
+| **Points** | 300 |
 
 ## Description
 

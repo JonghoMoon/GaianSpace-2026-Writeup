@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Category** | 06 — DR-ONE |
-| **Points** | ? |
+| **Points** | 300 |
 
 ## Description
 
