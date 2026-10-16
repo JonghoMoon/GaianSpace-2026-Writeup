@@ -17,6 +17,13 @@ Recover what the distant transmitter kept repeating.
 
 **Attachments:** `beacon_notes.md` — the operator's settings for the capture, `deep_space_capture.f32` — the raw recording from the post
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Find the beat** — The burst repeats on a fixed stride, but nothing tells you the stride. Let the recording line up against a shifted copy of itself and the stride will show.
+2. **Changes, not levels** — Once the repeats are stacked and the noise is gone, do not read the levels. Read where the signal flips and where it holds. One of those is a one.
+
 ## Solution
 
 ### Steps

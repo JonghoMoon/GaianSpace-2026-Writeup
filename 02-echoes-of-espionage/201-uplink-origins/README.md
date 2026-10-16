@@ -19,6 +19,13 @@ Report the sub-satellite point at the uplink instant and the satellite's altitud
 
 **Attachments:** `gaian-13.tle` — the element set flight dynamics kept for GAIAN-13 on the day
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The desk is wrong** — Reyes likes the coastal array. The ground truth is whatever the numbers say sat beneath the bird at 17:15, not where it felt right.
+2. **Straight down** — When something is overhead it is directly above one point on the Earth. That point, and the height to the satellite from it, are the whole answer.
+
 ## Solution
 
 ### Steps

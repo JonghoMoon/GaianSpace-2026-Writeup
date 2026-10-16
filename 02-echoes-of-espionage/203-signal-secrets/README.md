@@ -17,6 +17,13 @@ Work the recording in two passes and read the operator's parting line.
 
 **Attachments:** `downlink_signal.wav` — the array's recording of the malicious downlink
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Look, don't listen** — Spread the sound out by pitch over time. Something is painted across the band. It is not the flag; it is a key, and it tells you what the key is for.
+2. **Under the floor** — The flag rides in the quietest part of every sample, the part that never changes the sound. Pull that out and undo it with what the picture gave you.
+
 ## Solution
 
 ### Steps

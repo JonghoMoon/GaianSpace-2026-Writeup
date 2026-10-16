@@ -17,6 +17,13 @@ Make the decoder give up what the attacker armed.
 
 **Attachments:** `ground_server` — the station's telemetry decoder (Linux x86-64 ELF)
 
+## Hints
+
+Two hints were released during the event:
+
+1. **It already knows** — The decoder carries the key it is waiting for. It does not store it where a quick glance would find it. The right key is reachable without guessing.
+2. **Two coats of paint** — The key is hidden under one simple operation. What it reveals is hidden under the key.
+
 ## Solution
 
 ### Steps

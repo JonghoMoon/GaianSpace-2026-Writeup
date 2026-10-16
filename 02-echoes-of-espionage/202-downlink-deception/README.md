@@ -27,6 +27,13 @@ Receiving-site roster (lat, lon; west is negative):
 
 **Attachments:** `gaian-13.tle` — the element set for GAIAN-13; `telemetry_capture.bin` — the captured downlink telemetry frame
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Dishes miss things** — Reyes trusts the biggest antennas. Being big does not help if the satellite is below your horizon. Check who could actually see it.
+2. **The frame is honest** — You do not have to guess the moment. The capture writes down when it arrived, in plain characters, near the top.
+
 ## Solution
 
 ### Steps

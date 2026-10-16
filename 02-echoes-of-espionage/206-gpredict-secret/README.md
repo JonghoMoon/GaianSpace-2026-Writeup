@@ -17,6 +17,13 @@ Put the signature back together.
 
 **Attachments:** `gaian-13-relay.tle` — the second element set left on the laptop, `pass_capture.png` — a screen grab of a pass, `relay.mod` — the saved tracking module, `vela.qth` — the station location file
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Signed in three** — No one file has the whole thing. One fragment rides with the object, one is noted in the saved module, one is written on the screen grab.
+2. **Say it out loud** — The three fragments are not in random order. Put them together and they read like something a watcher would be called.
+
 ## Solution
 
 ### Steps

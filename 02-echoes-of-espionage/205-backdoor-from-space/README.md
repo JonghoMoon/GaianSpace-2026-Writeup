@@ -17,6 +17,13 @@ Recover the attacker's next move.
 
 **Attachments:** `ground_c2_traffic.pcap` — the span monitor's capture, just after the downlink
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Read the whole exchange** — The reply is scrambled with a stream cipher. The caller handed over the material for that scramble in its own request, in a header that does not belong on a normal upload.
+2. **Nothing labels it** — No field tells you the cipher or the key. The reply is base64 over raw ciphertext; the key is the session value the caller sent. A common stream cipher and that value is the whole trick.
+
 ## Solution
 
 ### Steps
