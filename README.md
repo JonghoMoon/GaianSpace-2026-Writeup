@@ -197,6 +197,3 @@ Points below are transcribed from the supplied solved-challenge screenshots; the
 | 4 | [134-repacked](./13-night-shift/134-repacked/) | 150 | `GAIANSPACE{r3p4ck3d_660413}` |
 | 5 | [135-what-they-took](./13-night-shift/135-what-they-took/) | 193 | `GAIANSPACE{wh4t_th3y_t00k_064CCB}` |
 
----
-
-*Write-ups are being prepared. Challenge links assume each problem is stored in a same-named subdirectory under its category; update relative paths if your local directory names differ.*
