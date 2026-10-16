@@ -19,6 +19,13 @@ Reassemble what the CanSat transmitted.
 - `lora_capture.log` — the ground radio's record of the descent window
 - `radio_notes.md` — the watch's notes on the receiver
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Pick your bird** — Two transmitters are in the log. Only one is the CanSat. The louder, longer one is the weather beacon and leads nowhere.
+2. **Count, then unscramble** — The frames did not arrive in order, but each one knows its place. Put the right node's frames back in sequence and undo the one scramble that was applied to every payload.
+
 ## Solution
 
 ### Analysis

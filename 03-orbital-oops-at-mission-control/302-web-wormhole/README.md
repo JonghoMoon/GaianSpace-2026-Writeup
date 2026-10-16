@@ -18,6 +18,13 @@ Find what the portal actually planted.
 **Attachments:**
 - `drive_by.pcap` — corporate capture of the browser visit
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Pull the objects** — Reassemble the files the browser downloaded. Most are harmless decoration. One is a script that does more than decorate.
+2. **Folded, not written** — Searching the capture for the answer finds nothing, because the script carries its real body folded up as text. Unfold that text and read what it sets.
+
 ## Solution
 
 ### Analysis

@@ -18,6 +18,13 @@ Read what the descent diary was hiding.
 **Attachments:**
 - `descent_log.csv` — the full sensor diary of the descent
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Not the barometer** — The altitude curve is a distraction. Look at the sensor whose two channels mean nothing on their own.
+2. **Let it draw** — Those two channels are coordinates, not a time series. Plot one against the other and stop reading them as numbers.
+
 ## Solution
 
 ### Analysis

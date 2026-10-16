@@ -19,6 +19,13 @@ Pass the review to get its assessment.
 - `foundation_one_gerbers.zip` — the recovered Foundation One board files
 - The original description also referenced a review service (`server.py`, `Dockerfile`, `docker-compose.yml`), but these server files are not present in the archived ZIP.
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Read, do not guess** — Every answer is visible in the Gerber set — the layer stack, the outline, the reference designators, the labels, the pad counts. A viewer shows all of it.
+2. **What should not be there** — One header on this board is wide open for anyone with a probe. Its silkscreen label names it outright.
+
 ## Solution
 
 ### Analysis

@@ -19,6 +19,13 @@ Recover the stolen board and read the fabricator's note.
 - `exfil_upload.pcap` — the corporate capture of the outbound transfer
 - `attacker_disk.img` — the staging disk pulled off the host
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The tool tells on itself** — The disk carries the program that scrambled the file. Read it. Its key comes straight from a phrase it keeps in the open. There is more than one job on the wire and more than one key on the disk, including one the listing does not show; an older job opens under an older phrase but is not the board you were sent, so match the key to the job before you spend your one attempt.
+2. **Rebuild, then open** — The board files did not go out in one piece. Two uploads of that job carry an offset header; put the pieces together in offset order, not the order they were sent, before you undo anything. The status call afterwards gives the finished length and hash so you can check the join. Then base64-decode, decrypt with the key the tool uses, unzip, and read the note in the silkscreen file.
+
 ## Solution
 
 ### Analysis

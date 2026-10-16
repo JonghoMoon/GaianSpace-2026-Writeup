@@ -18,6 +18,13 @@ Recover the attachment and read what is inside.
 **Attachments:**
 - `mem.dmp` — a dump of the engineer's working memory, taken before shutdown
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Dressed as a contract** — Ignore the cached password the desk is excited about. Look for the whole mail, headers and all, sitting in the dump as plain text. It knows who it claims to be from.
+2. **Carried in, not written in** — The attachment travels encoded inside the mail, so searching the dump for the answer directly finds nothing. Lift the encoded block out, turn it back into a file, and open that.
+
 ## Solution
 
 ### Analysis

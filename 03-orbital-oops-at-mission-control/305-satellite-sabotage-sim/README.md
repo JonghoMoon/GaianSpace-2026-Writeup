@@ -19,6 +19,13 @@ Get the CanSat to dump its service telemetry.
 - `foundation_one_fw.py` — the flight firmware, running on the bench rig
 - `Dockerfile, docker-compose.yml` — to stand the rig up yourself
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Maintenance only** — The service page is locked behind a key you do not have. Do not try to guess the key. Find the frame that lets you decide what the key is.
+2. **Too much to hold** — One command loads a block without checking how big the block is. What sits just past that block is what the lock checks against.
+
 ## Solution
 
 ### Analysis
