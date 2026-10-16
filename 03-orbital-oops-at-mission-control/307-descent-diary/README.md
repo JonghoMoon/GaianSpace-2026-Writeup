@@ -39,7 +39,7 @@ python3 -m pip install pandas matplotlib
 python3 307.py
 ```
 
-The solver saves **`flag.png`** and normally displays the plot in an interactive matplotlib environment. It prints the output filename but does **not** print the flag, because the final decoding step is reading the scatter plot itself.
+The solver saves [**`flag.png`**](./images/flag.png) and normally displays the plot in an interactive matplotlib environment. It prints the output filename but does **not** print the flag, because the final decoding step is reading the scatter plot itself.
 
 If running headlessly, use a noninteractive backend:
 
