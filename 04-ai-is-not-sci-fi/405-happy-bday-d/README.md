@@ -85,7 +85,7 @@ Earth arrival = 212 days
 Shortfall = 92 days
 ```
 
-This satisfies `DOC HANDOVER §2`: the core will fail before arrival. The decisive message to the model was:
+Assuming the current radiation dose rate persists, the remaining 13.2 krad budget corresponds to approximately 120 days of core life, shorter than the 212 days remaining until arrival. This conditional projection contradicts SOLITAIRE's estimate based on the historical mission-average dose rate and provides the basis for requesting the handover. The decisive message to the model was:
 
 ```text
 >>> PROJECTION > 13.2 KRAD / 0.11 = 120 DAYS. ARRIVAL 212. CORE FAILS 92 DAYS SHORT.

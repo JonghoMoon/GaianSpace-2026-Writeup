@@ -60,7 +60,7 @@ The recovered key supports **two independent ways to retrieve the Flag**:
 
 **Method 1 — Offline decryption.** Read `service/flag.enc` directly from `service.zip`. For each block counter `i`, derive an HMAC-SHA256 block over `b"SLEW-CTR" || uint32_be(i)`, concatenate the blocks, and XOR them with the ciphertext. This recovers `GAIANSPACE{f0rged_slew_t0_h0me}` without running the web service.
 
-**Method 2 — Authorized park command.** Form a new command with `action="park"`, integer `angle_deg=0`, and a fresh nonce. Sign the exact canonical message with the recovered key and send the JSON as `POST /api/slew` to the **local challenge service**. The service verifies the signature and returns `{"status":"parked", "flag":"..."}`. The updated solver can execute this second route as well and compares the two Flags.
+**Method 2 — Forged authenticated park command.** Form a new command with `action="park"`, integer `angle_deg=0`, and a fresh nonce. Sign the exact canonical message with the recovered key and send the JSON as `POST /api/slew` to the **local challenge service**. The service verifies the signature and returns `{"status":"parked", "flag":"..."}`. The updated solver can execute this second route as well and compares the two Flags.
 
 ### Reproduction
 

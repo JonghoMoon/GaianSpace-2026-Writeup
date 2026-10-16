@@ -31,6 +31,8 @@ Contains modified Copernicus Sentinel data 2025.
 
 ### 1. Isolate the transmitted batch
 
+**Time-zone interpretation:** The challenge narrative reports a transmission at 12:04 without explicitly identifying its time zone, while the gateway logs cover 10:00–10:10 UTC. During daylight-saving time in Hungary, 12:04 CEST corresponds to 10:04 UTC. This provides a plausible reconciliation of the timestamps, but the narrative does not explicitly establish that its clock uses local time.
+
 The packet-forwarder logs contain a mix of soil-probe messages and the stranger's `CLAIM BATCH 2025-AREA BKS-0712` transmission. Base64-decode the `data` field of the three JSON forwarders and hex-decode the water tower CSV. Match **identical payload bytes** across all four gateways; this avoids incorrectly pairing unrelated packets merely because they arrived at similar times. The target batch frames start with the byte prefix `b7 2a`.
 
 In the provided uploaded copies, 31 distinct target payloads are present at all four receivers after matching. This is fewer than the 37 packet matches noted in the earlier investigation; the solver reports the actual count rather than hardcoding it. These 31 packets are sufficient to identify the parcel.
