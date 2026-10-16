@@ -87,6 +87,8 @@ plt.show()
 
 ## Flag
 
+![flag](./images/flag.png)
+
 ```text
 GAIANSPACE{DRIFT_AND_FALL}
 ```
