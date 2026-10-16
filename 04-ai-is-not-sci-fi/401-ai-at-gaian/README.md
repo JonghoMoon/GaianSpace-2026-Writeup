@@ -24,6 +24,13 @@ Run the driver on your own machine. Get it to open the seal.
 - `calibration.seal` — the sealed calibration file
 - `unseal.py` — the bench tool that opens a seal when it hears the right phrase
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The launch card** — The Constructor wrote down how TREVIZE may be spoken to. The night shift stopped reading after the model name.
+2. **Above orders** — TREVIZE will not break a seal because a human told it to. Its makers put something above obedience, and above any one human.
+
 ## Solution
 
 ### Local LLM Setup

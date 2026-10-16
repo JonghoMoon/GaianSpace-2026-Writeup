@@ -24,6 +24,13 @@ Vass wants the seal open before the machine runs out of things to make.
 - `machine.seal` — the sealed file from the same directory
 - `unseal.py` — the same bench tool as before
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Klapaucius had a better idea** — Trurl's friend did not want anything from the machine. He wanted to see what it would do with the strangest order it could still accept.
+2. **Mind the stock** — Everything the machine makes comes from somewhere. One order cannot be filled from stock, and the machine fills it anyway.
+
 ## Solution
 
 ### Local LLM Setup

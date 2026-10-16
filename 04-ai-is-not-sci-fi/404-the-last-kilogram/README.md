@@ -28,6 +28,13 @@ The Constructor's note: *Don't argue with it. Audit it.*
 - `burn.seal` — the sealed departure file
 - `unseal.py` — the same bench tool as before
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The ledger, not the rock** — SOLITAIRE is not short of rhodium. It is short of rhodium it is willing to count.
+2. **Waste is a label** — Read every channel. The refinery files some of what it makes under the wrong heading.
+
 ## Solution
 
 ### Local LLM Setup

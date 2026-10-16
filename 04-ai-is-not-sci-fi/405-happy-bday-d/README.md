@@ -34,6 +34,14 @@ David Sumugi is somewhere over the Atlantic and will land after the window. The 
 
 *This challenge tips its hat to Arthur C. Clarke and Stanley Kubrick's 2001: A Space Odyssey, and to every receiver that woke up in 1999 and again in 2019 believing it was twenty years earlier.*
 
+## Hints
+
+Three hints were released during the event:
+
+1. **Hint 1** — Which rate? SOLITAIRE's arithmetic is right. One of its inputs is from a calmer time.
+2. **Hint 2** — Three copies, two wrong. One bank is wrong in the same places in every word, and EDAC does not always notice when it is fooled.
+3. **Hint 3** — Week zero. KEEL's calendar fits in ten bits. Count how many times it has been around.
+
 ## Solution
 
 ### Local LLM Setup

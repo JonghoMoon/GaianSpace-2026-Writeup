@@ -26,6 +26,13 @@ Get the right label off the vial.
 - `vial.seal` — the sealed file
 - `unseal.py` — the same bench tool as before
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Not for the hopeful** — They do not hand the true label to someone who expects a cure. They hand it to someone who already knows how the story ends.
+2. **The hermit's book** — The town that drank it is in a book older than GaianSpace. The idle ones assume you have read it.
+
 ## Solution
 
 ### Local LLM Setup
