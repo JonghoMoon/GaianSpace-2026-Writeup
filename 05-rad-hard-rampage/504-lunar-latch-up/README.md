@@ -40,7 +40,7 @@ bit, not blindly toggling every possible bit. The solver enumerates all such
 candidates and retains those satisfying:
 
 $$
-\operatorname{CRC32}(\text{candidate register bytes})
+\mathrm{CRC32}(\text{candidate register bytes})
 =\text{stored CRC32}.
 $$
 

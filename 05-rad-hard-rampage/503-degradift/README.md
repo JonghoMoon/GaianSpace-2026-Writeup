@@ -28,20 +28,20 @@ Recover the as-flown readings and read what they spell.
 parts per million. For sample index `n`:
 
 $$
-D(n)=\operatorname{round}_{\text{half-up}}(1.7n+0.013n^2).
+D(n)=\mathrm{round}_{\text{half-up}}(1.7n+0.013n^2).
 $$
 
 The measured reading includes both the original signal and this bias:
 
 $$
-M(n)=B+\operatorname{ASCII}(c_n)+D(n),
+M(n)=B+\mathrm{ASCII}(c_n)+D(n),
 $$
 
 where `B` is an unknown fixed CO2 baseline. Subtracting the modeled drift
 recovers the baseline plus the encoded character:
 
 $$
-R(n)=M(n)-D(n)=B+\operatorname{ASCII}(c_n).
+R(n)=M(n)-D(n)=B+\mathrm{ASCII}(c_n).
 $$
 
 The challenge provides the flag format `GAIANSPACE{...}`, so the first character
