@@ -35,7 +35,9 @@ Contains modified Copernicus Sentinel data 2025.
 
 The packet-forwarder logs contain a mix of soil-probe messages and the stranger's `CLAIM BATCH 2025-AREA BKS-0712` transmission. Base64-decode the `data` field of the three JSON forwarders and hex-decode the water tower CSV. Match **identical payload bytes** across all four gateways; this avoids incorrectly pairing unrelated packets merely because they arrived at similar times. The target batch frames start with the byte prefix `b7 2a`.
 
-In the provided uploaded copies, 31 distinct target payloads are present at all four receivers after matching. This is fewer than the 37 packet matches noted in the earlier investigation; the solver reports the actual count rather than hardcoding it. These 31 packets are sufficient to identify the parcel.
+**Use the whole payload, not only the repeated batch text.** Challenge 124 recovered two transmissions of the same 32-line batch: one header, 30 claims, and one END line per transmission. The application layout is `b7 2a | counter (LE16) | text`. Frame counters are **0–31** for the first transmission and **32–63** for the second, so the 64 complete payloads are distinct even though their text repeats. Keeping the counter in the matching key distinguishes the two transmissions; matching only the ASCII text would discard that distinction.
+
+The existing solver retains the complete payload bytes as each gateway dictionary's key and intersects those keys across receivers. In the supplied logs, **31 distinct complete target payloads** are present at all four gateways. This is the measured intersection, not a hardcoded count or a count of unique claim sentences. These 31 matched frames are sufficient to identify the parcel.
 
 ### 2. Correct the gateway position
 
@@ -92,13 +94,13 @@ Install the required Python packages:
 python3 -m pip install numpy scipy pyproj shapely
 ```
 
-Place `125.py` alongside the seven original challenge files and run:
+Run from the `125-where-they-stood/` directory with the seven original challenge files in `challenges/`:
 
 ```bash
-python3 125.py
+python3 scripts/125.py --directory challenges
 ```
 
-Expected relevant output (for the uploaded data):
+Expected relevant output (for the supplied logs):
 
 ```text
 Gateways: DRYER, SILO, TOWER, PUMP

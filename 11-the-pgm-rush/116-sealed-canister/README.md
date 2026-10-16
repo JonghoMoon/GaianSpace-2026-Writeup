@@ -38,9 +38,9 @@ The apparent pressure changes during the 45 °C hot soak are explained by temper
 
 ### Finding the First Breach Record
 
-The `tvac_report.md` setpoint table identifies the cooling phase (logger records **4200–6900**) independently of the breach timestamp. The supplied script parses the schedule, selects the longest decreasing-temperature segment, and uses the **first half** of that interval (4200–5550) as the normal-noise baseline. It calculates successive differences of `P/T_K`, estimates their center with a median and their robust noise scale with `σ = 1.4826 × MAD`, and flags a candidate below **−8σ** only if at least **three of the five** starting differences are also below **−3σ**. The default script scans the cooling interval.
+The `tvac_report.md` setpoint table identifies the cooling phase (logger records **4200–6900**) independently of the breach timestamp. The supplied script parses the schedule, selects the longest decreasing-temperature segment, and uses the **first half** of that interval (4200–5550) as the normal-noise baseline. It calculates successive differences of `P/T_K`, estimates their center with a median and their robust noise scale with `σ = 1.4826 × MAD`, and flags a candidate below **−8σ** only if at least **three of the five differences starting at that candidate** are also below **−3σ**. The five-difference window includes the candidate's own change and the following four changes (`derivatives[index - 1:index + 4]`), not five additional changes after the candidate. The default script scans the cooling interval.
 
-**The first sustained anomaly is record 6304 regardless of the baseline selected.** As an independent sensitivity check, the same compensated data and detection rule were evaluated with several reference intervals and search ranges:
+**The first sustained anomaly is record 6304 for all four tested baselines.** As an independent sensitivity check, the same compensated data and detection rule were evaluated with several reference intervals and search ranges:
 
 | Baseline interval | Search range | Robust σ (`Δ(P/T_K)`) | First anomaly | z at rec 6304 |
 |---|---|---:|---:|---:|
@@ -61,10 +61,14 @@ CO2 readings subsequently rise from near-zero values toward **418 ppm**, separat
 
 ### Reproduction
 
-Place `116.py`, `cl3_0419_boot.txt`, `cl3_0419_env.csv`, `cl3_0419_co2.csv`, and `tvac_report.md` in the same directory (`cl3_datasheet.md` is documentation, not a script input), then run:
+Run from the `116-sealed-canister/` directory with the original inputs in `challenges/` (`cl3_datasheet.md` is documentation, not a script input):
 
 ```bash
-python3 116.py
+python3 scripts/116.py \
+    --boot challenges/cl3_0419_boot.txt \
+    --env challenges/cl3_0419_env.csv \
+    --co2 challenges/cl3_0419_co2.csv \
+    --report challenges/tvac_report.md
 ```
 
 Expected relevant output:

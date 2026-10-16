@@ -35,7 +35,7 @@ Contains modified Copernicus Sentinel data 2025.
 
 ### Steps
 
-1. Decode and CRC-validate all 64 SDR frames, yielding two identical copies of a 30-claim batch.
+1. Decode and CRC-validate all 64 SDR frames, yielding two transmissions of the same 30-claim batch text. The complete frame payloads are distinct because their frame counters continue across the two transmissions.
 2. Read the five-channel georeferenced TIFF, parcel polygons, published class statistics, and training fields.
 3. Reconstruct the omitted `kukorica` (corn) class from the training pixels.
 4. Classify parcel pixels with the restored class and compare dominant classes to the submitted declarations.
@@ -43,12 +43,23 @@ Contains modified Copernicus Sentinel data 2025.
 
 The code reconstructs the omitted `kukorica` class from training-field pixels; the published-plus-restored classifier and a fully recomputed training classifier can differ at one pixel without changing the parcel-level decisions.
 
+### Repeated batch text, distinct frame payloads
+
+The decoded application payload starts with `b7 2a`, followed by a two-byte little-endian frame counter and the ASCII text: `b7 2a | counter (LE16) | text`. Each transmission contains 32 text lines: the `CLAIM BATCH 2025-AREA BKS-0712 applicant=AGRO-LIGET KFT n=30` header, 30 claim lines, and `END BKS-0712`.
+
+| Transmission | Frame counters | Text |
+|---|---|---|
+| First | 0–31 | Batch header, 30 claims, and END |
+| Second | 32–63 | The same 32 text lines |
+
+The saved `scripts/124_recovered/radio_packets.json` records both the `sequence` and the complete `payload_hex` for every frame. Comparing the text after the four-byte header gives two identical 32-line sequences, while comparing the complete payloads gives **64 distinct values**. The solver's output phrase `2 identical transmissions` refers to the decoded batch contents, not byte-for-byte identity of the complete frame payloads. This distinction matters in 125, which matches the complete payload across gateways so that the two transmissions are not merged.
+
 ### Reproduction
 
-Run the original solver from its challenge directory with its original input files:
+Run from the `124-subsidy-claim/` directory with the original inputs in `challenges/`:
 
 ```bash
-python3 124.py
+python3 scripts/124.py --input-dir challenges --output-dir scripts/124_recovered
 ```
 
 Expected relevant output:

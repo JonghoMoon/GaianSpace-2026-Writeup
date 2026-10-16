@@ -41,7 +41,7 @@ Factory ID on bus: 9f8503e2be0024fd
 MicroPython UID:   fd2400bee203859f
 ```
 
-The last line reverses the on-bus byte order to obtain the `machine.unique_id()` bytes used by the vendor's sealing routine. This matters because the UID is part of both the encryption key and IV derivation.
+For this device and capture, reversing the on-bus bytes gives the UID used by the sealing implementation: `fd2400bee203859f`. This byte-order choice is validated by the record decryptions below; it is not a general rule that MicroPython reverses factory identifiers. The UID is part of both the encryption key and IV derivation.
 
 ### 2. Recover the withdrawn seed from flash
 
@@ -101,7 +101,7 @@ All four plaintexts pass the embedded CRC32 check. This independently confirms t
 
 ## Reproduction
 
-Place `115.py`, `xrf9_flash.bin`, and `lander_link.log` in the same directory. The two Markdown attachments document the protocol and licensing context but are not read by the script.
+Run from the `115-locked-assayer/` directory, keeping the repository layout: the solver is in `scripts/` and the original inputs are in `challenges/`. The two Markdown attachments document the protocol and licensing context but are not read by the script.
 
 Install the one external dependency:
 
@@ -112,7 +112,7 @@ python3 -m pip install cryptography
 Run:
 
 ```bash
-python3 115.py xrf9_flash.bin lander_link.log
+python3 scripts/115.py challenges/xrf9_flash.bin challenges/lander_link.log
 ```
 
 **Expected relevant output:**
