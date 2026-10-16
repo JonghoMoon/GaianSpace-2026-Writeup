@@ -20,6 +20,13 @@ Find the copy that survived whole.
 - `relay_bbframes.ts` — another grab from the same dish
 - `bbframe_notes.md` — what is left of the frame manual after the coffee
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Not the mailbox** — Last watch's handbook will open something. It will not open this. The message is wrapped, and then wrapped again.
+2. **The copy that checks** — Two versions want to be believed. Only one of them still matches itself once the pieces are put back.
+
 ## Solution
 
 ### Steps

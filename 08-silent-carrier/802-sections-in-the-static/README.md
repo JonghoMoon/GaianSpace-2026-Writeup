@@ -20,6 +20,13 @@ Pull the crew’s words out of the static. Leave the rotten copies where they fe
 - `eumetcast_grab.ts` — the grab, this one continuous
 - `mpe_notes.md` — a page from a weather-bird handbook, torn at the corner
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The seal** — Oduya keeps a page only when its seal still matches. The faded repeats go back into the static.
+2. **Numbered in the sending** — The crew marked the good pages in the order they were sent. The fade did not respect that order.
+
 ## Solution
 
 ### Steps

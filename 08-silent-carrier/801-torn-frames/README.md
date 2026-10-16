@@ -22,6 +22,13 @@ Find the name the old operator left on the stream.
 - `halcyon_dump.bin` — the tuner stick, copied off in a hurry
 - `operator_log.txt` — Oduya’s notes from the same watch
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Short breaths** — Oduya says the relay blinks, goes quiet, then blinks again. She stopped laying one ruler across the whole reel.
+2. **The quiet is the cable** — The gaps are the tuner catching its breath. Whatever name is left lives in the blinks, not in the silence between them.
+
 ## Solution
 
 ### Steps

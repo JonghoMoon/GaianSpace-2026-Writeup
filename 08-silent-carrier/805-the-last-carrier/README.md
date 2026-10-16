@@ -21,6 +21,13 @@ Lock it by hand. Read HALCYON-7’s last transmission.
 - `halcyon_iq.json` — the numbers the sampler printed on its own card
 - `plheader_ref.md` — the physical-layer page, stained
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Four times around** — Oduya says the carrier is spinning faster than the letters. Count the spins before you believe the tone.
+2. **The bow** — The frame announces itself with the same word twice. Turn the page until that word sits upright, and the letters follow it.
+
 ## Solution
 
 ### Steps

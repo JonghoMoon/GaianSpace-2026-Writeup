@@ -20,6 +20,13 @@ A sticker on the recorder says the key is the stardate. Oduya tried that before 
 - `halcyon_mid.bin` — the log, started too late
 - `stationlog_format.md` — a fragment of the maintenance manual
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Started late** — The beginning of the file is not the beginning of a frame. Walk until the frame is willing to introduce itself.
+2. **The clean line** — One line of the log was never smudged. It talks about the ink. The ink is the same on every other line.
+
 ## Solution
 
 ### Steps
