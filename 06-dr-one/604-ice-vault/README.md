@@ -20,6 +20,12 @@ Open the vault and read the find.
 - `mission_vault.7z` — the sealed survey vault
 - `vault_notes.md` — what the field team said about the lock
 
+## Hints
+
+One hint was released during the event:
+
+1. **Passphrase** — The archive passphrase is `qvfzk`. Open `mission_vault.7z` with it and read the site.
+
 ## Solution
 
 ### Steps

@@ -23,6 +23,13 @@ The mission team wants two things from the twin's card: which swashplate servo q
 - `drone_config.md` — DR-ONE's configuration page, as sent with the card
 - `hall_notes.md` — the operators' test-hall note for the rerun
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Hint 1** — Last sync. A black box doesn't tell the card about everything it writes the moment it writes it. The card holds more than the file admits, and some of what follows isn't from this flight.
+2. **Hint 2** — Pinned. Gravity can't be mounted the wrong way round, and neither can a flight you watched. Find the nose and the way down in the data before you trust a page, or a gyro, that says otherwise.
+
 ## Solution
 
 ### 1. Recover the black-box log beyond the FAT16 directory size

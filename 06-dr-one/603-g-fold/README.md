@@ -20,6 +20,13 @@ Compute the landing site.
 - `descent_profile.csv` — the guidance thrust-acceleration plan (inertial frame)
 - `gfold_notes.md` — release state, constants, and how to integrate
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Thin air, hard ground** — This is not Earth. Use the gravity in the notes, not 9.81.
+2. **Fly the plan** — Add gravity to each thrust sample, step the velocity then the position, and stop when it reaches the ground. The horizontal position there is the site.
+
 ## Solution
 
 ### Steps

@@ -19,6 +19,13 @@ Read what the aircraft was saying as it flew.
 
 - `mars_control.pcap` — one flight's control conversation
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The aircraft's side** — Separate the aircraft's replies from the ground's pokes. Every answer to a poke starts with the same two-byte tag. Anything the aircraft sends on its own carries a different tag.
+2. **One field, in order** — A parked unit always answers with zeros. In flight, one byte of each reply changes. Collect that byte across the replies, in sequence. The radio link is not polite: replies arrive late, out of order, and sometimes twice. The last two bytes are the aircraft's own counter, low byte first.
+
 ## Solution
 
 ### Steps

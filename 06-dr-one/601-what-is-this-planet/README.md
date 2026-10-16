@@ -20,6 +20,13 @@ Identify the platform from its own downlink.
 - `mars_downlink.pcap` — the ground relay tap (control link + camera setup)
 - `perception_stack.drawio` — recovered design sketch of the onboard vision pipeline
 
+## Hints
+
+Two hints were released during the event:
+
+1. **It introduces itself** — The camera feed is set up with a short description exchange before any video flows. Follow that conversation; the stream states what it is.
+2. **Read the session** — The description of the feed carries a session name. That name is the answer, wrapper and all.
+
 ## Solution
 
 ### Steps
