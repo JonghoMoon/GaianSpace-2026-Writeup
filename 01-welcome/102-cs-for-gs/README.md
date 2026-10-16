@@ -15,6 +15,13 @@ A separate historical incident at a Norwegian ground station is deliberately men
 
 **Attachments:** None (public-source research).
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Same shelf** — The piece Moravec means sits next to the one you read for the crowded-sky briefing.
+2. **The recent one** — Among the incidents in that piece, only one is this recent and only one wiped the terminals themselves. The house puts its name in quotes.
+
 ## Solution
 
 ### Steps

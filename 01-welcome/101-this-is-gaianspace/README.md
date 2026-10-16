@@ -15,6 +15,13 @@ A whiteboard contains `LEO = 12,000+ ???` and `GEO is dead anyway`, but neither 
 
 **Attachments:** None (public-source research).
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The house talks** — GaianSpace posts what it is watching where anyone can read it. Start with what the house has to say, not the whole internet.
+2. **A table, a year** — The 2024 figure sits beside other years and other fleets. The forecast is further down, near the end of the story, and it is a round number.
+
 ## Solution
 
 ### Steps

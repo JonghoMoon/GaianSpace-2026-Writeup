@@ -13,6 +13,13 @@ At 21:00 UTC, the new operator checks in at console four. The watch lead, Ilse M
 
 **Attachments:** None.
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The patch, not the stitching** — Moravec says the brackets on the card are where the word goes. They are not part of the word.
+2. **Still on the pad** — Copy it almost exactly. The console is fussy about capital letters and does not forgive stray spaces.
+
 ## Solution
 
 ### Steps

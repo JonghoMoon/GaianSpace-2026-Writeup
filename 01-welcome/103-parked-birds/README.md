@@ -15,6 +15,13 @@ The abandoned Americas program and the numbers `683 / 684 ms` are explicitly non
 
 **Attachments:** None (public-source research).
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Who wrote the slogan** — The night shift got that line from the house. The same shelf as the crowded-sky briefing holds the long version.
+2. **Bought, then cancelled** — The two birds were ordered by the company that was bought, not by the one that bought it. Each one is a short name with a number. A program is not a bird.
+
 ## Solution
 
 ### Steps
