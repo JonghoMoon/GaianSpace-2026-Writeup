@@ -50,6 +50,124 @@ The **five-bit indexed-address adder** discards a carry across 32-word pages. A 
 
 The resulting patch contains **72 relocated words, two updated external references and one bridge = 75 words**, below the **96-word uplink limit**. Verification uses the supplied FDS simulator with bank `600–6FF` failed, demands **zero reads or writes in the dead bank**, checks that the thermal region is preserved, and compares all **114 telemetry words** against a corrected healthy reference. This checks behavior, not merely whether a Flag-shaped string can be found.
 
+<!-- BEGIN CATEGORY07 REVIEW: 704 -->
+
+### Bench-model validation and the historical 1981 error
+
+Before constructing the relocation patch, the supplied FDS-16
+bench model was used to distinguish the **2026 memory-chip
+failure** from the older **1981 signature-module error**.
+
+The following three conditions were examined:
+
+| Execution condition | Observation | Interpretation |
+|---|---|---|
+| Supplied image, fault enabled | Stops after 74 steps at address `626` | The 2026 chip failure prevents normal execution |
+| Supplied image, `--no-fault` | Executes, but produces a corrupted signature | The historical software error remains |
+| Corrected image, `--no-fault` | Correct signature restored | Provides the intended functional reference |
+
+#### Why `--no-fault` is not sufficient
+
+The simulator's `--no-fault` option disables the simulated
+memory-chip failure.
+
+However, it does not restore the contents of the supplied
+memory image to their original 1977 state.
+
+According to the load history in `fds_handbook.md`, the
+signature module's lookup table originally resided at
+address `2E0`.
+
+During the 1981 relocation, the module was moved into the
+`600` region. The signature began producing incorrect output
+after this relocation.
+
+Therefore, the supplied golden image contains a historical
+software error that is independent of the 2026 chip failure.
+
+Disabling the simulated memory fault alone cannot correct
+this historical error.
+
+#### The significance of address `632`
+
+The relevant word in the supplied memory image is:
+
+    Memory address:   632
+    Stored word:      0640
+    Restored word:    02E0
+
+Here, `632` is a memory address.
+
+The hexadecimal values `0640` and `02E0` are 16-bit words
+stored at that address.
+
+The word at `632` acts as a signature seed/tag rather than
+a normal relocatable address.
+
+Therefore, simply treating `0640` as a pointer and translating
+it to the new table address would preserve the historical
+signature error.
+
+The correct solution restores the original seed/tag value
+`02E0`.
+
+The solver constructs the corrected reference as follows:
+
+    reference = original.copy()
+    reference[0x632] = 0x02E0
+
+The relocation patch applies the same correction to the
+relocated copy of this word.
+
+#### Corrected healthy reference
+
+The patched spacecraft memory is compared against a
+**corrected fault-free reference**.
+
+It is not compared only against the supplied golden image
+with the memory fault disabled.
+
+The final verification results are:
+
+| Verification | Result |
+|---|---|
+| Patch size | 75 / 96 words |
+| Patched execution | 2093 steps |
+| Corrected reference execution | 2009 steps |
+| Telemetry output | 114 words |
+| Telemetry identical | True |
+| Dead-memory reads | 0 |
+| Dead-memory writes | 0 |
+| Thermal region preserved | True |
+
+The different execution step counts are expected because
+the relocation changes the control flow.
+
+Functional equivalence is established by comparing the
+complete telemetry output and checking the required memory
+constraints, rather than requiring an identical instruction
+count.
+
+This analysis separates two historical problems:
+
+**1981:** A signature-module relocation introduced a
+software error affecting the signature seed/tag.
+
+**2026:** The memory chip covering `600–6FF` failed,
+preventing the telemetry routine from executing.
+
+The final patch avoids the failed chip while restoring
+the intended signature behaviour.
+
+The load history supports the attribution of the older
+error to the 1981 relocation. The bench-model experiment
+independently confirms that correcting the seed/tag
+restores the expected signature.
+
+**Reproduction scope:** The first two baseline experiments (the unpatched fault-enabled run and the uncorrected `--no-fault` run) were performed directly with the supplied bench simulator. The published `704.py` automates the comparison between the patched fault-enabled machine and the seed-corrected fault-free reference. The historical attribution of the signature error to the 1981 relocation is supported by the load history and bench observations, rather than by an independent reconstruction of the original 1981 execution.
+
+<!-- END CATEGORY07 REVIEW: 704 -->
+
 ### Reproduction
 
 Required dependencies: Python standard library and the supplied `fds_sim.py`.

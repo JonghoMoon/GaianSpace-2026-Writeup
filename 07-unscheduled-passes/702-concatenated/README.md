@@ -40,6 +40,109 @@ After each recovered sync marker come `4 × 255 = 1020` bytes forming four inter
 
 The resulting 892 bytes consist of a 2-byte big-endian frame counter, a 2-byte valid-length field, and 888 available data bytes. Valid-length, `0x55` filler and consecutive frame counters are checked before joining payloads. In this capture, the three frames require **11 RS byte corrections** in total. Finally, the recovered 2050-byte stream is inflated to 3778 bytes; the detected **zlib wrapper's checksum** is validated by the decompressor. The code also has a raw-DEFLATE fallback, for which no zlib wrapper checksum is available; the observed solution takes the checksum-verified zlib path.
 
+<!-- BEGIN CATEGORY07 REVIEW: 702 -->
+
+### Hard-decision vs. soft-decision: experimental comparison
+
+To verify whether soft-decision decoding was necessary for this
+capture, the same signed 8-bit symbols were also processed using
+hard-decision Viterbi decoding.
+
+This follows Ade's suggestion in `coding_sheet.md`: retain only
+the sign of each received symbol and discard its magnitude.
+
+Both experiments use the same convolutional-code parameters,
+including the inverted second encoder output.
+
+| Verification | Hard-decision | Soft-decision |
+|---|---|---|
+| Synchronization markers recovered | 3 | 3 |
+| Frames successfully decoded | 0/3 | 3/3 |
+| Reed-Solomon decoding | Failed for all frames | Passed |
+| Total corrected RS bytes | Not available | 11 |
+| zlib checksum verification | Not reached | Passed |
+
+Finding all three synchronization markers with hard-decision
+decoding does not establish that the subsequent frame payloads
+are recoverable.
+
+#### Reed-Solomon correction capability
+
+The outer code is RS(255,223), with 32 parity bytes per codeword.
+
+Without erasure information, its maximum error-correction
+capability is:
+
+\[
+t = \frac{255-223}{2} = 16
+\]
+
+This limit applies to **each RS codeword**, not to an entire
+transmitted frame.
+
+Each frame contains four interleaved RS(255,223) codewords.
+
+In the hard-decision experiment, all three frames failed
+Reed-Solomon decoding because the recovered data could not
+be corrected within the supported decoding capability.
+
+This does not independently establish that every codeword
+contained more than 16 erroneous bytes. It establishes that
+the implemented RS decoder could not recover the hard-decision
+output under the specified coding parameters.
+
+#### Soft-decision correction results
+
+Soft-decision Viterbi decoding recovered all three frames.
+
+The Reed-Solomon correction counts were:
+
+| Frame | Corrections per RS codeword | Total |
+|---|---|---:|
+| 0 | 2, 2, 0, 1 | 5 |
+| 1 | 0, 0, 0, 0 | 0 |
+| 2 | 1, 2, 2, 1 | 6 |
+| **Total** | | **11** |
+
+The recovered compressed stream contained 2050 bytes and
+decompressed to 3778 bytes.
+
+The zlib checksum verification also passed.
+
+The comparison demonstrates that the reliability information
+preserved in the received soft symbols was essential to the
+successful decoding path **for this capture and implementation**.
+
+It does not prove that every possible hard-decision receiver
+would necessarily fail under different synchronization or
+decoding conditions.
+
+The successful processing chain is:
+
+    Signed 8-bit received symbols
+        |
+        v
+    Soft-decision Viterbi decoding
+        |
+        v
+    Synchronization marker recovery
+        |
+        v
+    Reed-Solomon deinterleaving and correction
+        |
+        v
+    Payload reconstruction
+        |
+        v
+    zlib decompression and checksum verification
+        |
+        v
+    GAIANSPACE{s0ft_v1terbi_th3n_r33d_s0l0m0n}
+
+**Reproduction scope:** The hard-decision results were obtained in a separate diagnostic experiment. The published `702.py` implements the successful soft-decision decoding path and does not include a hard-decision mode.
+
+<!-- END CATEGORY07 REVIEW: 702 -->
+
 ### Reproduction
 
 Required dependencies: NumPy. The solver implements Viterbi and Reed–Solomon decoding internally.

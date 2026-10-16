@@ -54,7 +54,7 @@ The initial static comparison produces false positives at `040`, `3A0`, and `3B1
 
 ### 4. Confirm repeatable bit damage
 
-For each address outside the dead bank and outside the runtime-written set, collect values from **checksum-valid** frames across the five readouts. Require at least three independent readouts agreeing on a value different from the patched reference.
+For each address outside the dead bank and outside the runtime-written set, collect values from **checksum-valid** frames across the five readouts. Require observations from at least three independent checksum-valid readouts. All available valid readouts must agree on the same value, and that value must differ from the patched reference.
 
 | Address | Patched reference | Observed | XOR | Valid readouts |
 |---|---|---|---|---|
@@ -72,6 +72,135 @@ All five words exhibit the same **bit-13 (`0x2000`)** difference. The consistenc
 - Treating checksum-failing frames as valid memory evidence confuses downlink corruption with spacecraft damage.
 - Treating the 1977 memory map as a current allocation map incorrectly marks `3A0` and `3B1` as bad cells.
 - A single matching discrepancy is insufficient; repeated agreement across independently verified readouts is essential.
+
+<!-- BEGIN CATEGORY07 REVIEW: 705 -->
+
+### Candidate reduction: from 416 discrepancies to five damaged words
+
+Ade's initial raw comparison produced **416 differing addresses**.
+
+However, this comparison used the original 1977 golden image
+and did not fully account for the known failed chip, the
+2026 uplink patch, or errors introduced during downlink
+reception.
+
+The analysis is best understood as two separate phases.
+
+#### Phase A — Re-evaluate the first readout
+
+| Step | Remaining candidates | Explanation |
+|---|---:|---|
+| Initial raw differences | 416 | Comparison against the 1977 golden image |
+| Exclude known failed chip | 160 | Remove addresses in `600–6FF` |
+| Apply actual 2026 uplink | 93 | Remove differences caused by intentional memory updates |
+| Retain checksum-valid frame evidence | 4 | Remove discrepancies associated with invalid received frames |
+
+The actual uplink contains 75 word writes.
+
+The reduction from 160 to 93 does not imply that the uplink
+contained only 67 writes. Only writes overlapping the
+remaining candidate differences affect this count.
+
+The four remaining discrepancies are candidates observed
+from the first readout.
+
+At this point, they are **not yet confirmed persistent
+memory faults**.
+
+#### Phase B — Cross-check all five readouts
+
+The analysis is then expanded to the five independent
+memory readouts.
+
+| Step | Remaining candidates | Explanation |
+|---|---:|---|
+| Discrepancies across all five readouts | 17 | Distinct address candidates from the checksum-valid observations, compared against the patched reference before runtime-write and persistence filtering |
+| Exclude runtime-written addresses | 6 | Remove legitimate software modifications |
+| Require consistent independent readouts | **5** | Retain persistent discrepancies |
+
+The increase from **4 to 17** is intentional.
+
+It does not represent an increase during a single
+candidate-filtering sequence.
+
+Phase A examines the first readout alone, whereas
+Phase B considers all five readouts.
+
+#### Why address `7CA` was rejected
+
+Address `7CA` initially appeared to contain an incorrect
+memory value.
+
+One checksum-valid readout reported a value different
+from the patched reference.
+
+However, two other checksum-valid readouts contained
+the expected reference value.
+
+The discrepancy was therefore not persistent across
+the available independent readouts.
+
+The observed difference could have resulted from a
+transient memory error or another nonpersistent effect.
+
+The available evidence does not establish its precise
+cause.
+
+Therefore, `7CA` was excluded from the final list of
+persistently damaged words.
+
+#### Exact persistence criterion
+
+The solver does not merely apply a three-readout
+majority vote.
+
+For each candidate address, it requires:
+
+1. At least three independent checksum-valid readouts
+   must provide observations.
+2. **All available checksum-valid readouts** must agree
+   on the same observed value.
+3. That value must differ from the patched reference.
+4. The address must be outside the known failed chip.
+5. The address must not be legitimately written during
+   normal FDS execution.
+
+For example, an address is rejected if three valid
+readouts report an incorrect value but a fourth valid
+readout reports the expected value.
+
+This strict consistency requirement distinguishes
+persistent memory damage from isolated discrepancies.
+
+#### Final five damaged words
+
+| Address | Expected | Observed | XOR difference |
+|---|---|---|---|
+| `405` | `452D` | `652D` | `2000` |
+| `43E` | `419E` | `619E` | `2000` |
+| `445` | `D743` | `F743` | `2000` |
+| `448` | `4D97` | `6D97` | `2000` |
+| `4BD` | `D5AA` | `F5AA` | `2000` |
+
+All five surviving words exhibit the same bit-13
+difference (`0x2000`).
+
+Each was observed consistently across at least three
+independent checksum-valid readouts.
+
+The final result is:
+
+    GAIANSPACE{405-43E-445-448-4BD}
+
+The analysis separates persistent spacecraft-memory
+corruption from legitimate runtime writes, known failed
+memory, and isolated readout discrepancies.
+
+**Counting convention:** The 17 candidates represent distinct memory addresses identified during the separate five-readout diagnostic comparison. They are not a count of frames or individual observations. The diagnostic comparison uses the uplink-corrected reference and checksum-valid frame observations; the runtime-write exclusion and persistence criterion are applied afterward.
+
+**Reproduction scope:** The intermediate counts `416 -> 160 -> 93 -> 4` and `17 -> 6 -> 5` were obtained during a separate diagnostic analysis. The published `705.py` implements checksum validation, runtime-write exclusion, and the final persistence checks, but does not print every intermediate count shown in the candidate-reduction tables.
+
+<!-- END CATEGORY07 REVIEW: 705 -->
 
 ### Reproduction
 
