@@ -31,6 +31,13 @@ The console listens on [http://localhost:8000](http://localhost:8000).
 - `slew_protocol.md` — Lindqvist’s notes on how an order is supposed to look
 - `service.zip` — the console, and the sealed copy of the token
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Orders already believed** — Every line in the log was accepted. That is a conversation you can check a guess against.
+2. **After the dot** — The day is painted on the wall. What is missing is the short fraction a clock writes after the dot, and nothing else.
+
 ## Solution
 
 ### Analysis

@@ -21,6 +21,13 @@ Walk the destinations in the order the dish was sent. The scraps, in that order,
 - `catalog.json` — the sky Kestrel Array is willing to believe
 - `motor_notes.md` — Lindqvist’s card, rewritten twice
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The long orders** — The short lines start the motor and stop it. The lines that name a place are the longer ones.
+2. **Finer than a degree** — The old positioner does not speak in whole degrees. The catalog already stores the angle the motor would be given. East and west are not the same direction.
+
 ## Solution
 
 ### Analysis

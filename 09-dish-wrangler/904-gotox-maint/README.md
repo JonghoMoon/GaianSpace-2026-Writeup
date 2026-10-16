@@ -20,6 +20,13 @@ The token it prints, once it believes you, is what the bridge asked for.
 - `gotox-maint` — the tool, copied off the controller
 - `maint_notes.md` — the drawer card, including the lie
 
+## Hints
+
+Two hints were released during the event:
+
+1. **Ask it properly** — The night shift did not patch the tool. They invoked it, and they passed the key in the open.
+2. **Two stamps** — The key is not a dictionary word. It is two marks the tool already knows, printed into the shape of a nameplate.
+
 ## Solution
 
 ### Analysis

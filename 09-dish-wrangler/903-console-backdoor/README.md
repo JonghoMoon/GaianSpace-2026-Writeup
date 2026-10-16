@@ -29,6 +29,13 @@ The console listens on [http://localhost:8000](http://localhost:8000). It does n
 
 - `service.zip` — the console, as Lindqvist copied it off the bench
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The pointer** — The import desk believes the path it is handed. It was written to be helpful.
+2. **Next door** — The schedule is not in the catalog drawer. It sits in the room beside it. Nobody told the desk to stay in the hallway.
+
 ## Solution
 
 ### Analysis — Method 1: HTTP Path Traversal

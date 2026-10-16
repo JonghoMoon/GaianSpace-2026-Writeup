@@ -22,6 +22,13 @@ Read what the motor was told.
 - `coax_tap_22k.wav` — scope tap from the motor coax
 - `diseqc_notes.md` — Lindqvist’s card, coffee on the corner
 
+## Hints
+
+Two hints were released during the event:
+
+1. **The lamp** — Lindqvist says ignore the song. Watch whether the lamp is lit.
+2. **Manners** — A long glow and a short glow are not the same word. He saves one tick in each little group for luck, and luck is not one of the letters.
+
 ## Solution
 
 ### Analysis
