@@ -7,7 +7,7 @@
 
 ## Description
 
-The AO-111 sample canister was tested in a thermal-vacuum chamber before flight. The question is whether its seal opened during the thermal cycle, and if so, **which environmental record was the first one after the breach**. The original full challenge statement was not supplied in this conversation; this summary is based on the attached test report, datasheet, and the verified analysis.
+The AO-111 sample canister was tested in a thermal-vacuum chamber before flight. The question is whether its seal opened during the thermal cycle, and if so, **which environmental record was the first one after the breach**.
 
 **Attachments:**
 - `cl3_0419_boot.txt` — logger boot log with the actual BME688 NVM register dump
@@ -38,15 +38,30 @@ The apparent pressure changes during the 45 °C hot soak are explained by temper
 
 ### Finding the First Breach Record
 
-The `tvac_report.md` setpoint table identifies the cooling phase (logger records **4200–6900**) without relying on the eventual breach timestamp. The code parses the setpoint rows, selects the longest decreasing-temperature segment, and estimates the normal derivative of temperature-normalized pressure (`P/T_K`) from the **first half** of that cooling interval (4200–5550). A robust median/MAD noise scale and the same sustained-change test are applied across the entire cooling phase.
+The `tvac_report.md` setpoint table identifies the cooling phase (logger records **4200–6900**) independently of the breach timestamp. The supplied script parses the schedule, selects the longest decreasing-temperature segment, and uses the **first half** of that interval (4200–5550) as the normal-noise baseline. It calculates successive differences of `P/T_K`, estimates their center with a median and their robust noise scale with `σ = 1.4826 × MAD`, and flags a candidate below **−8σ** only if at least **three of the five** starting differences are also below **−3σ**. The default script scans the cooling interval.
 
-The first qualifying deviation is **record 6304**, with an approximately −9.59 robust-sigma first-difference score using this broader baseline. Previously reported −12.51 comes from the narrower 6100–6290 baseline; both find the same first event, but only the revised version derives its baseline and search interval from the test schedule. CO2 increases from the near-zero nitrogen-cell readings toward ~418 ppm afterward, independently supporting a breach. Sub-400 ppm SCD-41 readings are treated as qualitative evidence, not reliable quantitative CO2 values.
+**The first sustained anomaly is record 6304 regardless of the baseline selected.** As an independent sensitivity check, the same compensated data and detection rule were evaluated with several reference intervals and search ranges:
 
-The full-run acceptance range (950–1100 hPa) is not sufficient to establish hermetic sealing, because temperature changes can mask gas loss.
+| Baseline interval | Search range | Robust σ (`Δ(P/T_K)`) | First anomaly | z at rec 6304 |
+|---|---|---:|---:|---:|
+| 4200–5550 (early cooling) | Entire record | 1.00663 × 10⁻⁴ | **6304** | −9.59 |
+| 6100–6290 (immediately before breach) | Cooling interval | 7.80014 × 10⁻⁵ | **6304** | −12.51 |
+| 1–900 (before heating) | Entire record | 1.01481 × 10⁻⁴ | **6304** | −9.47 |
+| 7000–8300 (low-temperature hold) | Entire record | 8.54423 × 10⁻⁵ | **6304** | −11.42 |
+
+The two commonly cited scores, **−9.59** and **−12.51**, describe the *same* record 6304, not two different event detections. The shorter pre-event interval has a smaller estimated noise scale, hence a more negative standardized score. The 7000–8300 interval is a **retrospective robustness check**, not a baseline that would have been available for real-time detection. The table extends the default script's cooling-only search; it is not additional output printed by `116.py`.
+
+The physical measurements support the same breakpoint:
+
+- **Through record 6303:** during late cooling, `P/T_K` remains near **3.444**, with ordinary small fluctuations. At record 6303 it is **3.44392882**. The pre-breach fluctuations are not a strict ±1.2 × 10⁻⁴ bound on every difference.
+- **Records 6304–6305:** the first differences suddenly fall to **−9.61 × 10⁻⁴** and **−1.48 × 10⁻³**, respectively. Record 6304 is the first sharp drop.
+- **From approximately record 6500 onward:** pressure stays near **1007 hPa** while the cell temperature progresses from roughly **19 °C** down to **10 °C** and back toward **22 °C**, consistent with pressure equalizing to its surroundings after the seal opens. Earlier in the cycle, internal pressure changed substantially with temperature, reaching approximately **1097 hPa** during heating.
+
+CO2 readings subsequently rise from near-zero values toward **418 ppm**, separately corroborating loss of containment. The SCD-41's sub-400 ppm readings are qualitative indications only, not reliable quantitative concentrations. The report's 950–1100 hPa acceptance range does not establish hermetic sealing because temperature-dependent pressure changes can mask gas loss.
 
 ### Reproduction
 
-Run the supplied Python analysis script with all five files in the same directory:
+Place `116.py`, `cl3_0419_boot.txt`, `cl3_0419_env.csv`, `cl3_0419_co2.csv`, and `tvac_report.md` in the same directory (`cl3_datasheet.md` is documentation, not a script input), then run:
 
 ```bash
 python3 116.py

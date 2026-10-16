@@ -57,9 +57,13 @@ The current `OR-7731-B` licence JSON says `LOCKED` with `seed: null`. The crucia
 
 The historical B seed is the key material needed for the three site samples. The A seed also provides a useful independent known-good decryption test.
 
-### 3. Reproduce the vendor seal algorithm
+### 3. Validate the vendor seal algorithm
 
-The previous analysis of the MicroPython `orlik.mpy` module identified the following construction. It is **not** sufficient to hash the licence seed alone: the UID, constant tag, eleven additional hash rounds, and per-record IV are all required.
+The controller flash contains the MicroPython vendor module `/lib/orlik.mpy`. A raw-flash inspection around offset `0x2AE000` also reveals its qstr/name strings and literals, including `orlik.py`, `cryptolib`, `machine`, `unique_id`, `sha256`, `aes`, `seal`, `unseal`, `ORLIK/XRF-9/SEAL/2`, and `IV`.
+
+These strings identify relevant functions and constants, **but qstr entries alone do not disclose the bytecode's complete control flow or prove the number of hash rounds**. This writeup does not document a `.mpy` bytecode disassembly or the tool used to perform one; it therefore does not claim that the precise construction below can be read directly from the strings.
+
+The following **verified decryption implementation** combines the licence seed, device UID, fixed tag, eleven additional SHA-256 rounds, and a per-record IV. Its correctness for the supplied dataset is established by successfully decrypting all four stored records with valid PKCS#7 padding and matching embedded CRC32 checks, rather than by an undocumented disassembly step.
 
 ```python
 uid = bytes.fromhex("fd2400bee203859f")
@@ -346,7 +350,7 @@ if __name__ == "__main__":
 - `lander_link.log` — Unit 3 factory ID
 - `orlik_notice.md` — licence suspension context
 - Raw RP2350 flash and historical littlefs metadata
-- Previously recovered MicroPython vendor seal algorithm
+- Flash-visible vendor-module qstr strings and the four independently CRC32-validated decrypted records
 
 ## Flag
 
