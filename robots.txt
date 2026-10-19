@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jonghomoon.github.io/GaianSpace-2026-Writeup/sitemap.xml
