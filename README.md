@@ -12,6 +12,16 @@ Each write-up will include the methodology, evidence, analysis scripts, and rele
 
 ![social-preview](./social-preview.png)
 
+## Links
+
+- 🌐**GitHub Pages**
+  
+  [https://jonghomoon.github.io/GaianSpace-2026-Writeup/](https://jonghomoon.github.io/GaianSpace-2026-Writeup/)
+
+- 📁**GitHub Repository**
+  
+  [https://github.com/JonghoMoon/GaianSpace-2026-Writeup](https://github.com/JonghoMoon/GaianSpace-2026-Writeup)
+
 ## Categories
 
 - [01-welcome](#01-welcome) — 4 challenges
