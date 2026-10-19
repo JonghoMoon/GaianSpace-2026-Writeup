@@ -1,14 +1,12 @@
----
-layout: default
-title: GaianSpace CTF 2026 Writeup
----
-
-# GaianSpace CTF 2026 Writeup
-
-Complete writeups and solutions for GaianSpace CTF 2026.
-
-[View the complete writeup on GitHub](https://github.com/JonghoMoon/GaianSpace-2026-Writeup)
-
-## Challenges
-
-See the [challenge directory](https://github.com/JonghoMoon/GaianSpace-2026-Writeup#readme).
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=README.html">
+  <link rel="canonical" href="https://jonghomoon.github.io/GaianSpace-2026-Writeup/README.md">
+  <title>GaianSpace CTF 2026 Writeup</title>
+</head>
+<body>
+  <p><a href="README.html">GaianSpace CTF 2026 Writeup</a></p>
+</body>
+</html>
