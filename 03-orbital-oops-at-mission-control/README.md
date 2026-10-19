@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # 03 — Orbital Oops at Mission Control
 
 Challenges involving memory and network forensics, hardware design recovery, embedded firmware exploitation, radio decoding, and sensor analysis.

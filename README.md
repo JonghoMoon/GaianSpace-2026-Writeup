@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # GaianSpace CTF 2026 Writeup
 
 Write-ups and analysis scripts for **GaianSpace CTF 2026** challenges.

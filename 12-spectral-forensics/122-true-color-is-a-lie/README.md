@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # 122-true-color-is-a-lie
 
 | | |

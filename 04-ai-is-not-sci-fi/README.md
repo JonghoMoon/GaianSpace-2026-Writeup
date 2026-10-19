@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # 04 — AI Is Not Sci-Fi
 
 Challenges involving local language models, literary references, prompt-based reasoning, and sealed-file recovery.

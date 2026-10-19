@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # 05 — Rad Hard Rampage
 
 Challenges involving radiation-induced hardware faults, digital logic recovery, sensor drift correction, cryptographic key repair, and thermal system analysis.

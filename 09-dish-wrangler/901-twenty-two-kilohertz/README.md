@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # 901-twenty-two-kilohertz
 
 | | |

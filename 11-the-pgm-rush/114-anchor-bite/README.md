@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # 114-anchor-bite
 
 | | |

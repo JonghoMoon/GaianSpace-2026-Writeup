@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # 06 — DR-ONE
 
 Challenges involving Mars rotorcraft telemetry, RTSP and UDP forensics, powered-descent guidance, and encrypted mission vault recovery.

@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # 121-channel-hop
 
 | | |

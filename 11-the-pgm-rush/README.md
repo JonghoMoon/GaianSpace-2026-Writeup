@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # 11 — The PGM Rush (Bonus)
 
 Asteroid prospecting and follow-up challenges covering reflectance spectroscopy, short-arc orbit determination, autonomous touchdown planning, and chiral chemistry.

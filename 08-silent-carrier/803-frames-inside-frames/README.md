@@ -1,3 +1,7 @@
+---
+render_with_liquid: false
+---
+
 # 803-frames-inside-frames
 
 | | |
