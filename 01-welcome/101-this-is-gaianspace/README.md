@@ -63,7 +63,7 @@ No exploit is involved. A minimal formatting check is sufficient:
 # Format the two figures as integers in the challenge's requested order.
 count_2024 = 8100
 forecast_2040 = 60000
-print(f"GAIANSPACE{{{count_2024},{forecast_2040}}}")
+print("GAIANSPACE{" + str(count_2024) + "," + str(forecast_2040) + "}")
 ```
 
 ### References
