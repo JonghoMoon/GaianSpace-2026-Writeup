@@ -62,6 +62,7 @@ FLAG: GAIANSPACE{LZ_1370_-360}
 
 ### Exploit Code
 
+{% raw %}
 ```python
 
 #!/usr/bin/env python3
@@ -117,6 +118,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
+{% endraw %}
 
 ## Flag
 

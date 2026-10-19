@@ -154,6 +154,7 @@ The full reproducible analysis is in [`127.py`](./scripts/127.py). It also deriv
 
 The complete top-level solver is shown below. Its two bundled PHY receiver modules, `lora_explicit.py` and `lora_implicit.py`, are separate because they implement different LoRa header modes; both are included in the revised package.
 
+{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies (install if needed):
@@ -567,6 +568,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
+{% endraw %}
 
 ## Flag
 

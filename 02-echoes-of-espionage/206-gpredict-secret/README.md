@@ -63,6 +63,7 @@ GAIANSPACE{w4tcher_0f_the_sky}
 
 ### Exploit Code
 
+{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies: python3 -m pip install Pillow pytesseract
@@ -189,6 +190,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
+{% endraw %}
 
 ## Flag
 

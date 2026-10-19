@@ -61,6 +61,7 @@ FLAG: GAIANSPACE{26.46,-98.64,3296.64}
 
 ### Exploit Code
 
+{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies: python3 -m pip install sgp4
@@ -156,6 +157,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
+{% endraw %}
 
 ## Flag
 
