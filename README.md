@@ -140,7 +140,7 @@ Points below are the final scoreboard values confirmed after the event. Individu
 | 2 | [702-concatenated](./07-unscheduled-passes/702-concatenated/) | 75 | `GAIANSPACE{s0ft_v1terbi_th3n_r33d_s0l0m0n}` |
 | 3 | [703-lagrange-fix](./07-unscheduled-passes/703-lagrange-fix/) | 100 | `GAIANSPACE{CLK_+2213481}` |
 | 4 | [704-dead-chip](./07-unscheduled-passes/704-dead-chip/) | 125 | `GAIANSPACE{r3l0c4ted_ar0und_a_d34d_ch1p}` |
-| 5 | [705-last-readout](./07-unscheduled-passes/705-last-readout/) | 125 | `GAIANSPACE{405-43E-445-448-4BD}` |
+| 5 | [705-last-readout](./07-unscheduled-passes/705-last-readout/) | 300 | `GAIANSPACE{405-43E-445-448-4BD}` |
 
 ### <a id="08-silent-carrier"></a>[08-silent-carrier](./08-silent-carrier/)
 
