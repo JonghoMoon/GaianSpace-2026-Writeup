@@ -127,8 +127,6 @@ TM,ACK,0,HELLO,GAIANSPACE{tw0_v01c3s_0B0EFE1A}
 
 The successful header checksum and PHY CRC support the interpretation that this is a correctly decoded reply rather than a spurious LoRa synchronization event.
 
-**Archived flowgraph note:** The original ZIP's `lora_RX.py` inadvertently contained the SF7/implicit-header configuration and absolute file paths used for Challenge 132, although its `lora_RX.grc` contained the correct Challenge 131 settings. The corrected `lora_RX.py` and `lora_RX.grc` in the revised bundle agree on SF9, CR1, explicit header, CRC enabled and sync word `0x12`. Use the corrected files for reproduction.
-
 #### 2b. Decode with the standalone Python receiver (independent verification)
 
 `131.py` does not require GNU Radio. With no argument it decodes `131_A_reply_1.cf32` from step 1:
