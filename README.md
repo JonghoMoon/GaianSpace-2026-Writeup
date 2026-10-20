@@ -63,18 +63,18 @@ The table below reflects the **final scoreboard at event close**, confirmed afte
 
 | Category | Challenges | Listed points |
 |---|---:|---:|
-| [01-welcome](#01-welcome/README.html) | 4 | 51 |
-| [02-echoes-of-espionage](#02-echoes-of-espionage/README.html) | 7 | 575 |
-| [03-orbital-oops-at-mission-control](#03-orbital-oops-at-mission-control/README.html) | 7 | 575 |
-| [04-ai-is-not-sci-fi](#04-ai-is-not-sci-fi/README.html) | 5 | 1250 |
-| [05-rad-hard-rampage](#05-rad-hard-rampage/README.html) | 5 | 425 |
-| [06-dr-one](#06-dr-one/README.html) | 5 | 650 |
-| [07-unscheduled-passes](#07-unscheduled-passes/README.html) | 5 | 650 |
-| [08-silent-carrier](#08-silent-carrier/README.html) | 5 | 450 |
-| [09-dish-wrangler](#09-dish-wrangler/README.html) | 5 | 450 |
-| [11-the-pgm-rush](#11-the-pgm-rush/README.html) | 8 | 1800 |
-| [12-spectral-forensics](#12-spectral-forensics/README.html) | 7 | 1537 |
-| [13-night-shift](#13-night-shift/README.html) | 5 | 718 |
+| [01-welcome](#01-welcome/) | 4 | 51 |
+| [02-echoes-of-espionage](#02-echoes-of-espionage/) | 7 | 575 |
+| [03-orbital-oops-at-mission-control](#03-orbital-oops-at-mission-control/) | 7 | 575 |
+| [04-ai-is-not-sci-fi](#04-ai-is-not-sci-fi/) | 5 | 1250 |
+| [05-rad-hard-rampage](#05-rad-hard-rampage/) | 5 | 425 |
+| [06-dr-one](#06-dr-one/) | 5 | 650 |
+| [07-unscheduled-passes](#07-unscheduled-passes/) | 5 | 650 |
+| [08-silent-carrier](#08-silent-carrier/) | 5 | 450 |
+| [09-dish-wrangler](#09-dish-wrangler/) | 5 | 450 |
+| [11-the-pgm-rush](#11-the-pgm-rush/) | 8 | 1800 |
+| [12-spectral-forensics](#12-spectral-forensics/) | 7 | 1537 |
+| [13-night-shift](#13-night-shift/) | 5 | 718 |
 | **Total** | **68** | **9131** |
 
 ---
