@@ -1,7 +1,3 @@
----
-render_with_liquid: false
----
-
 # 08 — Silent Carrier
 
 Challenges involving DVB transport streams, MPE and GSE reassembly, maintenance-log decoding, and QPSK signal recovery.

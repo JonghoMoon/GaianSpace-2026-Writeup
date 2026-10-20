@@ -1,7 +1,3 @@
----
-render_with_liquid: false
----
-
 # 902-where-was-it-pointing
 
 | | |

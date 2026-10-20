@@ -1,7 +1,3 @@
----
-render_with_liquid: false
----
-
 # 132-no-name-on-the-door
 
 | | |

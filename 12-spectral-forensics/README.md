@@ -1,7 +1,3 @@
----
-render_with_liquid: false
----
-
 # 12 — Spectral Forensics
 
 Challenges involving LoRa/SDR packet recovery, multispectral satellite imagery, NDVI, ISODATA-style clustering, and geospatial crop-claim verification.

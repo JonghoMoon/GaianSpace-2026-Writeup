@@ -1,7 +1,3 @@
----
-render_with_liquid: false
----
-
 # 13 — Night Shift
 
 Five challenges tracing unauthorized communication with GAIAN-723: competing LoRa signals, altered downlink settings, frequency hopping, repacked telemetry, and encrypted memory exfiltration.

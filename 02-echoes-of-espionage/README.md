@@ -1,7 +1,3 @@
----
-render_with_liquid: false
----
-
 # 02 — Echoes of Espionage
 
 Challenges involving satellite uplinks and downlinks, orbital tracking, signal forensics, binary reverse engineering, and attacker command-and-control traffic.

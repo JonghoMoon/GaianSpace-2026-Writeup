@@ -1,7 +1,3 @@
----
-render_with_liquid: false
----
-
 # 07 — Unscheduled Passes
 
 Challenges involving spacecraft clocks, deep-space light-time correction, concatenated error-correcting codes, Lagrange-point navigation, and flight-computer memory patching.

@@ -1,7 +1,3 @@
----
-render_with_liquid: false
----
-
 # 09 — Dish Wrangler
 
 Challenges involving DiSEqC tone decoding, USALS motor positioning, web console access, ELF reverse engineering, and authenticated command recovery.
