@@ -139,7 +139,7 @@ Record 3 (OR-7731-B, CRC32 OK): XRF9 s/n 0417;sample=QM23-C3;Pt=0.31g/t;Pd=0.12g
 FLAG: GAIANSPACE{XR9-6YYDU6}
 ```
 
-## Python Source Code
+## Solver Code
 
 {% raw %}
 ```python

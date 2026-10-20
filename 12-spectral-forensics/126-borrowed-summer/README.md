@@ -107,7 +107,7 @@ Tiles: 16; deliveries: 16
 FLAG: GAIANSPACE{ZDJ7-UCZA-JADX-7JEY}
 ```
 
-### Python Source Code
+### Solver Code
 
 {% raw %}
 ```python

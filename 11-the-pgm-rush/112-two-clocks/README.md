@@ -112,7 +112,7 @@ First frame after BITE: 0412377 at 2041-11-04T16:47:18.745365+00:00
 FLAG: GAIANSPACE{0412377}
 ```
 
-## Python Source Code
+## Solver Code
 
 {% raw %}
 ```python

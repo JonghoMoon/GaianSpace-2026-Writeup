@@ -40,9 +40,9 @@ Each write-up includes the methodology, supporting evidence, analysis scripts, a
 - C / OpenSSL / OpenMP where required
 - Wireshark, GNU binutils, SDR/DSP tools, and other challenge-specific utilities
 
-Exact tool versions and dependencies are documented in the individual challenge write-ups.
+Tool versions and dependencies are documented in the individual challenge write-ups.
 
-Each challenge directory is intended to contains:
+Each challenge directory contains:
 
 - `README.md` — challenge write-up
 - Original challenge files and/or description (where redistribution is permitted)
