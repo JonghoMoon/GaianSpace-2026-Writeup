@@ -87,10 +87,10 @@ Points below are the final scoreboard values confirmed after the event. Individu
 
 | # | Challenge | Points | Flags |
 |---:|---|---:|---|
-| 1 | [100-well-hello](./01-welcome/100-well-hello/README.html) | 1 | `GAIANSPACE{Welcome}` |
-| 2 | [101-this-is-gaianspace](./01-welcome/101-this-is-gaianspace/README.html) | 10 | `GAIANSPACE{8100,60000}` |
-| 3 | [102-cs-for-gs](./01-welcome/102-cs-for-gs/README.html) | 20 |`GAIANSPACE{AcidRain}` |
-| 4 | [103-parked-birds](./01-welcome/103-parked-birds/README.html) | 20 | `GAIANSPACE{IS-41,IS-44}` |
+| 1 | [100-well-hello](./01-welcome/100-well-hello/) | 1 | `GAIANSPACE{Welcome}` |
+| 2 | [101-this-is-gaianspace](./01-welcome/101-this-is-gaianspace/) | 10 | `GAIANSPACE{8100,60000}` |
+| 3 | [102-cs-for-gs](./01-welcome/102-cs-for-gs/) | 20 |`GAIANSPACE{AcidRain}` |
+| 4 | [103-parked-birds](./01-welcome/103-parked-birds/) | 20 | `GAIANSPACE{IS-41,IS-44}` |
 
 ### <a id="02-echoes-of-espionage"></a>[02-echoes-of-espionage](./02-echoes-of-espionage/)
 
