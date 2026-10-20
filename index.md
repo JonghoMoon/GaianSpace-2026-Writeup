@@ -24,18 +24,18 @@ Each write-up will include the methodology, evidence, analysis scripts, and rele
 
 ## Categories
 
-- [01-welcome](#01-welcome) — 4 challenges
-- [02-echoes-of-espionage](#02-echoes-of-espionage) — 7 challenges
-- [03-orbital-oops-at-mission-control](#03-orbital-oops-at-mission-control) — 7 challenges
-- [04-ai-is-not-sci-fi](#04-ai-is-not-sci-fi) — 5 challenges
-- [05-rad-hard-rampage](#05-rad-hard-rampage) — 5 challenges
-- [06-dr-one](#06-dr-one) — 5 challenges
-- [07-unscheduled-passes](#07-unscheduled-passes) — 5 challenges
-- [08-silent-carrier](#08-silent-carrier) — 5 challenges
-- [09-dish-wrangler](#09-dish-wrangler) — 5 challenges
-- [11-the-pgm-rush](#11-the-pgm-rush) — 8 challenges
-- [12-spectral-forensics](#12-spectral-forensics) — 7 challenges
-- [13-night-shift](#13-night-shift) — 5 challenges
+- [01-welcome](#01-welcome/README.html) — 4 challenges
+- [02-echoes-of-espionage](#02-echoes-of-espionage/README.html) — 7 challenges
+- [03-orbital-oops-at-mission-control](#03-orbital-oops-at-mission-control/README.html) — 7 challenges
+- [04-ai-is-not-sci-fi](#04-ai-is-not-sci-fi/README.html) — 5 challenges
+- [05-rad-hard-rampage](#05-rad-hard-rampage/README.html) — 5 challenges
+- [06-dr-one](#06-dr-one/README.html) — 5 challenges
+- [07-unscheduled-passes](#07-unscheduled-passes/README.html) — 5 challenges
+- [08-silent-carrier](#08-silent-carrier/README.html) — 5 challenges
+- [09-dish-wrangler](#09-dish-wrangler/README.html) — 5 challenges
+- [11-the-pgm-rush](#11-the-pgm-rush/README.html) — 8 challenges
+- [12-spectral-forensics](#12-spectral-forensics/README.html) — 7 challenges
+- [13-night-shift](#13-night-shift/README.html) — 5 challenges
 
 ## Environment
 
