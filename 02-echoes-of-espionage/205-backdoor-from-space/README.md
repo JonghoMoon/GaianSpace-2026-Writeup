@@ -109,7 +109,7 @@ flag=GAIANSPACE{c2_rc4_from_the_nonce}
 FLAG: GAIANSPACE{c2_rc4_from_the_nonce}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

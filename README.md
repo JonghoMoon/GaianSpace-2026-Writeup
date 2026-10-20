@@ -4,7 +4,7 @@ Write-ups and analysis scripts for **GaianSpace CTF 2026** challenges.
 
 This repository documents my solving process as a solo participant, with an emphasis on reproducible analysis of satellite communications, RF signals, orbital mechanics, reverse engineering, embedded systems, and related security challenges.
 
-Each write-up will include the methodology, evidence, analysis scripts, and relevant artifacts used to reach and validate the solution.
+Each write-up includes the methodology, supporting evidence, analysis scripts, and relevant artifacts used to derive the solution.
 
 ![social-preview](./social-preview.png)
 
@@ -35,7 +35,7 @@ Each write-up will include the methodology, evidence, analysis scripts, and rele
 
 ## Environment
 
-- Ubuntu 22.04.5(5.15.0-185-generic)
+- Ubuntu 22.04.5 (5.15.0-185-generic)
 - Python 3.10.12 and challenge-specific libraries
 - C / OpenSSL / OpenMP where required
 - Wireshark, GNU binutils, SDR/DSP tools, and other challenge-specific utilities
@@ -59,18 +59,18 @@ The table below reflects the **final scoreboard at event close**, confirmed afte
 
 | Category | Challenges | Listed points |
 |---|---:|---:|
-| [01-welcome](#01-welcome/) | 4 | 51 |
-| [02-echoes-of-espionage](#02-echoes-of-espionage/) | 7 | 575 |
-| [03-orbital-oops-at-mission-control](#03-orbital-oops-at-mission-control/) | 7 | 575 |
-| [04-ai-is-not-sci-fi](#04-ai-is-not-sci-fi/) | 5 | 1250 |
-| [05-rad-hard-rampage](#05-rad-hard-rampage/) | 5 | 425 |
-| [06-dr-one](#06-dr-one/) | 5 | 650 |
-| [07-unscheduled-passes](#07-unscheduled-passes/) | 5 | 650 |
-| [08-silent-carrier](#08-silent-carrier/) | 5 | 450 |
-| [09-dish-wrangler](#09-dish-wrangler/) | 5 | 450 |
-| [11-the-pgm-rush](#11-the-pgm-rush/) | 8 | 1800 |
-| [12-spectral-forensics](#12-spectral-forensics/) | 7 | 1537 |
-| [13-night-shift](#13-night-shift/) | 5 | 718 |
+| [01-welcome](#01-welcome) | 4 | 51 |
+| [02-echoes-of-espionage](#02-echoes-of-espionage) | 7 | 575 |
+| [03-orbital-oops-at-mission-control](#03-orbital-oops-at-mission-control) | 7 | 575 |
+| [04-ai-is-not-sci-fi](#04-ai-is-not-sci-fi) | 5 | 1250 |
+| [05-rad-hard-rampage](#05-rad-hard-rampage) | 5 | 425 |
+| [06-dr-one](#06-dr-one) | 5 | 650 |
+| [07-unscheduled-passes](#07-unscheduled-passes) | 5 | 650 |
+| [08-silent-carrier](#08-silent-carrier) | 5 | 450 |
+| [09-dish-wrangler](#09-dish-wrangler) | 5 | 450 |
+| [11-the-pgm-rush](#11-the-pgm-rush) | 8 | 1800 |
+| [12-spectral-forensics](#12-spectral-forensics) | 7 | 1537 |
+| [13-night-shift](#13-night-shift) | 5 | 718 |
 | **Total** | **68** | **9131** |
 
 ---
@@ -178,7 +178,7 @@ Points below are the final scoreboard values confirmed after the event. Individu
 |---:|---|---:|---|
 | 1 | [110-m-type](./11-the-pgm-rush/110-m-type/) | 100 | `GAIANSPACE{2041QM23_120}` |
 | 2 | [111-short-arc](./11-the-pgm-rush/111-short-arc/) | 150 | `GAIANSPACE{RT39SBA}` |
-| 3 | [112-two-clocks](./11-the-pgm-rush/112-two-clocks) | 200 | `GAIANSPACE{0412377}` |
+| 3 | [112-two-clocks](./11-the-pgm-rush/112-two-clocks/) | 200 | `GAIANSPACE{0412377}` |
 | 4 | [113-touchdown](./11-the-pgm-rush/113-touchdown/) | 250 | `GAIANSPACE{A-0242}` |
 | 5 | [114-anchor-bite](./11-the-pgm-rush/114-anchor-bite/) | 250 | `GAIANSPACE{B-27}` |
 | 6 | [115-locked-assayer](./11-the-pgm-rush/115-locked-assayer/) | 300 | `GAIANSPACE{XR9-6YYDU6}` |

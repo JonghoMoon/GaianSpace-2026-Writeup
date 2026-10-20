@@ -202,7 +202,7 @@ GAIANSPACE{h4ppy_bd4y_d4v1d_1t_g03s_h0m3}
 
 These commands were checked against the supplied `keel_dump.bin`, `scrub.log`, `moc_return_plan.txt`, `keel_memory.md`, `keel.seal`, and `unseal.py`. The Ollama dialogue is a **recorded exchange**, not a newly regenerated local-model session.
 
-### Exploit Code
+### Solver Code
 
 The following standalone script implements the KEEL recovery. It needs **no third-party Python packages**; the supplied `unseal.py` remains responsible for authentication and decryption.
 

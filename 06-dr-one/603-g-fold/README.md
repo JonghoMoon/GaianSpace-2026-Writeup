@@ -56,7 +56,7 @@ FLAG: GAIANSPACE{LZ_1370_-360}
 
 
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python

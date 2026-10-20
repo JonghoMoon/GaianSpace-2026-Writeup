@@ -64,7 +64,7 @@ token: GAIANSPACE{m41nt_m0de_unl0cked}
 FLAG: GAIANSPACE{m41nt_m0de_unl0cked}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

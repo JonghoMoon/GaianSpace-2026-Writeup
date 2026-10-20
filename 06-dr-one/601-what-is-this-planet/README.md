@@ -52,7 +52,7 @@ Platform: DR-ONE Mars rotorcraft scout - subsurface survey downlink
 
 
 
-### Exploit Code
+### Solver Code
 
 ```python
 

@@ -92,7 +92,7 @@ Note: GDSN is also above the geometric horizon; the problem implies
 FLAG: GAIANSPACE{VELA,2025-06-12T19:15:00Z}
 ```
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python

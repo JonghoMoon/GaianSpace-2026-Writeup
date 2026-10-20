@@ -61,7 +61,7 @@ FLAG: GAIANSPACE{qpsk_sof_lock_carrier}
 
 Sample rate, symbol rate, samples per symbol, and RRC rolloff are now read directly from `halcyon_iq.json` rather than copied into the solver as constants. The sync word `0x1ACFFC1D` is the conventional CCSDS Attached Sync Marker (ASM), here searched twice in succession. This is a protocol-informed hypothesis, not a value explicitly stated in the short `plheader_ref.md`. The existing fourth-power CFO estimator, matched filter, timing/phase recovery, QPSK slicer, and flag detection are unchanged. Install dependencies with `python3 -m pip install numpy scipy`.
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

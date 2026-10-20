@@ -65,7 +65,7 @@ FLAG: GAIANSPACE{mpe_dgram_r3assembly}
 
 The capture uses 188-byte MPEG-TS packets on PID `0x012C`. Each valid MPE private section (`table_id = 0x3E`) encapsulates an IPv4 datagram containing a UDP payload. The solver checks the section using **CRC-32/MPEG-2** (polynomial `0x04C11DB7`, non-reflected), rejects corrupted sections, and orders the surviving `SEG00`–`SEG03` fragments by their embedded indices rather than by arrival order. Four sections pass CRC and four are rejected in the supplied capture.
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

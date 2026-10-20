@@ -111,7 +111,7 @@ Decoded message: GAIANSPACE{therm4l_duty_cycle}
 FLAG: GAIANSPACE{therm4l_duty_cycle}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

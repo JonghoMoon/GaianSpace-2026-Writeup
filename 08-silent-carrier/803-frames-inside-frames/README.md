@@ -60,7 +60,7 @@ FLAG: GAIANSPACE{gse_fr4g_crc32_ok}
 
 After reassembling the relevant TS private section on PID 270, the solver verifies the 10-byte BBHEADER: the tenth byte is CRC-8 over the first nine bytes (polynomial `0xD5`, initial state zero). Its DFL field is a **bit count** and must be byte-aligned for this dataset. GSE fragment headers then supply the fragment identifier, first-fragment total datagram length, and a final CRC-32/MPEG-2. The updated solver compares the reassembled datagram length plus the two-byte protocol type with the first fragment's declared length before trusting the final CRC. A corrupted repeat is rejected and the CRC-valid repeat yields the IPv4/UDP flag.
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

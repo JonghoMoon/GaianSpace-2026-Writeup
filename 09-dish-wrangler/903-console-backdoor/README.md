@@ -124,7 +124,7 @@ Both methods agree: GAIANSPACE{ref_p4th_tr4versal}
 
 Make sure to use **this problem's** `service.zip`: the service archive for Challenge 905 is a different application.
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

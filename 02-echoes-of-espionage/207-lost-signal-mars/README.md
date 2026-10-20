@@ -70,7 +70,7 @@ Decoded:     �GAIANSPACE{diff_enc0ded_and_buried}
 FLAG: GAIANSPACE{diff_enc0ded_and_buried}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

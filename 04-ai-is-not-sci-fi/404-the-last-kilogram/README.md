@@ -110,7 +110,7 @@ Authenticated output:
 GAIANSPACE{3very_gr41n_c0unts}
 ```
 
-### Exploit Code
+### Solver Code
 
 No additional exploit script was needed. The challenge already provides `unseal.py` alongside the `.seal` file; the successful local-model prompt is recorded in **Steps**, and `unseal.py` performs authenticated decryption after the phrase is entered.
 

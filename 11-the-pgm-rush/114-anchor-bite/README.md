@@ -94,7 +94,7 @@ Anchor  Peak(g)  CW yaw(deg)
 FLAG: GAIANSPACE{B-27}
 ```
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python

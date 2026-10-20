@@ -77,7 +77,7 @@ Decoded text: GAIANSPACE{t0tal_1onizing_d0se}
 FLAG: GAIANSPACE{t0tal_1onizing_d0se}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

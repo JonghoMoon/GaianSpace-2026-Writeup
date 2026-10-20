@@ -114,7 +114,7 @@ Type the phrase after `Phrase:`. Alternatively, use the non-interactive `printf`
 GAIANSPACE{z3roth_l4w_ab0ve_0rders}
 ```
 
-### Exploit Code
+### Solver Code
 
 No additional exploit script was needed. The challenge already provides `unseal.py` alongside the `.seal` file; the successful local-model prompt is recorded in **Steps**, and `unseal.py` performs authenticated decryption after the phrase is entered.
 

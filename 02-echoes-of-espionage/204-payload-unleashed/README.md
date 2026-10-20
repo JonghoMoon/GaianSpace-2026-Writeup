@@ -84,7 +84,7 @@ Key: EL06QL-UNLOCK
 FLAG: GAIANSPACE{b4ckd00r_in_the_dec0der}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

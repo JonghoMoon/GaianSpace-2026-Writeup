@@ -65,7 +65,7 @@ Top recovery candidates (RMS/component, arcsec):
 BEST CANDIDATE: GAIANSPACE{RT39SBA}
 ```
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python

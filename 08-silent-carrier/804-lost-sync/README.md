@@ -60,7 +60,7 @@ Record @0xff: type=0x03, len=16, text='end of shift log'
 
 Rather than searching the entire raw file directly for the plaintext station-log banner, the revised solver scans possible byte offsets for a **CRC-8-valid 10-byte BBHEADER** (polynomial `0xD5`, initialization zero), checks the declared DFL in bits, and extracts the complete byte-aligned data field. The original capture begins partway through a frame; only a recovered valid frame containing the plaintext `STATIONLOG v2` banner is used. The banner states the XOR byte (`0x5A`) used for subsequent type/length/payload records. The record marked `0x07` contains the flag. This is a frame-header and data-field recovery for the archived capture, not a generic DVB-S2 demodulator.
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

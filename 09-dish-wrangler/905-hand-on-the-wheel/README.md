@@ -110,7 +110,7 @@ Offline and HTTP methods agree.
 
 `--park` is optional. The offline route is explicitly permitted by the challenge and remains the default, so no running service or Docker installation is required for Method 1.
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

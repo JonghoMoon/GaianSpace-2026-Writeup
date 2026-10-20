@@ -81,7 +81,7 @@ Corrected key: a3f1c09e42b7d6150c8e2f9b71aa4e33
 FLAG: GAIANSPACE{s1ngle_event_upset}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

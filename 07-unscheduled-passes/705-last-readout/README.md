@@ -231,7 +231,7 @@ Damaged words: 5
 FLAG: GAIANSPACE{405-43E-445-448-4BD}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

@@ -64,7 +64,7 @@ Diameter: 119.094 m
 FLAG: GAIANSPACE{2041QM23_120}
 ```
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python

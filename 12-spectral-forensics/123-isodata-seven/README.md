@@ -70,7 +70,7 @@ Bitmap mismatches: 0
 FLAG: GAIANSPACE{7TH-CLASS-XHTXWX}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

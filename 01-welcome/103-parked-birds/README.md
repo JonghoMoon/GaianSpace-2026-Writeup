@@ -38,7 +38,7 @@ In 2026, SES cancelled two GEO spacecraft originally ordered by Intelsat from Th
 
 The challenge explicitly requires the names in published order. They are `IS-41` first and `IS-44` second, with no spaces after the comma in the submitted flag.
 
-### Exploit Code
+### Solver Code
 
 Not applicable. This is a source-verification/OSINT challenge. The answer is obtained by comparing the acquisition announcement with the cancelled-order reporting.
 

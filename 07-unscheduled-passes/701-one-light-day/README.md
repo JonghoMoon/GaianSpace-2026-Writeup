@@ -81,7 +81,7 @@ FLAG: GAIANSPACE{FDS_3C0AB555}
 
 The `kernels.zip` supplied with the challenge is required; `de440s.bsp` in the working archive is not a listed challenge attachment.
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

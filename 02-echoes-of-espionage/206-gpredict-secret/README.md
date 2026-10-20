@@ -57,7 +57,7 @@ Station    : VELA (verified)
 GAIANSPACE{w4tcher_0f_the_sky}
 ```
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python

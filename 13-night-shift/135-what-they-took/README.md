@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Category** | 13 — Night Shift |
-| **Points** | 175 |
+| **Points** | 193 |
 
 ## Description
 

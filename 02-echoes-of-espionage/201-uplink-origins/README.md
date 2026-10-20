@@ -55,7 +55,7 @@ Altitude:  3296.64 km
 FLAG: GAIANSPACE{26.46,-98.64,3296.64}
 ```
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python

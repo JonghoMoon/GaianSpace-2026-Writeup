@@ -70,7 +70,7 @@ FLAG: GAIANSPACE{dis3qc_t0ne_b1ts}
 
 The 252 decoded bits correspond to 28 parity-checked, nine-bit characters. This directly validates the timing/parity interpretation rather than simply searching the WAV file for a preselected answer.
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

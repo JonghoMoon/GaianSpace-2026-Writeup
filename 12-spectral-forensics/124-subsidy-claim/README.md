@@ -84,7 +84,7 @@ False declarations: 3/30
 FLAG: GAIANSPACE{CUVE-UKEJ-TRP6}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

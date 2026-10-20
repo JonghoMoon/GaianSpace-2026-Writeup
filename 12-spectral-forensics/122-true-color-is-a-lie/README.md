@@ -68,7 +68,7 @@ Recovered text: GAIANSPACE{TRUE-NDVI-HR6TNM}
 FLAG: GAIANSPACE{TRUE-NDVI-HR6TNM}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

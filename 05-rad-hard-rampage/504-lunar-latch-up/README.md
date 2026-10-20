@@ -91,7 +91,7 @@ AES key: 178199ffd98d0f72841b0e909fac41d1
 FLAG: GAIANSPACE{s1ngle_event_l4tchup}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

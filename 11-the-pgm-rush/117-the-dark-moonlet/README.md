@@ -82,7 +82,7 @@ Selected compound: aspartic_acid
 FLAG: GAIANSPACE{aspartic_acid_L34}
 ```
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python

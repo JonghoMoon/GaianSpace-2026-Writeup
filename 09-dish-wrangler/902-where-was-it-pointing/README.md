@@ -61,7 +61,7 @@ FLAG: GAIANSPACE{usals_arc_backtr4ced}
 
 All six fragments are taken directly from the provided catalog. No previously decoded fragment or final Flag is hardcoded into the solver.
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

@@ -36,7 +36,7 @@ The competition uses `GAIANSPACE{...}` for flags. The square brackets in the exa
 
 `PASSWORD123` is explicitly rejected in the story; it is not a password to crack or a valid flag.
 
-### Exploit Code
+### Solver Code
 
 Not applicable. This is a flag-format and reading-comprehension check; no tool or code is needed.
 

@@ -200,7 +200,7 @@ FLAG: GAIANSPACE{r3l0c4ted_ar0und_a_d34d_ch1p}
 
 The solver generates `704_solution/fds_patch_704_v1.txt`; it is an output artifact, not an original challenge attachment.
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

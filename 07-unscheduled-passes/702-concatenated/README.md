@@ -175,7 +175,7 @@ FLAG: GAIANSPACE{s0ft_v1terbi_th3n_r33d_s0l0m0n}
 
 
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

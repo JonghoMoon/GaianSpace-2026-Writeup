@@ -119,7 +119,7 @@ Median parcel: MZH-3240
 FLAG: GAIANSPACE{MZH-3240}
 ```
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python

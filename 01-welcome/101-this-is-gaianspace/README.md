@@ -55,7 +55,7 @@ This gives **60,000** as the projected LEO satellite population. The challenge d
 
 The challenge requests whole numbers, so omit approximation signs and thousands separators. Place the 2024 count first, followed by the forecast: `8100,60000`.
 
-### Exploit Code
+### Solver Code
 
 No exploit is involved. A minimal formatting check is sufficient:
 

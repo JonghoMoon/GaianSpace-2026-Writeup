@@ -89,7 +89,7 @@ Samples: 30
 FLAG: GAIANSPACE{displ4cement_drift}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

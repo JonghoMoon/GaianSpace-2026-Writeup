@@ -105,7 +105,7 @@ FLAG: GAIANSPACE{CLK_+2213481}
 
 The `de440s.bsp` file is present in the uploaded working archive, but is not one of the two original challenge attachments.
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python

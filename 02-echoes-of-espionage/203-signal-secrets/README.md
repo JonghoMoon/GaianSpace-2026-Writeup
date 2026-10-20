@@ -68,7 +68,7 @@ Key offset: 1
 FLAG: GAIANSPACE{tw0_l4yer_d0wnlink}
 ```
 
-### Exploit Code
+### Solver Code
 
 ```python
 #!/usr/bin/env python3

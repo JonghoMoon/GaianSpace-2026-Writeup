@@ -93,7 +93,7 @@ Final CO2: 418 ppm
 FLAG: GAIANSPACE{6304}
 ```
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python

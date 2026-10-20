@@ -42,7 +42,7 @@ The Norwegian ground-station story is another security example but does not iden
 
 Keep the malware name's capitalization, `AcidRain`, inside the flag envelope.
 
-### Exploit Code
+### Solver Code
 
 Not applicable. The challenge is open-source incident identification; no binary, service, or capture was supplied.
 

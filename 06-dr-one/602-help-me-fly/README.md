@@ -66,7 +66,7 @@ FLAG: GAIANSPACE{fl1ght_telemetry_str3am}
 
 
 
-### Exploit Code
+### Solver Code
 
 ```python
 

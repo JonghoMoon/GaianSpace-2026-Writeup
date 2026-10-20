@@ -73,7 +73,7 @@ Best slot:       0242
 FLAG: GAIANSPACE{A-0242}
 ```
 
-### Exploit Code
+### Solver Code
 
 {% raw %}
 ```python
