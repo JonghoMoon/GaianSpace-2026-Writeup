@@ -123,7 +123,7 @@ Servo projection scores: {1: 2961.0, 2: -681.1585523069634, 3: -2279.84144769303
 FLAG: GAIANSPACE{S1-T78758}
 ```
 
-## Python Source Code
+## Solver Code
 
 The standalone recovery and analysis script is also available as [`605.py`](./scripts/605.py).
 
