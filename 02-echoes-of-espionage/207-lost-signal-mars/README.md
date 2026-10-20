@@ -66,7 +66,7 @@ Samples:     462400
 Symbols:     115600
 Burst size:  289 (autocorrelation=0.098)
 Repetitions: 400
-Decoded:     �GAIANSPACE{diff_enc0ded_and_buried}
+Decoded:     GAIANSPACE{diff_enc0ded_and_buried}
 FLAG: GAIANSPACE{diff_enc0ded_and_buried}
 ```
 
