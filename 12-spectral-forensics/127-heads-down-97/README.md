@@ -141,7 +141,7 @@ Tonight's field: SZ4TE4 (agreed across 5 seeds)
 FLAG: GAIANSPACE{SZMMPR-SZPTJU-SZXYMY_SZ4TE4}
 ```
 
-### Solver Code
+### Implementation Overview
 
 The full reproducible analysis is in [`127.py`](./scripts/127.py). It also derives the capture-time B08/B11 mapping from the provided configuration and crop references instead of embedding the selected answer. The revised version additionally writes `127_output/dealer_concentration.json` with per-seed supporting class counts. It includes packet decoding, CFO grouping, cube reconstruction, pixel-to-parcel masking, NDVI comparison, seven-class clustering, and flag assembly. The two bundled LoRa decoder modules contain the PHY-layer demodulation logic.
 
