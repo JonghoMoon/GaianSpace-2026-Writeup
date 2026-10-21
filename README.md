@@ -8,6 +8,13 @@ Each write-up includes the methodology, supporting evidence, analysis scripts, a
 
 ![social-preview](./social-preview.png)
 
+## Award
+
+🏆 **GaianSpace CTF 2026 — Best Write-up Award**
+
+Our **12 · Spectral Forensics** write-up was selected as the **Best Write-up of GaianSpace CTF 2026**.
+![GaianSpace CTF 2026 Best Write-up Certificate](./GaianSpace-CTF-2026-Best-Writeup-Certificate.png)
+
 ## Links
 
 - 🌐**GitHub Pages**
