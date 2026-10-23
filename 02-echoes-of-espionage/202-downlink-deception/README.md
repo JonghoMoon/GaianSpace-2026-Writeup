@@ -94,7 +94,6 @@ FLAG: GAIANSPACE{VELA,2025-06-12T19:15:00Z}
 
 ### Solver Code
 
-{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies: python3 -m pip install skyfield
@@ -160,7 +159,6 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
-{% endraw %}
 
 ## Flag
 
