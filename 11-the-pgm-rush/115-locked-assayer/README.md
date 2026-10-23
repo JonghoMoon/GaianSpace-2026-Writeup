@@ -141,6 +141,7 @@ FLAG: GAIANSPACE{XR9-6YYDU6}
 
 ## Solver Code
 
+{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies: pip install cryptography
@@ -348,6 +349,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
+{% endraw %}
 
 ## Tools and References
 

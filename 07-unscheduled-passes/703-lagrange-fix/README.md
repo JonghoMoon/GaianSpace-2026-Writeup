@@ -107,6 +107,7 @@ The `de440s.bsp` file is present in the uploaded working archive, but is not one
 
 ### Solver Code
 
+{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies:
@@ -497,6 +498,7 @@ if __name__ == '__main__':
         print(f'ERROR: {exc}', file=sys.stderr)
         raise SystemExit(1)
 ```
+{% endraw %}
 
 ## Flag
 

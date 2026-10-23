@@ -75,6 +75,7 @@ FLAG: GAIANSPACE{A-0242}
 
 ### Solver Code
 
+{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies: pip install numpy pandas scipy
@@ -178,6 +179,7 @@ print(f"Contact speed:   {speed:.6f} m/s")
 print(f"Best slot:       {best_slot:04d}")
 print(f"FLAG: GAIANSPACE{{{spring}-{best_slot:04d}}}")
 ```
+{% endraw %}
 
 ## Flag
 

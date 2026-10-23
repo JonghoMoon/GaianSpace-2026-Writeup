@@ -58,6 +58,7 @@ FLAG: GAIANSPACE{LZ_1370_-360}
 
 ### Solver Code
 
+{% raw %}
 ```python
 
 #!/usr/bin/env python3
@@ -113,6 +114,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
+{% endraw %}
 
 ## Flag
 

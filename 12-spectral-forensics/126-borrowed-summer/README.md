@@ -109,6 +109,7 @@ FLAG: GAIANSPACE{ZDJ7-UCZA-JADX-7JEY}
 
 ### Solver Code
 
+{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies (install if needed):
@@ -220,6 +221,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
+{% endraw %}
 
 ## Tools and References
 

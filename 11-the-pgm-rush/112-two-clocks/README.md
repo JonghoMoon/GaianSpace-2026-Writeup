@@ -114,6 +114,7 @@ FLAG: GAIANSPACE{0412377}
 
 ## Solver Code
 
+{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies: Python 3 standard library only.
@@ -236,6 +237,7 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
+{% endraw %}
 
 ## Tools and References
 

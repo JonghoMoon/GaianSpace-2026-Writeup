@@ -173,6 +173,7 @@ The source below is identical to the downloadable `132.py` and contains both bac
 
 **`132.py`**
 
+{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies:
@@ -610,6 +611,7 @@ if __name__ == '__main__':
         print('ERROR:', exc, file=sys.stderr)
         raise SystemExit(1)
 ```
+{% endraw %}
 
 ### Flag
 

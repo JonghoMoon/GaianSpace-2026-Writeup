@@ -84,6 +84,7 @@ FLAG: GAIANSPACE{aspartic_acid_L34}
 
 ### Solver Code
 
+{% raw %}
 ```python
 #!/usr/bin/env python3
 """Resolve chiral peak excess with blank and isotopic controls.
@@ -181,6 +182,7 @@ target, ee = qualified[0]
 print(f"\nSelected compound: {target}")
 print(f"FLAG: GAIANSPACE{{{target}_L{round(ee)}}}")
 ```
+{% endraw %}
 
 ## Flag
 
