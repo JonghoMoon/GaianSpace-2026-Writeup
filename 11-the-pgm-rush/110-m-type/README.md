@@ -66,7 +66,6 @@ FLAG: GAIANSPACE{2041QM23_120}
 
 ### Solver Code
 
-{% raw %}
 ```python
 #!/usr/bin/env python3
 """Compare the asteroid optical survey against quantified radar evidence.
@@ -140,7 +139,6 @@ print(f"\nSelected prospect: {target['designation']}")
 print(f"Diameter: {diameter_m:.3f} m")
 print(f"FLAG: GAIANSPACE{{{name}_{rounded_m}}}")
 ```
-{% endraw %}
 
 ## Flag
 
