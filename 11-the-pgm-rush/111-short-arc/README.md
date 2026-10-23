@@ -67,7 +67,6 @@ BEST CANDIDATE: GAIANSPACE{RT39SBA}
 
 ### Solver Code
 
-{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies: pip install numpy scipy skyfield
@@ -350,7 +349,6 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
-{% endraw %}
 
 ## Flag
 
