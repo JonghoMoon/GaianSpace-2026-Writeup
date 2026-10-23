@@ -58,7 +58,6 @@ FLAG: GAIANSPACE{LZ_1370_-360}
 
 ### Solver Code
 
-{% raw %}
 ```python
 
 #!/usr/bin/env python3

@@ -127,7 +127,6 @@ FLAG: GAIANSPACE{S1-T78758}
 
 The standalone recovery and analysis script is also available as [`605.py`](./scripts/605.py).
 
-{% raw %}
 ```python
 #!/usr/bin/env python3
 # Dependencies: Python 3 standard library only.
@@ -334,7 +333,6 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
-{% endraw %}
 
 ## Tools and References
 
